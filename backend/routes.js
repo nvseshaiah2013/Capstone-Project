@@ -4,12 +4,25 @@ const router = require('express')();
 
 
 router.get('/',function(req,res){
-    res.send("Default Route Working");
+    res.redirect('/landing');
 
+});
+
+router.get('/landing',function(req,res){
+    res.render("landing");
 });
 
 router.get('/event-new',function(req,res){
     res.render("events/new-event");
 });
 
-module.exports = router;
+router.get('/login',function(req,res){
+    res.render("students/Login");
+});
+
+router.get('/signup',function(req,res){
+    res.render("students/sign-up");
+});
+
+
+module.exports = router; 
