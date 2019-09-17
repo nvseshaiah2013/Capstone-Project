@@ -1,4 +1,5 @@
-const mongoose = require('../../db/db');
+const mongoose = require('mongoose');
+const localMongoose = require('passport-local-mongoose');
 const eventSchema = new mongoose.Schema({
     event_id:mongoose.Schema.Types.ObjectId,
     event_name:String,
@@ -8,35 +9,33 @@ const eventSchema = new mongoose.Schema({
 const Student = new mongoose.Schema({
     regn_no:{
         type:String,
-        index:true,
-        unique:true,
-        required:true
+        default:0
     },
     name: {
         type:String,
-        required:true
+        defualt:"ABC"
     },
-    email_id:{
+    username:{
         type:String,
         unique:true,
         required:true
     },
     phone_no:
     {
-        type:[String]
+        type:String
     },
    events:[eventSchema],
-   password:{
-       type:String,
-       required:true
+   reg_date:{
+       type:Date,
+       default:Date.now()
    },
-   reg_date:Date,
    profile_pic:{
        type:String,
        default:'../../public/assets/21294.png'
    }
 });
 
+Student.plugin(localMongoose);
 
 module.exports = mongoose.model('Student',Student);
 

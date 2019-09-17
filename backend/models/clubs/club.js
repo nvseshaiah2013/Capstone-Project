@@ -1,4 +1,5 @@
-const mongoose = require('../../db/db');
+const mongoose = require('mongoose');
+const localMongoose = require('passport-local-mongoose');
 const contactDetails = require('./contact');
 const description = require('./description');
 
@@ -21,6 +22,7 @@ const clubSchema = new mongoose.Schema({
     reg_date:Date
 });
 
+clubSchema.plugin(localMongoose);
 
 module.exports = mongoose.model('Club',clubSchema);
 

@@ -7,14 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<form id="login-form" method="POST">
+<form id="login-form" method="POST" action="/login">
     <h1>Log In</h1>
     <label>Username </label>
-    <input type="text"  placeholder="Username..."  required>
+    <input type="text"  name="username" placeholder="Username..."  required>
     <label>Password</label>
     <input type="password" name="password" placeholder="Password..."  required>
     <button class ="submit-btn1">Login</button>
-    <p id="p1" style="color:whitesmoke;">Don't Have an Account<span id="login"><a href="Sign up.html"target="_blank;"style="color:white;float:right">Sign Up</a></span></p>
+    <p id="p1" style="color:whitesmoke;">Don't Have an Account<span id="login"><a href="/signup"target="_blank;"style="color:white;float:right">Sign Up</a></span></p>
 </form>
 </body>
 </html>
