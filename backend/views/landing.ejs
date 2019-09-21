@@ -9,7 +9,8 @@
 
     <!-- Site Properties -->
     <title>Landing Page - LPU Colors</title>
-    <link rel="stylesheet" type="text/css" href="/css/dist/semantic.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css"
+    integrity="sha256-QVBN0oT74UhpCtEo4Ko+k3sNo+ykJFBBtGduw13V9vw=" crossorigin="anonymous" />
 
     <style type="text/css">
         html
@@ -130,11 +131,10 @@
     </style>
 
     <script src="assets/library/jquery.min.js"></script>
-    <script src="/css/dist/components/visibility.js"></script>
-    <script src="/css/dist/components/sidebar.js"></script>
-    <script src="/css/dist/components/transition.js"></script>
-
-    <script>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"
+        integrity="sha256-qs5p0BFSqSvrstBxPvex+zdyrzcyGdHNeNmAirO2zc0=" crossorigin="anonymous"></script>
+        <script>
         $(document)
             .ready(function () {
 
@@ -160,6 +160,7 @@
                     .sidebar('attach events', '.toc.item')
                     ;
 
+                    $('.ui.checkbox').checkbox();
             })
             ;
     </script>

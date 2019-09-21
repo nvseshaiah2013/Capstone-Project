@@ -7,9 +7,9 @@ const routes = require('./routes');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 app.set('view engine','ejs');
 app.use(express.static('public'));
-app.use('/css',express.static(__dirname + '/semantic'));
 app.use('/',routes);
 
 
