@@ -55,12 +55,12 @@ Student.methods.genJWT = function genJWT(cb)
    jwt.sign({username:this.username},process.env.STUDENT_PR_KEY,{expiresIn:"2h"},function(err,token){
         if(err)
         {
-            console.log("Error in signing token for user: " + student.username);
+           // console.log("Error in signing token for user: " + student.username);
             cb(err);
         }
         else
         {
-            console.log("Token Generated for username: " + student.username + " " + token);
+          //  console.log("Token Generated for username: " + student.username + " " + token);
             cb(null,token);
         }
     });
@@ -86,7 +86,7 @@ Student.pre('save',function(next){
 
 
 Student.methods.comparePwd = function(password,cb){
-    console.log(this.password);
+   // console.log(this.password);
     bcrypt.compare(password,this.password,function(err,result){
         if(err) return cb(err);
         cb(null,result);
