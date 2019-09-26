@@ -45,6 +45,9 @@ const Student = new mongoose.Schema({
    profile_pic:{
        type:String,
        default:'../../public/assets/21294.png'
+   },
+   expired_tokens:{
+       type:[String]
    }
 });
 

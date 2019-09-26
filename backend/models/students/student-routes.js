@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express();
 const Student = require('./student');
-const bodyParser = require('body-parser');
 
 router.get('/login', function (req, res) {
     res.render("students/Login");
@@ -57,7 +56,7 @@ router.post('/login', function (req, res) {
                     user.genJWT(function (err, token) {
                         if (err) console.log("Token Error: " + err);
                         else {
-                            res.render("students/dashboard", { auth: token, id: user.username });
+                            res.render("students/dashboard", { auth: token, id: user });
                         }
                     });
                 }

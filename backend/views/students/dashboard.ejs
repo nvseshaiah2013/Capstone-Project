@@ -11,20 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css"
         integrity="sha256-QVBN0oT74UhpCtEo4Ko+k3sNo+ykJFBBtGduw13V9vw=" crossorigin="anonymous" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"
-        integrity="sha256-qs5p0BFSqSvrstBxPvex+zdyrzcyGdHNeNmAirO2zc0=" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"
+    integrity="sha256-qs5p0BFSqSvrstBxPvex+zdyrzcyGdHNeNmAirO2zc0=" crossorigin="anonymous"></script>
     <script>
         $(document)
             .ready(function () {
                 $('.ui.dropdown').dropdown();
-                $('.ui.sticky')
-                    .sticky({
-                        context: '#events'
-                    })
-                    ;
+                $('.ui.sticky').sticky({ context: '#events' });
             });
     </script>
 
@@ -36,7 +31,7 @@
             <a class="item header" href="#">LPU Colors </a>
             <a class="item active"><i class="home icon"></i> Home </a>
             <div class="right menu">
-                <a class="item"><i class="user outline icon"></i> Hi <%= id.split('@')[0] %></a>
+                <a class="item"><i class="user outline icon"></i> Hi <%= id.username.split('@')[0] %></a>
                 <div class="item ui dropdown"><i class="icon bell"></i>Notifications <i class="ui dropdown icon"></i>
 
                     <div class="menu">
@@ -72,68 +67,133 @@
             </div>
         </div>
     </div>
-    <div class="ui grid">
-        <div class="ui left rail four wide column">
-            <div class="ui sticky" style="width: 100px !important; height:100px !important; left:20px !important;">
-                <div class="ui card">
-                    <div class="content">
-                        <div class="header">Cute Dog</div>
-                        <div class="meta">2 days ago</div>
-                        <div class="description">
-                            <p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others
-                                for their tiny stature, and even others for their massive size.</p>
-                            <p>Many people also have their own barometers for what makes a cute dog.</p>
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="two column row">
+                <div class="four wide column">
+                    <div class="ui card sticky simple">
+                        <div class="image">
+                            <img src="/assets/images/21294.png">
+                        </div>
+                        <div class="content">
+                            <a class="header"><%= id.name %></a>
+                            <div class="meta">
+                                <span class="date">Joined on <%= id.reg_date.toDateString() %> <i class="icon calendar outline"></i></span>
+                            </div>
+                            <div class="description">
+                                Registration No: <%= id.regn_no %>
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a>
+                                <i class="phone icon"></i>
+                                <%= id.phone_no %>
+                            </a>
                         </div>
                     </div>
-                    <div class="extra content">
-                        <i class="check icon"></i>
-                        121 Votes
+                </div>
+                <div class="twelve wide column">
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui segment fluid">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                the industry's standard
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                to make a type specimen
+                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                Ipsum passages, and more
+                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </div>
+                        </div>
                     </div>
+                    <div class="ui section divider"></div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui segment fluid">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                the industry's standard
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                to make a type specimen
+                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                Ipsum passages, and more
+                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui section divider"></div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui segment fluid">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                the industry's standard
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                to make a type specimen
+                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                Ipsum passages, and more
+                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui section divider"></div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui segment fluid">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                the industry's standard
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                to make a type specimen
+                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                Ipsum passages, and more
+                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui section divider"></div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui segment fluid">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                the industry's standard
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                to make a type specimen
+                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                Ipsum passages, and more
+                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui section divider"></div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui segment fluid">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                the industry's standard
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                to make a type specimen
+                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                remaining essentially
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                Ipsum passages, and more
+                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui section divider"></div>
                 </div>
             </div>
+            
         </div>
-        <div id="events" class="ui twelve wide column">
-        <div class="ui segment text fluid container">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-            aliqua. Diam ut venenatis tellus in metus vulputate eu. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit amet.
-            Id velit ut tortor pretium. Interdum velit euismod in pellentesque massa placerat duis. Amet volutpat consequat mauris
-            nunc congue. Sem integer vitae justo eget magna fermentum. Vel eros donec ac odio tempor orci dapibus. Magna ac placerat
-            vestibulum lectus mauris. Dui id ornare arcu odio. Ornare suspendisse sed nisi lacus sed viverra tellus in. Mauris in
-            aliquam sem fringilla. Maecenas ultricies mi eget mauris pharetra et. Aliquet porttitor lacus luctus accumsan tortor
-            posuere ac ut. Interdum varius sit amet mattis vulputate. Facilisis leo vel fringilla est. Facilisi cras fermentum odio
-            eu feugiat. Enim blandit volutpat maecenas volutpat blandit aliquam. Egestas sed sed risus pretium quam.
-        </div>
-        <div class="ui segment text fluid container">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-            aliqua. Diam ut venenatis tellus in metus vulputate eu. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit
-            amet.
-            Id velit ut tortor pretium. Interdum velit euismod in pellentesque massa placerat duis. Amet volutpat consequat
-            mauris
-            nunc congue. Sem integer vitae justo eget magna fermentum. Vel eros donec ac odio tempor orci dapibus. Magna ac
-            placerat
-            vestibulum lectus mauris. Dui id ornare arcu odio. Ornare suspendisse sed nisi lacus sed viverra tellus in. Mauris
-            in
-            aliquam sem fringilla. Maecenas ultricies mi eget mauris pharetra et. Aliquet porttitor lacus luctus accumsan tortor
-            posuere ac ut. Interdum varius sit amet mattis vulputate. Facilisis leo vel fringilla est. Facilisi cras fermentum
-            odio
-            eu feugiat. Enim blandit volutpat maecenas volutpat blandit aliquam. Egestas sed sed risus pretium quam.
-        </div>
-        <div class="ui segment text container">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-            aliqua. Diam ut venenatis tellus in metus vulputate eu. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit
-            amet.
-            Id velit ut tortor pretium. Interdum velit euismod in pellentesque massa placerat duis. Amet volutpat consequat
-            mauris
-            nunc congue. Sem integer vitae justo eget magna fermentum. Vel eros donec ac odio tempor orci dapibus. Magna ac
-            placerat
-            vestibulum lectus mauris. Dui id ornare arcu odio. Ornare suspendisse sed nisi lacus sed viverra tellus in. Mauris
-            in
-            aliquam sem fringilla. Maecenas ultricies mi eget mauris pharetra et. Aliquet porttitor lacus luctus accumsan tortor
-            posuere ac ut. Interdum varius sit amet mattis vulputate. Facilisis leo vel fringilla est. Facilisi cras fermentum
-            odio
-            eu feugiat. Enim blandit volutpat maecenas volutpat blandit aliquam. Egestas sed sed risus pretium quam.
-        </div>
-        </div>
+
     </div>
     <% if(auth) { %>
     <script>
@@ -142,23 +202,7 @@
 
     </script>
     <% } %>
-    <div class="ui container">
-        <div class="ui card">
-            <div class="content">
-                <div class="header">Cute Dog</div>
-                <div class="meta">2 days ago</div>
-                <div class="description">
-                    <p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others
-                        for their tiny stature, and even others for their massive size.</p>
-                    <p>Many people also have their own barometers for what makes a cute dog.</p>
-                </div>
-            </div>
-            <div class="extra content">
-                <i class="check icon"></i>
-                121 Votes
-            </div>
-        </div>
-    </div>
+
 </body>
 
 </html>

@@ -3,12 +3,14 @@ const bodyParser = require('body-parser');
 const authStudent = require('./middleware/studentauth');
 const studentRoutes = require('./models/students/student-routes');
 const clubRoutes = require('./models/clubs/club-routes');
+const eventRoutes = require('./models/events/event-routes');
 const Admin = require('./models/admin/admin');
 
 //To enable req.body parsing
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use('/student',studentRoutes);
+router.use('/events',eventRoutes);
 
 //Routes
 router.get('/', function (req, res) {

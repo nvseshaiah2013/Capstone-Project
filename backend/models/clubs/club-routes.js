@@ -1,8 +1,19 @@
+const express = require('express');
+const router = express();
+
+
 const Club = require('./club');
+const clubAuth = require('../../middleware/clubauth');
 
+router.get('/add',function(req,res){
 
-const clubRoutes = {
+});
 
-};
+router.post('/add',function(req,res){
+    let club = new Club({
 
-module.exports = clubRoutes;
+    });
+    club.save();
+});
+
+module.exports = router;

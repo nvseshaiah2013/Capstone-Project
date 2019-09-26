@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const desc = require('./description');
+const category = require('./categories');
 
 const eventSchema = new mongoose.Schema({
     event_name:{
@@ -26,8 +27,11 @@ const eventSchema = new mongoose.Schema({
     },
     description:{
         type:desc
+    },
+    categories:{
+        type:[category],
+        required:true
     }
-
 });
 
 module.exports = mongoose.model('Event',eventSchema);

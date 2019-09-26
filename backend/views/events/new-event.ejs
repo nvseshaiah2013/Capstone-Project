@@ -1,14 +1,174 @@
 <!doctype html>
 <html>
-    <head>
-        <title>
-            LPU Colors - Add Event
-        </title>
 
-    </head>
-    <body> 
-        <div class="container">
-            This is the Event Creation page
-        </div>        
-    </body>
+<head>
+    <title>
+        LPU Colors - Add Event
+    </title>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+        integrity="sha256-9mbkOfVho3ZPXfM7W8sV2SndrGDuh7wuyLjtsWeTI1Q=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"
+    integrity="sha256-qs5p0BFSqSvrstBxPvex+zdyrzcyGdHNeNmAirO2zc0=" crossorigin="anonymous"></script>
+        
+</head>
+
+<body>
+    <div class="ui menu blue inverted large">
+        <div class="ui container">
+            <a class="item header" href="#">
+                LPU Colors
+            </a>
+            <a class="active item" href="#">Home</a>
+            <div class="right menu">
+                <a class="item" href="#">
+                    <i class="icon user"></i> Hi Username
+                </a>
+                <a class="item" href="#"><i class="icon bell"></i> Notifications </a>
+                <a class="item" href="#"><i class="icon sign out"></i> Sign Out</a>
+            </div>
+        </div>
+    </div>
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="two column row">
+                <div class="four wide column">
+                    <div class="ui card">
+                        <div class="image">
+                            <img src="/assets/images/21294.png">
+                        </div>
+                        <div class="content">
+                            <a class="header">Kristy</a>
+                            <div class="meta">
+                                <span class="date">Joined in 2013</span>
+                            </div>
+                            <div class="description">
+                                Kristy is an art director living in New York.
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a>
+                                <i class="user icon"></i>
+                                22 Friends
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ten wide column">
+                    <div class="one columm row">
+                        <div class="column ui segment">
+                            <div class="ui dividing header large blue">
+                                Event Creation Form
+                            </div>
+                            <div class="ui message red">
+                                <div class="header">
+                                    Important things to remember
+                                </div>
+                                <li>
+                                    Leave the Venue field blank if it is not decided
+                                </li>
+                                <li>
+                                    Create the event at least before 2 days
+                                </li>
+                            </div>
+                            <div class="ui form">
+                                <div class="sixteen wide field required">
+                                    <label>
+                                        Event Name
+                                    </label>
+                                    <input type="text" placeholder="Event Name for e.g. Youth Vibe 2018" name="event_name"/>
+                                </div>
+                                <div class="two fields">
+                                    <div class="seven wide field required">
+                                        <label>Start date</label>
+                                        <input type="date" id="start_date" name="start_date" required/>
+                                    </div>
+                                    <div class="six wide field required">
+                                        <label>End date</label>
+                                       <input type="date" id="end_date" name="end_date" required />
+                                    </div>
+                                </div>
+                                <div class="sixteen wide field required">
+                                    <label>
+                                        Registration Deadline
+                                    </label>
+                                    <input type="date" name="reg_date" id="reg_date" required />
+                                </div>
+                                <div class="sixteen wide field">
+                                    <label>
+                                        Venue
+                                    </label>
+                                    <input type="text" name="venue" placeholder="Venue for e.g. Block 13 Room No 402" />
+                                </div>
+                                <div class="ui button orange" id="addCat">
+                                   
+                                    Add Category &nbsp; <i class="icon plus circle"></i>
+                                </div>
+                                <pre><br/></pre>
+                                <div id="categories">
+        
+                                </div>
+                                <br />
+                                <div class="sixteen wide field">
+                                    <label>
+                                        Additional Instructions
+                                    </label>
+                                    <textarea name="misc_details">
+
+                                    </textarea>
+                                </div>
+                                <div class="ui submit button primary">
+                                    Create Event
+                                </div>
+                                <div class="ui button red">
+                                    Cancel
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function remove(input) {
+                document.getElementById('categories').removeChild(input.parentNode);
+            }
+        $(document).ready(function(){
+            var id = 1;
+            
+            
+            $('#addCat').on('click',function(){
+                let category = document.createElement('div');
+                category.setAttribute('id',id);
+                ++id;
+                category.classList.add('ui');
+                category.classList.add('segment');
+                category.innerHTML = `
+                <div class="header medium ui dividing red"> Category </div>
+            <div class="sixteen wide field required">
+                <label> Category Name </label>
+                <input type="text" name="category_name" required />
+            </div>
+            <div class="sixteen wide field required">
+                <label> Group Size </label>
+                <input type="number" name="group_size" min="1" max="5" required/>
+            </div>
+            <div class="sixteen wide field required">
+                <label> Amount </label>
+                <input type="number" name="amount" required min="0" />
+            </div>
+            <div class="ui button red" onclick=remove(this)>
+                Remove
+                </div>
+            `;
+               document.querySelector('#categories').appendChild(category);
+               let val= id-1;
+               document.getElementById(val).focus({preventScroll:false});
+            });
+            
+        });
+    </script>
+</body>
+
 </html>
