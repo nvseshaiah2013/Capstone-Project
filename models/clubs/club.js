@@ -18,7 +18,10 @@ const clubSchema = new mongoose.Schema({
     },
     contact:contactDetails,
     desc:description,
-    reg_date:Date
+    reg_date:{
+        type:Date,
+        default:Date.now()
+    }
 });
 
 

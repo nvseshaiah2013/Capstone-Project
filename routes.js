@@ -24,6 +24,16 @@ router.get('/landing', function (req, res) {
 router.get('/event-new', function (req, res) {
     res.render("events/new-event");
 });
+
+router.get('/clubNew',function(req,res){
+    res.render("clubs/clubNew");
+});
+
+router.post('/clubNew',function(req,res){
+    console.log(req.body);
+    res.send("Hola");
+});
+
 //Protected Route
 
 router.get('/protected', authStudent, function (req, res) {

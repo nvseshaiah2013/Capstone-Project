@@ -1,0 +1,229 @@
+<% include ../partials/header %>
+
+<style>
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+</head>
+
+<body>
+    <div class="ui menu inverted teal large">
+        <div class="ui container">
+            <a class="item header">
+                LPU Colors
+            </a>
+            <a class="item active">
+                Home
+            </a>
+            <div class="right menu">
+                <a class="item">
+                    <i class="icon user"></i> Hi Admin
+                </a>
+                <a class="item">
+                    <i class="icon bell">
+
+                    </i>
+                    Notifications
+                </a>
+                <a class="item">
+                    <i class="icon sign out"></i>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <div class="three column row">
+                <div class="one wide column"></div>
+                <div class="four wide column">
+                    <div class="ui card">
+                        <div class="image">
+                            <img src="/assets/images/21294.png">
+                        </div>
+                        <div class="content">
+                            <a class="header">Administrator</a>
+                            <div class="meta">
+                                <span class="date">Joined in 2013</span>
+                            </div>
+                            <div class="description">
+                                Kristy is an art director living in New York.
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a>
+                                <i class="user icon"></i>
+                                22 Friends
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="eleven wide column">
+
+                    <form class="ui form" method="POST" action="/clubNew">
+                        <div class="ui raised segment olive">
+                            <div class="ui dividing header large">Add New Club</div>
+                            <div class="ui segment">
+
+                                <div class="thirteen wide field required">
+                                    <label for="club_name">
+                                        Club Name
+                                    </label>
+                                    <input name="club_name" placeholder="Enter Name of Club" id="club_name" required />
+                                </div>
+                                <div class="thirteen wide field required">
+                                    <label for="username">
+                                        Email Id
+                                    </label>
+                                    <input type="email" name="username" placeholder="Enter email Id" id="username"
+                                        autocomplete="username" required />
+                                </div>
+                                <div class="thirteen wide field required">
+                                    <label for="ceo">
+                                        Chief Executive Officer
+                                    </label>
+                                    <input type="text" name="ceo" id="ceo" required />
+                                </div>
+                                <div class="thirteen wide field required">
+                                    <label for="password">
+                                        Password
+                                    </label>
+                                    <input type="password" name="password" id="password" autocomplete="current-password"
+                                        required />
+                                </div>
+                                <div class="thirteen wide field required">
+                                    <label for="confirm_pwd">Confirm Password</label>
+                                    <input type="password" name="confirm_pwd" id="confirm_pwd"
+                                        autocomplete="current-password" required />
+                                </div>
+                            </div>
+                            <div class="ui segment inverted olive">
+                                <div class="ui dividing header medium">
+                                    Additional details
+                                </div>
+                                <div class="thirteen wide field required">
+                                    <label for="found_date">Foundation Date </label>
+                                    <input type="date" name="found_date" id="found_date" required />
+                                </div>
+                                <div id="founder">
+
+                                    <div class="label">
+                                        Founding Members
+                                    </div>
+                                    <div class="two fields inline">
+
+                                        <div class="twelve wide field">
+
+                                            <input type="text" name="founders" placeholder="Name of Founder" />
+                                        </div>
+
+                                        <button class="ui icon button red" type="button"
+                                            onclick="foundRemove('founder',this)"><i class="icon trash"></i></button>
+
+                                    </div>
+
+                                </div>
+                                <button class="ui right labeled icon button orange" type="button" id="foundAdd"> Add
+                                    Founder <i class="icon plus"></i></button>
+                            </div>
+                            <div class="ui segment ">
+                                <div class="ui dividing header medium">
+                                    Contact Details
+                                </div>
+                                <div id="phone">
+
+                                    <h4 class="header">
+                                        Phone No(s).
+                                    </h4>
+                                    <div class="two fields inline">
+                                        <div class="twelve wide field">
+
+                                            <input type="number" min="10000000001" name="phone_no"
+                                                placeholder="Enter Phone No. " required />
+                                        </div>
+                                        <button class="ui icon button red" type="button"
+                                            onclick="foundRemove('phone',this)"><i class="icon trash"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                                <button class="ui right labeled icon button orange" type="button" id="addNum">
+                                    Add Phone No.
+                                    <i class="plus icon"></i>
+                                </button>
+                                
+                                <div id="emails" style="margin-top:10px !important;">
+                                
+                                    <h4 class="header">
+                                        Email Id(s).
+                                    </h4>
+                                    <div class="two fields inline">
+                                        <div class="twelve wide field">
+                                
+                                            <input type="email" name="email_id" placeholder="Enter Email Id. " required />
+                                        </div>
+                                        <button class="ui icon button red" type="button" onclick="foundRemove('emails',this)"><i class="icon trash"></i>
+                                        </button>
+                                
+                                    </div>
+                                </div>
+                                <button class="ui right labeled icon button orange" type="button" id="addEmail">
+                                    Add Email Id.
+                                    <i class="plus icon"></i>
+                                </button>
+                                <div class="thirteen wide field required" style="margin-top: 10px !important">
+                                    <label for="address">
+                                        Address
+                                    </label>
+                                    <textarea name="address" id="address" cols="30" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <button class="ui button positive submit" type="submit">Add Club</button>
+                            <button class="ui button negative" type="reset"> Reset </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function foundRemove(parent, input) {
+            document.querySelector('#' + parent).removeChild(input.parentNode);
+        }
+        $(document).ready(function () {
+            $('#foundAdd').bind('click', function () {
+                let d = document.createElement('div');
+                $(d).addClass('two fields inline');
+                d.innerHTML = `
+                <div class="twelve wide field"><input type="text" name="founders" placeholder="Name of Founder" /></div>                                     
+                <button class="ui icon button red" type="button" onclick="foundRemove(this)"><i class="icon trash"></i></button>
+                `;
+                $('#founder').append(d);
+            });
+            $('#addNum').bind('click', function () {
+                let d = document.createElement('div');
+                $(d).addClass('two fields inline');
+                d.innerHTML = `
+                <div class="twelve wide field"><input type="number" min="10000000001" name="phone_no" placeholder="Enter Phone No. " required /></div>
+                <button class="ui icon button red" type="button" onclick="foundRemove('phone',this)" ><i class="icon trash"></i></button>
+                `;
+                $('#phone').append(d);
+            });
+            $('#addEmail').bind('click', function () {
+                let d = document.createElement('div');
+                $(d).addClass('two fields inline');
+                d.innerHTML = `
+                <div class="twelve wide field"><input type="email" name="email_id" placeholder="Enter Email Id. " required /></div>
+                <button class="ui icon button red" type="button" onclick="foundRemove('emails',this)"><i class="icon trash"></i></button></div>
+                `;
+                $('#emails').append(d);
+            });
+        });
+    </script>
+</body>
+
+<% include ../partials/footer %>
