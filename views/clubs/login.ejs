@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <div class="ui container">
+    <div class="ui container" id="clubLogin">
         <div class="ui stackable grid">
             <div class="row">
 
@@ -19,47 +19,48 @@
                 <div class="six wide column" style="height:60vh !important">
 
                     <div class="ui raised segment teal">
-                        <form class="ui form" method="POST" action="/student/login" id="logIn">
+                        <form class="ui form" method="POST" action="/clubs/login" id="logIn">
                             <h2 class="ui dividing header center aligned teal">
-                                Student Log In
+                                Club Log In
                             </h2>
                             <div class="sixteen wide field required">
                                 <label for="username">
                                     Username
                                 </label>
-                                <input type="email" name="username" placeholder="Enter Username ... " required/>
+                                <input type="email" name="username" placeholder="Enter Username ... " required />
                             </div>
                             <div class="sixteen wide field required">
                                 <label for="password">
                                     Password
                                 </label>
-                                <input type="password" name="password" minlength="8" placeholder="Enter password ... " required/>
+                                <input type="password" name="password" minlength="8" placeholder="Enter password ... "
+                                    required />
                             </div>
-                           <div class="ui list">
-                               <div class="item">
-                                   <div class="right floated content">
-                                       <a href="#"> Forgot Password ? Click Here </a>
-                                   </div>
-                               </div>
-                           </div>
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <a href="#"> Forgot Password ? Click Here </a>
+                                    </div>
+                                </div>
+                            </div>
                             <button type="submit" class="ui positive button submit fluid">
                                 Log In
                             </button>
-                           <br/>
+                            <br />
                             <div class="three column row">
                                 <div class="five wide column">
                                     <h5 class="ui header blue right floated">
-                                        New Student ? Request Credentials
+                                        New Club ? Request Credentials
                                     </h5>
                                 </div>
                                 <div class="two wide column">
 
                                 </div>
-                                <br/>
+                                <br />
                                 <div class="eight wide column">
-                                <button type="button" class="ui button olive fluid" id="signUp">
-                                    Sign Up !
-                                </button>
+                                    <button type="button" class="ui button olive fluid" id="signUp">
+                                        Sign Up !
+                                    </button>
 
                                 </div>
                             </div>

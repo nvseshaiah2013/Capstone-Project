@@ -1,0 +1,55 @@
+<% include ../partials/header %>
+
+
+</head>
+
+<body>
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <div class="row">
+
+            </div>
+            <div class="row">
+
+            </div>
+            <div class="three column row">
+                <div class="five wide column">
+
+                </div>
+                <div class="six wide column" style="height:60vh !important">
+
+                    <div class="ui raised segment teal">
+                        <form class="ui form" method="POST" action="/admins/login" id="logIn">
+                            <h2 class="ui dividing header center aligned teal">
+                                Admin Log In
+                            </h2>
+                            <div class="sixteen wide field required">
+                                <label for="username">
+                                    Username
+                                </label>
+                                <input type="text" name="username" placeholder="Enter Username ... " required />
+                            </div>
+                            <div class="sixteen wide field required">
+                                <label for="password">
+                                    Password
+                                </label>
+                                <input type="password" name="password" minlength="8" placeholder="Enter password ... "
+                                    required />
+                            </div>
+                            
+                            <button type="submit" class="ui positive button submit fluid">
+                                Log In
+                            </button>
+                            <br />
+                           
+                        </form>
+                    </div>
+                </div>
+                <div clas="five wide column">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include ../partials/footer %>

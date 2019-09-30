@@ -1,0 +1,86 @@
+<% include ../partials/header %>
+</head>
+
+<body>
+    <div class="ui menu blue inverted large">
+        <div class="ui container">
+            <a class="item header" href="#">
+                LPU Colors
+            </a>
+            <a class="active item" href="#">Home</a>
+            <div class="right menu">
+                <a class="item" href="#">
+                    <i class="icon user"></i> Hi <%= club.name %>
+                </a>
+                <a class="item" href="#"><i class="icon bell"></i> Notifications <i class="ui dropdown icon"></i></a>
+                <a class="item" href="#"><i class="icon sign out"></i> Sign Out</a>
+            </div>
+        </div>
+    </div>
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="two column row">
+                <div class="four wide column">
+                    <div class="ui card">
+                        <div class="image">
+                            <img src="/assets/images/21294.png">
+                        </div>
+                        <div class="content">
+                            <a class="header"><%= club.name %></a>
+                            <div class="meta">
+                                <span class="date">Founded On <%= club.desc.found_date.toDateString() %></span>
+                            </div>
+                            <div class="description">
+                                CEO: <%= club.desc.ceo %>
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a>
+                                <i class="phone icon"></i>
+                                <%= club.contact.phone_no %>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ten wide column">
+                    <div class="one column row">
+                        <div class="column">
+
+                            <button type="button" id="createEvent" class="ui button inverted">
+                                create Event </button>
+                        </div>
+                    </div>
+                    <div class="one column row">
+                        <div class="column" id="store">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% if(auth) { %>
+    <script>
+        localStorage.setItem('__colors__', "<%- auth %>");
+        axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
+        
+    </script>
+    <% } %>
+
+    <script>
+        $(document).ready(function () {
+                $('#createEvent').bind('click', function () {
+                    axios.get('/clubs/events/add').then(function (response) {
+                        //console.log(response);
+                        $('#store').html(response.data);
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                });
+            });
+    </script>
+
+
+
+    <% include ../partials/footer %>

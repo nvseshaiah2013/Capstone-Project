@@ -67,7 +67,7 @@ router.post('/login', function (req, res) {
 
         }
         else {
-            res.send(403).send("Invalid Credentials!");
+            res.status(403).send("Invalid Credentials!");
         }
     }).catch(err => {
         res.status(403).send({ "message": "invalid Credentials" });

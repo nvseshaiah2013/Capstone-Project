@@ -63,7 +63,7 @@
                 
                 <div class="eleven wide column">
 
-                    <form class="ui form" method="POST" action="/clubNew">
+                    <form class="ui form" method="POST" action="/clubs/add">
                         <div class="ui raised segment olive">
                             <div class="ui dividing header large">Add New Club</div>
                             <div class="ui segment">
@@ -141,7 +141,7 @@
                                     <div class="two fields inline">
                                         <div class="twelve wide field">
 
-                                            <input type="number" min="10000000001" name="phone_no"
+                                            <input type="tel" name="phone_no" pattern="[1-9]{1}[0-9]{9}"
                                                 placeholder="Enter Phone No. " required />
                                         </div>
                                         <button class="ui icon button red" type="button"
@@ -208,7 +208,7 @@
                 let d = document.createElement('div');
                 $(d).addClass('two fields inline');
                 d.innerHTML = `
-                <div class="twelve wide field"><input type="number" min="10000000001" name="phone_no" placeholder="Enter Phone No. " required /></div>
+                <div class="twelve wide field"><input type="tel" name="phone_no" pattern="[1-9]{1}[0-9]{9}" placeholder="Enter Phone No. " required /></div>
                 <button class="ui icon button red" type="button" onclick="foundRemove('phone',this)" ><i class="icon trash"></i></button>
                 `;
                 $('#phone').append(d);
