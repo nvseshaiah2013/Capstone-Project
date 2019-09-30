@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express();
 const Student = require('./student');
+const Events = require('../events/event');
+const studentAuth = require('../../middleware/studentauth');
 
 router.get('/login', function (req, res) {
     res.render("students/Login");
@@ -72,6 +74,16 @@ router.post('/login', function (req, res) {
     }).catch(err => {
         res.status(403).send({ "message": "invalid Credentials" });
     });
+});
+
+router.get('/events',studentAuth,function(req,res){
+    // console.log("reached event Route");
+    Events.find({}).then(docs=>{
+        
+        res.status(200).send({events:docs});
+    }).catch(err=>{
+        res.status(404).send({"message":"Error"});
+    })
 });
 
 module.exports = router;

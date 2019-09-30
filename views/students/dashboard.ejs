@@ -1,5 +1,5 @@
 <% include ../partials/header %>
-   
+
 </head>
 
 <body>
@@ -55,7 +55,8 @@
                         <div class="content">
                             <a class="header"><%= id.name %></a>
                             <div class="meta">
-                                <span class="date">Joined on <%= id.reg_date.toDateString() %> <i class="icon calendar outline"></i></span>
+                                <span class="date">Joined on <%= id.reg_date.toDateString() %> <i
+                                        class="icon calendar outline"></i></span>
                             </div>
                             <div class="description">
                                 Registration No: <%= id.regn_no %>
@@ -67,21 +68,90 @@
                                 <%= id.phone_no %>
                             </a>
                         </div>
+                        <div class="content">
+                            <div class="ui styled fluid accordion">
+                                <div class="title">
+                                    <i class="dropdown icon"></i>
+                                    Events
+                                </div>
+                                <div class="content">
+                                    <div class="transition hidden">
+                                        <div class="ui link list">
+                                            <a class="item" id="allEvents" href="#">
+                                                All Events
+                                            </a>
+                                            <a class="item" id="pastEvents" href="#">
+                                                Past Events
+                                            </a>
+                                            <a class="item" id="upcomingEvents" href="#">
+                                                Upcoming Events
+                                            </a>
+                                            <a class="item" id="liveEvents" href="#">
+                                                Live Events
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="title">
+                                    <i class="dropdown icon">
+
+                                    </i>
+                                    Profile
+                                </div>
+                                <div class="content">
+                                    <div class="transition hidden">
+                                        <div class="ui link list">
+                                            <a href="#" class="item">
+                                                View Profile
+                                            </a>
+                                            <a href="#" class="item">
+                                                My Participation
+                                            </a>
+                                            <a href="#" class="item">
+                                                My Teams
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="title">
+                                    <i class="dropdown icon"></i>
+                                    Clubs
+                                </div>
+                                <div class="content">
+                                    <div class="transition hidden">
+                                        <div class="ui link list">
+                                            <a href="#" class="item">
+                                                View All Clubs
+                                            </a>
+                                            <a href="#" class="item">
+                                                My Club Participation
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="twelve wide column">
+                <div class="twelve wide column" id="store">
                     <div class="one column row">
                         <div class="column">
                             <div class="ui segment fluid">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been
                                 the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                                scrambled it
                                 to make a type specimen
-                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting,
                                 remaining essentially
-                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                containing Lorem
                                 Ipsum passages, and more
-                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                recently with desktop publishing software like Aldus PageMaker including versions of
+                                Lorem Ipsum
                             </div>
                         </div>
                     </div>
@@ -89,15 +159,20 @@
                     <div class="one column row">
                         <div class="column">
                             <div class="ui segment fluid">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been
                                 the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                                scrambled it
                                 to make a type specimen
-                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting,
                                 remaining essentially
-                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                containing Lorem
                                 Ipsum passages, and more
-                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                recently with desktop publishing software like Aldus PageMaker including versions of
+                                Lorem Ipsum
                             </div>
                         </div>
                     </div>
@@ -105,15 +180,20 @@
                     <div class="one column row">
                         <div class="column">
                             <div class="ui segment fluid">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been
                                 the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                                scrambled it
                                 to make a type specimen
-                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting,
                                 remaining essentially
-                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                containing Lorem
                                 Ipsum passages, and more
-                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                recently with desktop publishing software like Aldus PageMaker including versions of
+                                Lorem Ipsum
                             </div>
                         </div>
                     </div>
@@ -121,15 +201,20 @@
                     <div class="one column row">
                         <div class="column">
                             <div class="ui segment fluid">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been
                                 the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                                scrambled it
                                 to make a type specimen
-                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting,
                                 remaining essentially
-                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                containing Lorem
                                 Ipsum passages, and more
-                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                recently with desktop publishing software like Aldus PageMaker including versions of
+                                Lorem Ipsum
                             </div>
                         </div>
                     </div>
@@ -137,15 +222,20 @@
                     <div class="one column row">
                         <div class="column">
                             <div class="ui segment fluid">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been
                                 the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                                scrambled it
                                 to make a type specimen
-                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting,
                                 remaining essentially
-                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                containing Lorem
                                 Ipsum passages, and more
-                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                recently with desktop publishing software like Aldus PageMaker including versions of
+                                Lorem Ipsum
                             </div>
                         </div>
                     </div>
@@ -153,22 +243,27 @@
                     <div class="one column row">
                         <div class="column">
                             <div class="ui segment fluid">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                                has been
                                 the industry's standard
-                                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                                dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                                scrambled it
                                 to make a type specimen
-                                book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                book. It has survived not only five centuries, but also the leap into electronic
+                                typesetting,
                                 remaining essentially
-                                unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                                unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                containing Lorem
                                 Ipsum passages, and more
-                                recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                recently with desktop publishing software like Aldus PageMaker including versions of
+                                Lorem Ipsum
                             </div>
                         </div>
                     </div>
                     <div class="ui section divider"></div>
                 </div>
             </div>
-            
+
         </div>
 
     </div>
@@ -183,4 +278,4 @@
     </script>
 
 
-<% include ../partials/footer %>
+    <% include ../partials/footer %>

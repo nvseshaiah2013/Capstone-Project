@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="ui container">
-        <div class="ui grid">
+        <div class="ui stackable grid">
             <div class="two column row">
                 <div class="four wide column">
                     <div class="ui card">
@@ -35,24 +35,93 @@
                             </div>
                         </div>
                         <div class="extra content">
-                            <a>
+                            <div class="ui link list">
+                                <% club.contact.phone_no.forEach(function(phone){ %>
+                                    <a class="item" href="tel:<%= phone %>">
                                 <i class="phone icon"></i>
-                                <%= club.contact.phone_no %>
-                            </a>
+
+                                        <%= phone %>
+                                    </a>
+                             <%   }) %>
+                                </div>
+                        </div>
+
+                        <div class="content">
+
+                            <div class="ui styled fluid accordion">
+                                <div class="title">
+                                    <i class="icon dropdown"></i>
+                                    Events
+                                </div>
+                                <div class="content">
+                                    <div class="transition hidden">
+                                        <div class="ui link list">
+                                            <a href="#" class="item" id="ourEvents">
+                                                Our Events
+                                            </a>
+                                            <a href="#" class="item" id="addEvent">
+                                                Add Event
+                                            </a>
+                                            <a href="#" class="item" id="updateEvent">
+                                                Update Event Data
+                                            </a> </div>
+                                    </div>
+                                </div>
+                                <div class="title">
+                                    <i class="icon dropdown">
+
+                                    </i>
+                                    Club Profile
+                                </div>
+                                <div class="content">
+                                    <div class="transition hidden">
+                                        <div class="ui link list">
+                                            <a href="#" class="item">
+                                                View Profile
+                                            </a>
+                                            <a href="#" class="item">
+                                                Update Profile
+                                            </a>
+                                            <a href="#" class="item">
+                                                View Account
+                                            </a>
+                                            <a href="#" class="item">
+                                                View Members
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="title">
+                                    <i class="icon dropdown">
+
+                                    </i>
+                                    Students
+                                </div>
+                                <div class="content">
+                                    <div class="transition hidden">
+                                        <div class="ui link list">
+                                            <a href="#" class="item">
+                                                Participation History
+                                            </a>
+                                            <a href="#" class="item">
+                                                Current Registerd Students
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="ten wide column">
                     <div class="one column row">
                         <div class="column">
-
-                            <button type="button" id="createEvent" class="ui button inverted">
-                                create Event </button>
+    
                         </div>
                     </div>
                     <div class="one column row">
                         <div class="column" id="store">
-
+    
                         </div>
                     </div>
                 </div>
@@ -60,25 +129,19 @@
         </div>
     </div>
 
+
+
+
     <% if(auth) { %>
     <script>
-        localStorage.setItem('__colors__', "<%- auth %>");
-        axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
-        
+        localStorage.setItem('__colors__', "<%= auth %>");
+        axios.defaults.headers.common['Authorization'] = "Bearer " + "<%= auth %> ";
+
     </script>
     <% } %>
 
-    <script>
-        $(document).ready(function () {
-                $('#createEvent').bind('click', function () {
-                    axios.get('/clubs/events/add').then(function (response) {
-                        //console.log(response);
-                        $('#store').html(response.data);
-                    }).catch(err => {
-                        console.log(err);
-                    });
-                });
-            });
+    <script src="/scripts/clubs/scripts/dashboard.js">
+       
     </script>
 
 

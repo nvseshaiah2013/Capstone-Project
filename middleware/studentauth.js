@@ -9,7 +9,7 @@ module.exports = (req,res,next) => {
     if(!header) return res.redirect('/student/login');
    // console.log(req);
     let token = header.split(" ")[1];
-    console.log(token);
+   // console.log(token);
     if(token)
     {
         jwt.verify(token,process.env.STUDENT_PB_KEY,(err,decoded)=>{
