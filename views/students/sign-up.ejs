@@ -1,27 +1,80 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Signup</title>
-    <meta http-equiv="refresh" content="30">
-    <link rel = "stylesheet" href="/stylesheets/index.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<% include ../partials/header %>
 </head>
-<body>
-    
-<form method="POST" action="/student/signup">
-    <h1>Student Sign Up</h1>
-    <label>Full Name</label>
-    <input type="text" name="name" autocomplete="name" placeholder="Full name..." required>
-    <label>Registration Number</label>
-    <input type="number" name="reg_no" autocomplete="reg_no" placeholder ="Reg.no..." min="11600001" required>
-    <label>Email</label>
-    <input type="email" name="username" autocomplete="username" placeholder="Email..." required>
-    <label> Password</label>
-    <input type="password" name="password" autocomplete="current-password" placeholder="Password..." required>
-    <label>Mobile No</label>
-    <input type="number" name="phone_no" autocomplete="phone_no" placeholder="Mobile no..." required>
-    <button class ="submit-btn">Sign up</button>
-</form>
 
-</body>
-</html>
+<body>
+
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <div class="row">
+
+            </div>
+           
+            <div class="three column row">
+                <div class="five wide column">
+
+                </div>
+                <div class="six wide column">
+                    <div class="ui raised segment green">
+
+                        <form class="ui form" method="POST" action="/student/signup">
+                            
+                            <h2 class="ui dividing header green aligned center">Student Sign Up</h2>
+                            <div class="sixteen wide field required">
+
+                                <label>Full Name</label>
+                                <input type="text" name="name" autocomplete="name" placeholder="Name in Full " >
+                            </div>
+                            <div class="sixteen wide field required">
+                                <label>Registration Number</label>
+                                <input type="tel" name="reg_no" autocomplete="reg_no" placeholder="Registration No. for e.g. 11708421" >
+                            </div>
+                            <div class="sixteen wide field required">
+                            
+                                <label>Email</label>
+                                <input type="email" name="username" autocomplete="username" placeholder="Email Id" >
+                            </div>
+                            <div class="sixteen wide field required">
+                            
+                                <label> Password</label>
+                                <input type="password" name="password" autocomplete="current-password"
+                                    placeholder="Enter Password" >
+                            </div>
+                            <div class="sixteen wide field required">
+                                <label>
+                                    Confirm Password
+                                </label>
+                                <input type="password" name="cnfm_password" autocomplete="current-password" placeholder="Enter Same Password" />
+                            </div>
+                            <div class="sixteen wide field required">
+                            
+                                <label>Mobile No</label>
+                                <input type="tel" name="phone_no" autocomplete="phone_no" placeholder="Mobile no...">
+                            </div>
+                            <div class="ui link list">
+                                <a href="/student/login" class="item active">
+                                    Already a Student ? Login.
+                                </a>
+                            </div>
+                            <button class="ui submit button positive fluid" id="signUp" type="submit">Sign Up Now !</button>
+                            <div class="ui success message">
+                                <div class="header">
+                                    Form Submitted Successfully
+                                </div>
+                                <p>
+                                    You are now registered Go to Login To Continue
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="five wide column">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/scripts/students/scripts/sign-up.js"></script>
+
+    <% include ../partials/footer %>

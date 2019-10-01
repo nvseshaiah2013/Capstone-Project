@@ -1,0 +1,31 @@
+
+<% events.forEach(function(event) { %>
+<div class="one column row">
+    <div class="column">
+        <div class="ui fluid raised segment">
+            <h2 class="ui dividing header">
+                <%= event.event_name %>
+            </h2>
+            <p class="description">
+               Start Date:  <%= event.start_date.toLocaleDateString() %>
+            </p>
+            <p class="description">
+                End Date: <%= event.end_date.toLocaleDateString() %>
+            </p>
+            <p class="description">
+                Venue : <%= event.description.venue %>
+            </p>
+            <p class="description">
+                Prizes Worth: <%= event.description.prizes_worth %>
+            </p>
+            <div class="ui dividing footer">
+                <a class="ui positive button" href="#">
+                    View More Details
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui section divider"></div>
+
+<%  }); %>

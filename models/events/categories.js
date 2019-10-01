@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const categoriesSchema = new mongoose.Schema({
     catId:{
         type:Number,
-        index:true,
-        unique:true
+        required:true
     },
     category_name:{
         type:String,

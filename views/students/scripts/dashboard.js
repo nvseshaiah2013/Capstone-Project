@@ -4,8 +4,8 @@ $(document)
         $('.ui.accordion').accordion();
         $('#allEvents').bind('click',function(evt){
             evt.preventDefault();
-            axios.get('/student/events').then(result=>{
-               console.log(result.data.events);
+            axios.get('/student/events').then(result=>{               
+               $('#store').html(result.data);
             }).catch(err=>{
                 console.log(err);
             });

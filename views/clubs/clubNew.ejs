@@ -63,7 +63,7 @@
                 
                 <div class="eleven wide column">
 
-                    <form class="ui form" method="POST" action="/clubs/add">
+                    <form class="ui form" id="newClub">
                         <div class="ui raised segment olive">
                             <div class="ui dividing header large">Add New Club</div>
                             <div class="ui segment">
@@ -72,32 +72,32 @@
                                     <label for="club_name">
                                         Club Name
                                     </label>
-                                    <input name="club_name" placeholder="Enter Name of Club" id="club_name" required />
+                                    <input name="club_name" placeholder="Enter Name of Club" id="club_name" />
                                 </div>
                                 <div class="thirteen wide field required">
                                     <label for="username">
                                         Email Id
                                     </label>
                                     <input type="email" name="username" placeholder="Enter email Id" id="username"
-                                        autocomplete="username" required />
+                                        autocomplete="username" />
                                 </div>
                                 <div class="thirteen wide field required">
                                     <label for="ceo">
                                         Chief Executive Officer
                                     </label>
-                                    <input type="text" name="ceo" id="ceo" required />
+                                    <input type="text" name="ceo" id="ceo" />
                                 </div>
                                 <div class="thirteen wide field required">
                                     <label for="password">
                                         Password
                                     </label>
                                     <input type="password" name="password" id="password" autocomplete="current-password"
-                                        required />
+                                         />
                                 </div>
                                 <div class="thirteen wide field required">
                                     <label for="confirm_pwd">Confirm Password</label>
                                     <input type="password" name="confirm_pwd" id="confirm_pwd"
-                                        autocomplete="current-password" required />
+                                        autocomplete="current-password"  />
                                 </div>
                             </div>
                             <div class="ui segment inverted olive">
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="thirteen wide field required">
                                     <label for="found_date">Foundation Date </label>
-                                    <input type="date" name="found_date" id="found_date" required />
+                                    <input type="date" name="found_date" id="found_date"  />
                                 </div>
                                 <div id="founder">
 
@@ -141,8 +141,8 @@
                                     <div class="two fields inline">
                                         <div class="twelve wide field">
 
-                                            <input type="tel" name="phone_no" pattern="[1-9]{1}[0-9]{9}"
-                                                placeholder="Enter Phone No. " required />
+                                            <input type="tel" name="phone_no"
+                                                placeholder="Enter Phone No. " />
                                         </div>
                                         <button class="ui icon button red" type="button"
                                             onclick="foundRemove('phone',this)"><i class="icon trash"></i>
@@ -163,7 +163,7 @@
                                     <div class="two fields inline">
                                         <div class="twelve wide field">
                                 
-                                            <input type="email" name="email_id" placeholder="Enter Email Id. " required />
+                                            <input type="email" name="email_id" placeholder="Enter Email Id. " />
                                         </div>
                                         <button class="ui icon button red" type="button" onclick="foundRemove('emails',this)"><i class="icon trash"></i>
                                         </button>
@@ -190,39 +190,8 @@
             </div>
         </div>
     </div>
-    <script>
-        function foundRemove(parent, input) {
-            document.querySelector('#' + parent).removeChild(input.parentNode);
-        }
-        $(document).ready(function () {
-            $('#foundAdd').bind('click', function () {
-                let d = document.createElement('div');
-                $(d).addClass('two fields inline');
-                d.innerHTML = `
-                <div class="twelve wide field"><input type="text" name="founders" placeholder="Name of Founder" /></div>                                     
-                <button class="ui icon button red" type="button" onclick="foundRemove(this)"><i class="icon trash"></i></button>
-                `;
-                $('#founder').append(d);
-            });
-            $('#addNum').bind('click', function () {
-                let d = document.createElement('div');
-                $(d).addClass('two fields inline');
-                d.innerHTML = `
-                <div class="twelve wide field"><input type="tel" name="phone_no" pattern="[1-9]{1}[0-9]{9}" placeholder="Enter Phone No. " required /></div>
-                <button class="ui icon button red" type="button" onclick="foundRemove('phone',this)" ><i class="icon trash"></i></button>
-                `;
-                $('#phone').append(d);
-            });
-            $('#addEmail').bind('click', function () {
-                let d = document.createElement('div');
-                $(d).addClass('two fields inline');
-                d.innerHTML = `
-                <div class="twelve wide field"><input type="email" name="email_id" placeholder="Enter Email Id. " required /></div>
-                <button class="ui icon button red" type="button" onclick="foundRemove('emails',this)"><i class="icon trash"></i></button></div>
-                `;
-                $('#emails').append(d);
-            });
-        });
+    <script src="/scripts/clubs/scripts/clubNew.js">
+        
     </script>
 </body>
 

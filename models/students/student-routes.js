@@ -78,9 +78,8 @@ router.post('/login', function (req, res) {
 
 router.get('/events',studentAuth,function(req,res){
     // console.log("reached event Route");
-    Events.find({}).then(docs=>{
-        
-        res.status(200).send({events:docs});
+    Events.find({}).then(docs=>{        
+        res.render("events/allEvents",{events:docs});
     }).catch(err=>{
         res.status(404).send({"message":"Error"});
     })

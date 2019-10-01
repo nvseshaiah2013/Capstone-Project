@@ -5,11 +5,11 @@ const Event = require('../events/event');
 const clubAuth = require('../../middleware/clubauth');
 const adminAuth = require('../../middleware/adminauth');
 
-router.get('/add',adminAuth,function(req,res){
+router.get('/add',function(req,res){
     res.render("clubs/clubNew");
 });
 
-router.post('/add',adminAuth,function(req,res){
+router.post('/add',function(req,res){ 
     let club = new Club({
         "name":req.body.club_name,
         "username":req.body.username,

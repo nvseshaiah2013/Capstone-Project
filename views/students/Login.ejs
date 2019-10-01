@@ -16,10 +16,10 @@
                 <div class="five wide column">
 
                 </div>
-                <div class="six wide column" style="height:60vh !important">
+                <div class="six wide column">
 
                     <div class="ui raised segment teal">
-                        <form class="ui form" method="POST" action="/student/login" id="logIn">
+                        <form class="ui form large" method="POST" action="/student/login" id="logIn">
                             <h2 class="ui dividing header center aligned teal">
                                 Student Log In
                             </h2>
@@ -27,13 +27,13 @@
                                 <label for="username">
                                     Username
                                 </label>
-                                <input type="email" name="username" placeholder="Enter Username ... " required/>
+                                <input type="email" name="username" placeholder="Enter Username ... " />
                             </div>
                             <div class="sixteen wide field required">
                                 <label for="password">
                                     Password
                                 </label>
-                                <input type="password" name="password" minlength="8" placeholder="Enter password ... " required/>
+                                <input type="password" name="password" minlength="8" placeholder="Enter password ... " />
                             </div>
                            <div class="ui list">
                                <div class="item">
@@ -57,9 +57,9 @@
                                 </div>
                                 <br/>
                                 <div class="eight wide column">
-                                <button type="button" class="ui button olive fluid" id="signUp">
+                                <a class="ui button olive fluid" href="/student/signup" id="signUp">
                                     Sign Up !
-                                </button>
+                                </a>
 
                                 </div>
                             </div>
@@ -72,5 +72,5 @@
             </div>
         </div>
     </div>
-
+    <script src="/scripts/students/scripts/login.js"></script>
     <% include ../partials/footer %>
