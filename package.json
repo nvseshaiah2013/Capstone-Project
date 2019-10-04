@@ -15,16 +15,13 @@
     "dotenv": "^8.1.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
-    "json": "^9.0.6",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.0",
     "multer": "^1.4.2",
     "shortid": "^2.2.15"
   },
-  "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.10.2"
-  },
+  "devDependencies": {},
   "repository": {
     "url": "https://github.com/nvseshaiah2013/Capstone-Project"
   }
