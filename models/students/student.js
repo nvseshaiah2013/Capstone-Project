@@ -2,15 +2,12 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
+const shortid = require('shortid');
 const salt_factor = 10;
 
 dotenv.config();
 
-const eventSchema = new mongoose.Schema({
-    event_id:mongoose.Schema.Types.ObjectId,
-    event_name:String,
-    date:Date
-});
+shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#$');
 
 const Student = new mongoose.Schema({
     regn_no:{
@@ -22,6 +19,13 @@ const Student = new mongoose.Schema({
         type:String,
         required:true,
 
+    },
+    secretToken:{
+        type:String,
+        default:shortid.generate
+    },
+    myTeams:{
+        type:[mongoose.Schema.Types.ObjectId]
     },
     username:{
         type:String,
@@ -36,8 +40,7 @@ const Student = new mongoose.Schema({
     {
         type:String,
         required:true
-    },
-   events:[eventSchema],
+    },  
    reg_date:{
        type:Date,
        default:Date.now()
@@ -45,10 +48,7 @@ const Student = new mongoose.Schema({
    profile_pic:{
        type:String,
        default:'../../public/assets/21294.png'
-   },
-   expired_tokens:{
-       type:[String]
-   }
+   }  
 });
 
 

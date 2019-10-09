@@ -85,4 +85,8 @@ router.get('/events',studentAuth,function(req,res){
     })
 });
 
+router.get('/teams',studentAuth,function(req,res){
+    res.render("students/createTeam");
+});
+
 module.exports = router;

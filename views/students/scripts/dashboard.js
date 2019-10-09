@@ -9,5 +9,13 @@ $(document)
             }).catch(err=>{
                 console.log(err);
             });
-        })
+        });
+        $('#teams').bind('click',function(evt){
+            evt.preventDefault();
+            axios.get('/student/teams').then(result=>{
+                $('#store').html(result.data);
+            }).catch(err=>{
+                console.log(err);
+            });
+        });
     });

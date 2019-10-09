@@ -8,11 +8,11 @@ $(document).ready(function () {
                 rules: [
                     {
                         type: 'empty',
-                        prompt: 'fill the required fields'
+                        prompt: 'Invalid Field'
                     },
                     {
                         type: 'email',
-                        prompt: 'enter a valid username'
+                        prompt: 'Invalid Field'
                     }
                 ]
             },

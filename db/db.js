@@ -8,17 +8,10 @@ mongoose.connect(
         useNewUrlParser:true,
         useUnifiedTopology:true 
     }).then(succ=>{
-        console.log("Successfully Connected to DB");
+        console.log("Successfully Connected to DB" );
     }).catch(err=>{
         console.log("Error: " + err);
     });
 
-mongoose.connection.on('connected',()=>{
-    console.log("Database Connected!");
-});
-
-mongoose.connection.on('error',(err) => {
-    console.log("Database Connect Failed with - :" + err);
-});
 
 module.exports = mongoose;
