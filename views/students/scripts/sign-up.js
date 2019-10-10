@@ -97,17 +97,28 @@ $(document).ready(function(){
         event.preventDefault();
         var f = $(this);
         if(f.form('is valid')){
-
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize()
-            }).done(function (data) {
-                // Optionally alert the user of success here...
-                console.log("reached");
-            }).fail(function (data) {
-                // Optionally alert the user of an error here...
-            });
+            let formData = {
+                username:$('[name="username"]').val(),
+                password:$('[name="password"]').val(),
+                phone_no:$('[name="phone_no"]').val(),
+                reg_no:$('[name="reg_no"]').val(),
+                name:$('[name="name"]').val()
+            }
+            axios.post('/student/signup',{data:formData}).then(succ=>{
+                //console.log(succ);
+                $('#sucMess').toggleClass('hidden');
+                setTimeout(function(){
+                    $('#sucMess').toggleClass('hidden');
+                },5000);
+                //console.log("Reached");
+            }).catch(fail=>{
+                //console.log(fail.response.data);
+                $('#failMess').append('<p> ' + fail.response.data.message + '</p>');
+                $('#failMess').toggleClass('hidden');
+                setTimeout(function () {
+                    $('#failMess').toggleClass('hidden');
+                }, 5000);
+            })
         }
 
     });

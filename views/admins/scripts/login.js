@@ -10,10 +10,7 @@ $(document).ready(function(){
                         type:'empty',
                         prompt:'fill the required fields'
                     },
-                    {
-                        type:'email',
-                        prompt:'enter a valid username'
-                    }
+                    
                 ]
             },
             password:{

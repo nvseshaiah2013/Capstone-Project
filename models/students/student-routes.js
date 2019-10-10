@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 const Student = require('./student');
 const Events = require('../events/event');
+const Team = require('../teams/teams');
 const studentAuth = require('../../middleware/studentauth');
 
 router.get('/login', function (req, res) {
@@ -13,30 +14,45 @@ router.get('/signup', function (req, res) {
 });
 
 router.post('/signup', function (req, res) {
-    console.log(req.body);
-    let student = new Student({
-        username: req.body.username,
-        password: req.body.password,
-        regn_no: req.body.reg_no,
-        name: req.body.name,
-        phone_no: req.body.phone_no
-    });
-    Student.findOne({ regn_no: req.body.reg_no }).then(user => {
+   // console.log(req.body.data.username);
+    
+    Student.findOne({ regn_no: req.body.data.reg_no }).then(user => {
         if (user) {
-            console.log("User Already Exists " + req.body.reg_no);
+            console.log("User Already Exists " + req.body.data.reg_no);
             res.status(401).json({ "message": "Registration No Already Used" });
             res.end();
         }
         else {
-            Student.findOne({ username: req.body.username }).then(user => {
+            Student.findOne({ username: req.body.data.username }).then(user => {
                 if (user) {
-                    console.log("Email Id already Taken " + req.body.reg_no);
+                    console.log("Email Id already Taken " + req.body.data.reg_no);
                     res.status(401).json({ "message": "Email Id already Exists" });
                     res.end();
                 }
                 else {
-                    student.save();
-                    console.log(student + " Inserted\n");
+                    var student = new Student({
+                        username: req.body.data.username,
+                        password: req.body.data.password,
+                        regn_no: req.body.data.reg_no,
+                        name: req.body.data.name,
+                        phone_no: req.body.data.phone_no
+                    });
+                    let team = new Team({
+                        "owner_name.regn_no":req.body.data.reg_no,
+                        "team_name":"Individual",
+                        "owner_name.name":req.body.data.name,
+                        "isFinal":true
+                    });
+                    team.save(function(err,doc){
+                        if(err) console.log("Individual Team Creation Failed " + err);
+                        else 
+                            {
+                                student.myTeams.push(doc._id);
+                                //console.log(doc);
+                            }
+                            student.save();
+                    });
+                    //console.log(student + " Inserted\n");
                     res.status(200).send({ "message": "Success" });
                 }
             }).catch(err => {
@@ -45,7 +61,7 @@ router.post('/signup', function (req, res) {
         }
 
     }).catch(err => {
-        console.log("error occured");
+        console.log("error occured" + err);
     })
 });
 

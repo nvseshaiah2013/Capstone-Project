@@ -14,41 +14,55 @@
 
                 </div>
                 <div class="six wide column">
+                    <div class="ui success hidden message" id="sucMess">
+                        <div class="header">
+                            Form Submitted Successfully
+                        </div>
+                        <p>
+                            You are now registered Go to Login To Continue
+                        </p>
+                    </div>
+                    <div class="ui error hidden message" id="failMess">
+                        <div class="header">
+                            Form Submission Failed
+                        </div>
+                    </div>
+
                     <div class="ui raised segment green">
 
-                        <form class="ui form" method="POST" action="/student/signup">
+                        <form class="ui form" method="POST" action="/student/signup" autocomplete="off">
                             
                             <h2 class="ui dividing header green aligned center">Student Sign Up</h2>
                             <div class="sixteen wide field required">
 
                                 <label>Full Name</label>
-                                <input type="text" name="name" autocomplete="name" placeholder="Name in Full " >
+                                <input type="text" name="name" placeholder="Name in Full " >
                             </div>
                             <div class="sixteen wide field required">
                                 <label>Registration Number</label>
-                                <input type="tel" name="reg_no" autocomplete="reg_no" placeholder="Registration No. for e.g. 11708421" >
+                                <input type="tel" name="reg_no" placeholder="Registration No. for e.g. 11708421" >
                             </div>
                             <div class="sixteen wide field required">
                             
                                 <label>Email</label>
-                                <input type="email" name="username" autocomplete="username" placeholder="Email Id" >
+                                <input type="email" name="username" placeholder="Email Id" >
                             </div>
                             <div class="sixteen wide field required">
                             
                                 <label> Password</label>
-                                <input type="password" name="password" autocomplete="current-password"
+                                <input type="password" name="password" 
                                     placeholder="Enter Password" >
                             </div>
                             <div class="sixteen wide field required">
                                 <label>
                                     Confirm Password
                                 </label>
-                                <input type="password" name="cnfm_password" autocomplete="current-password" placeholder="Enter Same Password" />
+                                <input type="password" name="cnfm_password" placeholder="Enter Same Password" />
                             </div>
                             <div class="sixteen wide field required">
                             
                                 <label>Mobile No</label>
-                                <input type="tel" name="phone_no" autocomplete="phone_no" placeholder="Mobile no...">
+                                <input type="tel" name="phone_no" placeholder="Mobile no...">
                             </div>
                             <div class="ui link list">
                                 <a href="/student/login" class="item active">
@@ -56,14 +70,6 @@
                                 </a>
                             </div>
                             <button class="ui submit button positive fluid" id="signUp" type="submit">Sign Up Now !</button>
-                            <div class="ui success message">
-                                <div class="header">
-                                    Form Submitted Successfully
-                                </div>
-                                <p>
-                                    You are now registered Go to Login To Continue
-                                </p>
-                            </div>
                         </form>
                     </div>
                 </div>

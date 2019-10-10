@@ -4,7 +4,8 @@ const owner = new mongoose.Schema({
     _id:false,
     regn_no: {
         type: String,
-        required: true
+        required: true,
+        index:true
     },
     name: {
         type: String
@@ -24,6 +25,10 @@ const events = new mongoose.Schema({
         required:true
     },
     isDeleted:{
+        type:Boolean,
+        default:false
+    },
+    isRefunded:{
         type:Boolean,
         default:false
     }

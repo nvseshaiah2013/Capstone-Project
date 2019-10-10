@@ -13,7 +13,8 @@ const Student = new mongoose.Schema({
     regn_no:{
         type:String,
         required:true,
-        unique:true
+        unique:true,
+        index:true
     },
     name: {
         type:String,
@@ -24,13 +25,17 @@ const Student = new mongoose.Schema({
         type:String,
         default:shortid.generate
     },
-    myTeams:{
-        type:[mongoose.Schema.Types.ObjectId]
-    },
+    myTeams:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"team"
+        }
+    ],
     username:{
         type:String,
         unique:true,
-        required:true
+        required:true,
+        index:true
     },
     password:{
         type:String,
