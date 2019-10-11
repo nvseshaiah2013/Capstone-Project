@@ -1,0 +1,115 @@
+
+
+
+        <div class="ui info compact message">
+            <div class="header">
+                Important information
+            </div>
+            <ul class="list">
+                <li>
+                    The team can be of maximum 5 members including you
+                </li>
+                <li>
+                    You can mark your team as final once you have done adding members
+                </li>
+                <li>
+                    Team once marked final cannot be modified or deleted
+                </li>
+                <li>However there is no limit on the no teams which can be created</li>
+            </ul>
+        
+        </div>
+    
+
+<h2 class="ui top attached header">
+    My Teams
+</h2>
+<div class="ui attached segment olive">
+    <div class="ui stackable grid">
+        <div class="twelve wide column">
+
+            <h4 class="ui block header">
+                Teams Owned by Me 
+            </h4>
+        </div>
+        <div class="four wide column">
+
+            <button class="ui right labeled icon button brown">New Team <i class="icon plus"></i></button>
+        </div>
+    </div>
+
+    <div class="ui segments">
+       
+        <% allTeams.owner.forEach(function(own){ %>
+        <li class="ui compact segment">
+            <h5 class="ui dividing header">
+                Team Name: <%= own.team_name %>
+            </h5>
+            <% if(own.participants.length > 0 ) {own.participants.forEach(function(part){ %>
+
+            <% }); } else { %>
+            <p class="content">
+                No participants
+            </p>
+            <% } %>
+            <% if(own.isFinal) { %>
+                <div class="inline">
+
+                    <button class="ui button olive inline">Show Participated Events</button>
+                </div>
+            <% } else { %>
+            <button class="ui button positive">Add participant</button>
+            <button class="ui button negative">Mark as Final</button>
+            <% } %>
+        </li>
+        <% }); %>
+
+    </div>
+    <h4 class="ui block header">
+        Teams I am part of
+    </h4>
+    <div class="ui segments">
+        <% allTeams.participant.forEach(function(own){ %>
+        <li class="ui compact segment">
+            <h5 class="ui dividing header">
+                Team Name: <%= own.team_name %> owned by <%= own.owner_name.name %> (Regn No. <%= own.owner_name.regn_no %>)
+            </h5>
+            <% if(own.participants.length > 0 ) { %>
+            <div class="ui relaxed horizontal list">
+                <%   own.participants.forEach(function(part){ %>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">
+                                Name: <%= part.name %>
+                                <p class="description">
+                                    Regn No. <%= part.regn_no %>
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+
+
+            <% } else { %>
+            <p class="content">
+                No participants
+            </p>
+            <% } %>
+            <% if(own.isFinal) { %>
+                <div class="inline">
+
+                    <button class="ui button olive">Show Participated Events</button>
+                </div>
+            <% } else { %>
+                <div class="inline">
+                    <button class="ui button positive">Add participant</button>
+                    <button class="ui button negative">Mark as Final</button>
+                </div>
+            <% } %>
+        </li>
+        <% }); %>
+    </div>
+    <% allTeams.participant %>
+</div>

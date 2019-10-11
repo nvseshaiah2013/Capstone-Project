@@ -102,7 +102,30 @@ router.get('/events',studentAuth,function(req,res){
 });
 
 router.get('/teams',studentAuth,function(req,res){
-    res.render("students/createTeam");
+    var teams = new Object();
+    Team.find({"owner_name.regn_no":req.currentUser.regn_no,isDeleted:false},{isDeleted:0,date_created:0})
+    .then((docs)=>{
+       // console.log(docs);
+        teams.owner = [...docs];
+        Team.find({ "participants.regn_no": req.currentUser.regn_no, isDeleted: false }, { isDeleted: 0, date_created: 0 })
+            .then((docs) => {
+                //console.log(docs);
+                teams.participant = [...docs];
+                //console.log("Team: \n" + teams.participant);
+               // console.log(teams);
+                return res.render("students/allTeams", { allTeams: teams });
+            })
+            .catch((err) => {
+                console.log(err);
+                return res.status(401).send({"message":"Failed to load participant designation"});
+            });
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(401).send({ "message": "Failed to Team Details" });
+
+    });
+      
 });
 
 module.exports = router;
