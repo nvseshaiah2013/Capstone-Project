@@ -6,7 +6,8 @@ mongoose.connect(
     'mongodb://localhost:27017/lpu_colors',
     { 
         useNewUrlParser:true,
-        useUnifiedTopology:true 
+        useUnifiedTopology:true,
+        useFindAndModify:false
     }).then(succ=>{
         console.log("Successfully Connected to DB" );
     }).catch(err=>{

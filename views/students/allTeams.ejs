@@ -1,82 +1,111 @@
+<div class="ui basic modal" id="newTeam">
+    <h1 class="header"> Create New Team </h1>
+    <div class="content">
 
-
-
-        <div class="ui info compact message">
-            <div class="header">
-                Important information
-            </div>
-            <ul class="list">
-                <li>
-                    The team can be of maximum 5 members including you
-                </li>
-                <li>
-                    You can mark your team as final once you have done adding members
-                </li>
-                <li>
-                    Team once marked final cannot be modified or deleted
-                </li>
-                <li>However there is no limit on the no teams which can be created</li>
-            </ul>
-        
-        </div>
-    
-
-<h2 class="ui top attached header">
-    My Teams
-</h2>
-<div class="ui attached segment olive">
-    <div class="ui stackable grid">
-        <div class="twelve wide column">
-
-            <h4 class="ui block header">
-                Teams Owned by Me 
-            </h4>
-        </div>
-        <div class="four wide column">
-
-            <button class="ui right labeled icon button brown">New Team <i class="icon plus"></i></button>
+        <div class="ten wide field required">
+            <label>
+                Enter Team Name
+            </label>
+            <input type="text" id="new_team_name" name="new_team_name" />
         </div>
     </div>
+    <div class="actions">
+        <div class="ui red basic cancel button">
+            <i class="remove icon"></i>
+            Cancel
+        </div>
+        <div class="ui green ok button" id="okTeam">
+            <i class="checkmark icon"></i>
+            Go Ahead to Create Team
+        </div>
+    </div>
+</div>
 
-    <div class="ui segments">
-       
-        <% allTeams.owner.forEach(function(own){ %>
-        <li class="ui compact segment">
-            <h5 class="ui dividing header">
-                Team Name: <%= own.team_name %>
-            </h5>
-            <% if(own.participants.length > 0 ) {own.participants.forEach(function(part){ %>
-
-            <% }); } else { %>
-            <p class="content">
-                No participants
-            </p>
-            <% } %>
-            <% if(own.isFinal) { %>
-                <div class="inline">
-
-                    <button class="ui button olive inline">Show Participated Events</button>
+<div class="ui basic modal" id="participantAdd">
+    <div class="ui header">
+        Add New Participant
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="six wide field required">
+                    <label>
+                        Enter Regn No.
+                    </label>
+                    <input type="text" name="regn_no" />
                 </div>
-            <% } else { %>
-            <button class="ui button positive">Add participant</button>
-            <button class="ui button negative">Mark as Final</button>
-            <% } %>
-        </li>
-        <% }); %>
-
+                <div class="five wide field required">
+                    <label>
+                        Enter Secret Token
+                    </label>
+                    <input type="text" name="secretToken" />
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui red basic cancel inverted button" >
+                    <i class="remove icon"></i>
+                    Cancel
+                </div>
+                <div class="ui green ok button" id="participantAddForm">
+                    <i class="checkmark icon"></i>
+                    Add Member
+                </div>
+            </div>
+        </div>
     </div>
-    <h4 class="ui block header">
-        Teams I am part of
-    </h4>
-    <div class="ui segments">
-        <% allTeams.participant.forEach(function(own){ %>
-        <li class="ui compact segment">
-            <h5 class="ui dividing header">
-                Team Name: <%= own.team_name %> owned by <%= own.owner_name.name %> (Regn No. <%= own.owner_name.regn_no %>)
-            </h5>
-            <% if(own.participants.length > 0 ) { %>
-            <div class="ui relaxed horizontal list">
-                <%   own.participants.forEach(function(part){ %>
+    
+</div>
+
+
+<div class="ui info compact message">
+    <i class="icon close"></i>
+    <div class="header">
+        Important information
+    </div>
+    <ul class="list">
+        <li>
+            The team can be of maximum 5 members including you
+        </li>
+        <li>
+            You can mark your team as final once you have done adding members
+        </li>
+        <li>
+            Team once marked final cannot be modified or deleted
+        </li>
+        <li>However there is no limit on the no teams which can be created</li>
+    </ul>
+
+</div>
+
+<div id="teamData">
+    <h2 class="ui top attached header">
+        My Teams
+    </h2>
+    <div class="ui attached segment olive">
+        <div class="ui stackable grid">
+            <div class="twelve wide column">
+
+                <h4 class="ui block header">
+                    Teams Owned by Me
+                </h4>
+            </div>
+            <div class="four wide column">
+
+                <button class="ui right labeled icon button brown" id="createTeam">New Team <i
+                        class="icon plus"></i></button>
+            </div>
+        </div>
+
+        <div class="ui segments">
+
+            <% allTeams.owner.forEach(function(own){ %>
+            <li class="ui compact segment">
+                <h5 class="ui dividing header">
+                    Team Name: <%= own.team_name %>
+                </h5>
+                <% if(own.participants.length > 0 ) { %>
+                <div class="ui relaxed horizontal list">
+                    <% own.participants.forEach(function(part){ %>
                     <div class="item">
                         <div class="content">
                             <div class="header">
@@ -85,31 +114,79 @@
                                     Regn No. <%= part.regn_no %>
                                 </p>
                             </div>
-                            
+
                         </div>
                     </div>
-                <% }); %>
-            </div>
-
-
-            <% } else { %>
-            <p class="content">
-                No participants
-            </p>
-            <% } %>
-            <% if(own.isFinal) { %>
+                    <% }); %>
+                </div>
+                <% } else { %>
+                <p class="content">
+                    No participants
+                </p>
+                <% } %>
+                <% if(own.isFinal) { %>
                 <div class="inline">
+                    <button class="ui button olive inline">Show Participated Events</button>
+                </div>
+                <% } else { %>
+                <div >
+                    <%   if(own.participants.length <= 3 ) { %>
+                    <button class="ui button positive" onclick="addParticipant('<%= own._id %>')">Add participant</button>
+                    <% } %>
+                    <button class="ui button negative" onclick="markFinal('<%= own._id %>')">Mark as Final</button>
+                </div>
+                <% } %>
+            </li>
+            <% }); %>
 
+        </div>
+        <h4 class="ui block header">
+            Teams I am part of
+        </h4>
+        <div class="ui segments">
+            <% allTeams.participant.forEach(function(own){ %>
+            <li class="ui compact segment">
+                <h5 class="ui dividing header">
+                    Team Name: <%= own.team_name %> owned by <%= own.owner_name.name %> (Regn No.
+                    <%= own.owner_name.regn_no %>)
+                </h5>
+                <% if(own.participants.length > 0 ) { %>
+                <div class="ui relaxed horizontal list">
+                    <%   own.participants.forEach(function(part){ %>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">
+                                Name: <%= part.name %>
+                                <p class="description">
+                                    Regn No. <%= part.regn_no %>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+
+
+                <% } else { %>
+                <p class="content">
+                    No participants
+                </p>
+                <% } %>
+                <% if(own.isFinal) { %>
+                <div class="inline">
                     <button class="ui button olive">Show Participated Events</button>
                 </div>
-            <% } else { %>
-                <div class="inline">
-                    <button class="ui button positive">Add participant</button>
-                    <button class="ui button negative">Mark as Final</button>
+                <% } else { %>
+                <div class="ui dividing footer">
+                    You have'nt participated in Any Events
                 </div>
-            <% } %>
-        </li>
-        <% }); %>
+                <% } %>
+            </li>
+            <% }); %>
+        </div>
+        <% allTeams.participant %>
     </div>
-    <% allTeams.participant %>
 </div>
+
+<script src="/scripts/students/scripts/allTeams.js"></script>

@@ -10,7 +10,8 @@ const eventSchema = new mongoose.Schema({
     },
     club_id:{
         type:mongoose.Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'Club'
     },
     start_date:{
         type:mongoose.Schema.Types.Date,
