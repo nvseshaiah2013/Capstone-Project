@@ -11,48 +11,48 @@ router.get('/add',function(req,res){
 
 router.post('/add',function(req,res){ 
     let club = new Club({
-        "name":req.body.club_name,
-        "username":req.body.username,
-        "password":req.body.password,
-        "desc.found_date":req.body.found_date,
-        "desc.founders":req.body.founders,
-        "desc.ceo":req.body.ceo,
-        "contact.phone_no":req.body.phone_no,
-        "contact.email_id":req.body.email_id,
-        "contact.address":req.body.address
+        "name":req.body.data.club_name,
+        "username":req.body.data.username,
+        "password":req.body.data.password,
+        "desc.found_date":req.body.data.found_date,
+        "desc.founders":req.body.data.founders,
+        "desc.ceo":req.body.data.ceo,
+        "contact.phone_no":req.body.data.phone_no,
+        "contact.email_id":req.body.data.email_id,
+        "contact.address":req.body.data.address
     });
-    Club.findOne({name:req.body.club_name}).then(succ=>{
+    Club.findOne({name:req.body.data.club_name}).then(succ=>{
         if(!succ)
         {
-            Club.findOne({username:req.body.username}).then(suc=>{
+            Club.findOne({username:req.body.data.username}).then(suc=>{
                 if(!suc)
                 {
                     club.save();
                     console.log("Saved");
-                    res.status(200).json({"message":"save Success!"})
+                    return  res.statusCode(200).send({"message":"save Success!"}).end();
                 }
                 else
                 {
                     console.log("username already in use");
                 
-                    //res.status(401).json({"message":"username already in use"});
+                  return  res.statusCode(401).send({"message":"username already in use"}).end();
                 }
 
             }).catch(err=>{
-                //res.status(401).json({"message":"Error Occured"})
+             // return  res.status(401).send({"message":"Error Occured" + err}).end();
             });
         }
         else
         {
             console.log("Name Exists");
-           // res.status(401).json({"message":"Club Name Already Exists"});
+           return res.statusCode(401).send({"message":"Club Name Already Exists"}).end();
         }
 
     }).catch(err=>{
         console.log(err);
-       // res.status(403).json({"message":"Something wrong","error":err});
+       return res.statusCode(403).send({"message":"Something wrong","error":err}).end();
     })
-    res.send("Successfully Reached End!");
+    return res.send("Successfully Reached End!").end();
 });
 
 router.get('/login',function(req,res){

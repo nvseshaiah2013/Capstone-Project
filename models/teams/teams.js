@@ -12,6 +12,13 @@ const owner = new mongoose.Schema({
     }
 });
 
+const payment = new mongoose.Schema({
+    _id:false,
+    text:{
+        type:String
+    }
+});
+
 const events = new mongoose.Schema({
     _id:false,
     event_id:{
@@ -31,7 +38,8 @@ const events = new mongoose.Schema({
     isRefunded:{
         type:Boolean,
         default:false
-    }
+    },
+    payments:[payment]
 });
 
 

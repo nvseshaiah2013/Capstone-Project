@@ -159,11 +159,51 @@ $(document).ready(function () {
         }
     });
 
-    $('#newClub').submit(function(event){
+    $('form').submit(function(event){
         event.preventDefault();
         var f = $(this);
+        console.log(f);
         if(f.form('is valid'))
         {
+            let founder = document.querySelectorAll('input[name="founders"]');
+            let phone = document.querySelectorAll('input[name="phone_no"]');
+            let email = document.querySelectorAll('input[name="email_id"]');
+            let founders = [];
+            let phones = [];
+            let emails = [];
+            var i=0;
+            for(i=0;i<founder.length;++i)
+            {
+                founders.push(founder[i].value);
+               // console.log(founder)
+            }
+            for(i=0;i<phone.length;++i)
+            {
+                phones.push(phone[i].value);
+            }
+            for(i=0;i<email.length;++i)
+            {
+                emails.push(email[i].value);
+            }
+            let Data = {
+                club_name: $('input[name="club_name"]').val(),
+                found_date: $('input[name="found_date"]').val(),
+                password: $('input[name="password"]').val(),
+                ceo: $('input[name="ceo"]').val(),
+                username: $('input[name="username"]').val(),
+                address: $('#address').val(),
+                email_id:emails,
+                founders:founders,
+                phone_no:phones
+            }
+            axios.post('/clubs/add',
+            {data:Data})
+            .then((succ)=>{
+                console.log("Success");
+            })
+            .catch((fail)=>{
+                console.log(fail);
+            });
             console.log("Valid");
         }
     });

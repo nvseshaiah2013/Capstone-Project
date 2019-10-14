@@ -4,6 +4,21 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 
 dotenv.config();
+const notification = new mongoose.Schema({
+    _id: false,
+    heading: {
+        type: String,
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
+    },
+    date_created: {
+        type: Date,
+        default: Date.now()
+    }
+});
 
 const adminSchema = new mongoose.Schema({
     username:{
@@ -13,7 +28,8 @@ const adminSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    notifications:[notification]
 });
 
 adminSchema.pre('save',function(next){

@@ -9,6 +9,22 @@ dotenv.config();
 
 shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#$');
 
+const notification = new mongoose.Schema({
+    _id: false,
+    heading: {
+        type: String,
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
+    },
+    date_created: {
+        type: Date,
+        default: Date.now()
+    }
+});
+
 const Student = new mongoose.Schema({
     regn_no:{
         type:String,
@@ -53,7 +69,8 @@ const Student = new mongoose.Schema({
    profile_pic:{
        type:String,
        default:'../../public/assets/21294.png'
-   }  
+   },
+   notifications:[notification]
 });
 
 
