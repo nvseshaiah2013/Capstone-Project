@@ -4,6 +4,7 @@ const Club = require('./club');
 const Event = require('../events/event');
 const clubAuth = require('../../middleware/clubauth');
 const adminAuth = require('../../middleware/adminauth');
+const Team = require('../teams/teams');
 
 router.get('/add',function(req,res){
     res.render("clubs/clubNew");

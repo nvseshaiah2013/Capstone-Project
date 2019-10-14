@@ -16,10 +16,10 @@ $(document).ready(function(){
         {
             axios.post('/student/teams',{data:{"team_name":$('#new_team_name').val()}})
             .then(succ=>{
-                console.log(succ.response);
+                console.log(succ.data);
             })
             .catch(fail=>{  
-                console.log(fail.response);
+                console.log(fail.data);
             });
         }
     });
@@ -35,10 +35,10 @@ function addParticipant(teamId){
         {
             axios.post('/student/teams/' + teamId + '/addMember',{data:{secretToken:secretToken,regn_no:regn_no}})
             .then(succ=>{
-                console.log(succ);
+                console.log(succ.data);
             })
             .catch(fail=>{
-                console.log(fail);
+                console.log(fail.data);
             });
         } 
         $('[name="secretToken"]').val('');
@@ -47,12 +47,12 @@ function addParticipant(teamId){
 }
 
 function markFinal(teamId){
-    console.log(teamId);
+   // console.log(teamId);
     axios.post('/student/teams/' + teamId + '/markFinal')
     .then((succ)=>{
-        console.log("Axios Data: " + succ.response.data);
+        console.log("Axios Data: " + succ.data);
     })
     .catch((fail)=>{
-        console.log("Failed: " + fail.response.data);
+        console.log("Failed: " + fail.data);
     });
 }

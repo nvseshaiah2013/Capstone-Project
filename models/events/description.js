@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const description = new mongoose.Schema({
+    _id:false,
     venue:
     {
         type:String,

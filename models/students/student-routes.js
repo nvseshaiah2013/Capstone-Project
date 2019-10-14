@@ -4,6 +4,7 @@ const Student = require('./student');
 const Events = require('../events/event');
 const Team = require('../teams/teams');
 const studentAuth = require('../../middleware/studentauth');
+const adminAuth = require('../../middleware/adminauth');
 
 router.get('/login', function (req, res) {
     res.render("students/Login");
@@ -233,4 +234,113 @@ router.post('/teams/:id/markFinal',studentAuth,function(req,res){
     });
 });
 
+//Event Registration through Team
+router.post('/:categoryId/register/:teamId',function(req,res){
+    Team.findOne({_id:req.params.teamId,isFinal:true},(err,teams)=>{
+        if(err) {
+            console.log("Error:" + err);
+            return res.status(401).send({"message":"Error Occured in Registration"});
+        }
+        if(!teams)
+        {
+            console.log("No Team Found!");
+            return res.statusCode(401).send({"message":"Team Id is wrong"});
+        }
+        else
+        {
+            Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1},(err,events)=>{
+                if(err){
+                    console.log("Error: " + err);
+                    return res.status(401).send({"message":"Error Occured in Registration"});
+                }
+                if(!events)
+                {
+                    return res.status(401).send({"message":"Event Invalid"});
+                }
+                else{
+                    // console.log("teams.participants" + teams.participants.length);
+                    // console.log( events.categories);
+                    // res.send("Happy");
+                    if ((teams.participants.length + 1) === (events.categories[0].group_size) && !teams.events_participated.find(function (value) {
+                        return value.cat_id == req.params.categoryId;
+                    }))
+                    {
+                       //console.log( );
+                        teams.events_participated.push({cat_id:req.params.categoryId});
+                        teams.save((err,succ)=>{
+                            if(err){
+                                console.log("Save error" + err);
+                            }
+                            else{
+                                console.log(succ);
+                                return res.status(200).send({"message":"Successfully Registered"});
+                            }
+                        });
+                        // res.send("S");
+                    }
+                    else
+                    {
+                        return res.status(401).send({"message":"Already Error Occured"});
+                    }
+                }
+            });
+        }
+
+    });
+});
+
+router.get('/:categoryId/Ownedteams',studentAuth,function(req,res){
+    Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1},(err,events)=>{
+        if(err) {
+            console.log(err);
+            return res.send(401).send({"message":"AError Occured"});
+        }
+        else{
+
+            // console.log("\nevents:" + events);
+            let val = parseInt(events.categories[0].group_size) - 1;
+            // console.log(val);
+            Team.find({ "owner_name.regn_no": req.currentUser.regn_no, participants: { "$size": val },isFinal:true},function(err,teams){
+            if(err) {
+                console.log(err);
+                return res.status(401).send({"message":"Error Occured"});
+            }
+            // console.log("\nTeams:" + teams);
+            res.status(200).send({"message":"Success",teams:teams});
+        });
+    }
+    });
+});
+
+router.get('/:categoryId/teams',studentAuth,function(req,res){
+    Events.findOne({ "categories._id": req.params.categoryId }, { "categories.$": 1 }, (err, events) => {
+        if (err) {
+            console.log(err);
+            return res.send(401).send({ "message": "AError Occured" });
+        }
+        else {
+
+            // console.log("\nevents:" + events);
+            let val = parseInt(events.categories[0].group_size) - 1;
+            // console.log(val);
+            Team.find({ "participants.regn_no": req.currentUser.regn_no, participants: { "$size": val }, isFinal: true }, function (err, teams) {
+                if (err) {
+                    console.log(err);
+                    return res.status(401).send({ "message": "Error Occured" });
+                }
+                // console.log("\nTeams:" + teams);
+                return res.status(200).send({ "message": "Success", teams: teams });
+            });
+        }
+    });
+});
+
+router.get('/allStudents',adminAuth,function(req,res){
+    Student.find({}).then(students=>{
+        return res.status(200).render("students/allStudents",{students:students});
+    }).catch(err=>{
+        console.log("/allStudents Route: " + err);
+        return res.status(400).send({"message":"Error"});
+    });
+});
 module.exports = router;

@@ -21,11 +21,6 @@ const payment = new mongoose.Schema({
 
 const events = new mongoose.Schema({
     _id:false,
-    event_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        index:true,
-        required:true
-    },
     cat_id:{
         type:mongoose.Schema.Types.ObjectId,
         index:true,
