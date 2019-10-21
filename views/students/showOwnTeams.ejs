@@ -1,0 +1,53 @@
+
+<% if(teams.length > 0 ) { %>
+<div class="ui attached segment">
+    <h3 class="ui header">
+        My Owned Teams
+    </h3>
+    <div class="ui cards">
+        <% teams.forEach(function(team) { %>
+        <div class="card">
+            <div class="content">
+                <div class="header"><%= team.team_name %></div>
+                <div class="ui list">
+                    <% team.participants.forEach(function(participant){ %>
+                        <div class="item">
+                            Name: <%= participant.name %>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="ui bottom attached positive button" onclick="registerForEvent('<%= team._id %>')">
+                <i class="add icon"></i>
+                Register
+            </div>
+        </div>
+     <% }); %>   
+    </div>
+</div>
+
+<% } else { %>
+    <div class="ui placeholder segment">
+        <div class="ui header">
+            No Matching Teams Found. Go Ahead and Create One
+        </div>
+        <button class="ui primary button">Create New Team</button>
+    </div>
+<% } %>
+
+<script>
+    function registerForEvent(teamId){
+        if(teamId && selectedCategory)
+        {
+            axios.post('/student/' + selectedCategory +'/register/' + teamId)
+            .then((succ)=>{
+                console.log(succ.data);
+            })
+            .catch((fail)=>{
+                console.log(fail.data);
+            });
+        }
+        else console.log("failed");
+
+    }
+</script>

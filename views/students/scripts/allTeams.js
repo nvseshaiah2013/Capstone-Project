@@ -28,6 +28,7 @@ $(document).ready(function(){
 function addParticipant(teamId){
     $('#participantAdd').modal('show');
     $('#participantAddForm').on('click',function(evt){
+        evt.preventDefault();
         secretToken = $('[name="secretToken"]').val();
         regn_no = $('[name="regn_no"]').val();
         console.log(regn_no + ' ' + secretToken);

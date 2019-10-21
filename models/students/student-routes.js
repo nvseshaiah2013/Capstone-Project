@@ -131,6 +131,7 @@ router.get('/teams', studentAuth, function (req, res) {
 
 //Adds a new member to the team
 router.post('/teams/:id/addMember', studentAuth, function (req, res) {
+    console.log(req.body.data);
     const teamId = req.params.id;
     var member = {
         regn_no: req.body.data.regn_no,
@@ -306,7 +307,7 @@ router.get('/:categoryId/Ownedteams',studentAuth,function(req,res){
                 return res.status(401).send({"message":"Error Occured"});
             }
             // console.log("\nTeams:" + teams);
-            res.status(200).send({"message":"Success",teams:teams});
+            res.render("students/showOwnTeams",{teams:teams});
         });
     }
     });
@@ -329,7 +330,7 @@ router.get('/:categoryId/teams',studentAuth,function(req,res){
                     return res.status(401).send({ "message": "Error Occured" });
                 }
                 // console.log("\nTeams:" + teams);
-                return res.status(200).send({ "message": "Success", teams: teams });
+                return res.render("students/showMemberTeams",{ teams: teams });
             });
         }
     });
@@ -343,4 +344,15 @@ router.get('/allStudents',adminAuth,function(req,res){
         return res.status(400).send({"message":"Error"});
     });
 });
+
+//GET EVENT DETAILS BY ID
+
+router.get('/:eventId/details',studentAuth,function(req,res){
+    Events.findById(req.params.eventId,(err,docs)=>{
+        if(err) return res.status(401).send({"message":"Error Occured"});
+        return res.render("events/showEvent",{event:docs});
+    });
+});
+
+
 module.exports = router;

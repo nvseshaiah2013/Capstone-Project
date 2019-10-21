@@ -1,31 +1,57 @@
+<div class="ui cards">
+    <% events.forEach(function(event) { %>
 
-<% events.forEach(function(event) { %>
-<div class="one column row">
-    <div class="column">
-        <div class="ui fluid raised segment">
-            <h2 class="ui dividing header">
-                <%= event.event_name %>
-            </h2>
-            <p class="description">
-               Start Date:  <%= event.start_date.toLocaleDateString() %>
-            </p>
-            <p class="description">
-                End Date: <%= event.end_date.toLocaleDateString() %>
-            </p>
-            <p class="description">
-                Venue : <%= event.description.venue %>
-            </p>
-            <p class="description">
-                Prizes Worth: <%= event.description.prizes_worth %>
-            </p>
-            <div class="ui dividing footer">
-                <a class="ui positive button" href="#">
-                    View More Details
-                </a>
+            <div class="ui raised card">
+                <div class="content">
+                    <div class="header"><%= event.event_name %></div>
+                </div>
+                <div class="content">
+                    <h4 class="ui sub header">Important Dates</h4>
+                    <div class="ui small feed">
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                   Start Date : <%= event.start_date.toDateString() %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                    End Date: <%= event.end_date.toDateString() %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                    Registration Deadline: <%= event.reg_deadline.toDateString() %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                    No. Of Categories: <%= event.categories.length %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event">
+                            <div class="content">
+                                <div class="summary">
+                                    Venue: <%= event.description.venue %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <button class="ui labeled icon primary button" onclick="showEvent('<%= event._id %>')"><i class="add icon"></i>More Details</button>
+                </div>
             </div>
-        </div>
+    
+    <%  }); %>
     </div>
-</div>
-<div class="ui section divider"></div>
 
-<%  }); %>
+    <script src="/scripts/events/scripts/allEvents.js"></script>
+    

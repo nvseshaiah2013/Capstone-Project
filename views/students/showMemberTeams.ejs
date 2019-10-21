@@ -1,0 +1,37 @@
+<% if(teams.length > 0 ) { %>
+<div class="ui attached segment">
+    <div class="ui dividing header">
+        My Participated Teams
+        <div class="ui sub header" style="text-transform:capitalize !important;">
+            You can request your team owner to register for the event.
+        </div>
+    </div>
+    <div class="ui cards">
+        <% teams.forEach(function(team){ %>
+        <div class="card">
+            <div class="content">
+                <div class="header">Owner Name: <%= team.owner_name.name %></div>
+                <div class="ui list">
+                    <% team.participants.forEach(function(participant){ %>
+                        <div class="item">
+                            <%= participant.name %>
+                        </div>
+                        <% }); %>
+                </div>
+            </div>
+        </div>
+       <% }); %> 
+    </div>
+</div>
+
+<% } else { %>
+    <div class="ui attached placeholder segment">
+        <div class="ui header">
+            No Matching Teams Found. Go Ahead and Create One
+        </div>
+        <button class="ui primary button">Create New Team</button>
+    </div>
+<% } %>
+<script>
+
+</script>

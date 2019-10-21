@@ -1,0 +1,54 @@
+<div class="ui fluid container">
+    <div class="ui segments">
+
+        <div class="ui segment">
+            <div class="ui dividing header">
+                <%= event.event_name %>
+            </div>
+            <div class="summary">
+                <div class="ui list">
+                    <h5> Important Instructions</h5>
+                <% event.description.misc_details.split('\n').forEach(function(line) { %>
+                    <div class="item">
+                        <%= line %>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
+            <h3 class="header" style="color:red !important">
+             Registration Deadline   <%= event.reg_deadline.toDateString() %>
+            </h3>
+        </div>
+        <div class="ui segment">
+            <div class="ui cards">
+                <% event.categories.forEach(function(category){ %>
+                    <div class="compact card">
+                        <div class="content">
+                            
+                            <div class="header">
+                               <%= category.category_name %>
+                            </div>
+                            <div class="meta">
+                                Group Size: <%= category.group_size %>
+                            </div>
+                            <div class="description">
+                                Participation Fee: <%= category.amount %>
+                            </div>
+                        </div>
+                        <div class="extra content">                            
+                                <div class="ui basic green button" onclick="showTeams('<%= category._id %>')">Show My Teams</div>                                 
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+        <div id="myOwnedTeams">
+            
+        </div>
+        <div id="myMemberTeams">
+
+        </div>
+    </div>
+</div>
+
+<script src="/scripts/events/scripts/showEvent.js"></script>
