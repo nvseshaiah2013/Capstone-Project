@@ -16,10 +16,7 @@ module.exports = (req,res,next) => {
                 if(err)
                 {
                     console.log(err);
-                    res.status(401).json({
-                        "message":"Invalid Request1",
-                        "error" : err
-                    });
+                    res.render("ExpireSession");
                 }
                 else
                 {
@@ -27,9 +24,7 @@ module.exports = (req,res,next) => {
                     {
                         if(err)
                         {
-                            res.status(401).json({
-                                "message":"Invalid User"
-                            })
+                            res.render("NotFound404");
                         }
                         else
                         {

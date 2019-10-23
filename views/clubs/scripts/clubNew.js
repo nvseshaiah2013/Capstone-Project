@@ -7,14 +7,6 @@ $(document).ready(function () {
         <div class="twelve wide field"><input type="text" name="founders" data-validate="founder" placeholder="Name of Founder" /></div>\
             <button class= "ui icon button red" type = "button" onclick = "foundRemove(this)" > <i class="icon trash"></i></button>\
         </div>').appendTo('#founder');
-
-        // let d = document.createElement('div');
-        // $(d).addClass('two fields inline');
-        // d.innerHTML = `
-        //         <div class="twelve wide field"><input type="text" name="founders" data-validate="founder" placeholder="Name of Founder" /></div>                                     
-        //         <button class="ui icon button red" type="button" onclick="foundRemove(this)"><i class="icon trash"></i></button>
-        //         `;
-        // $('#founder').append(d);
     });
     $('#addNum').bind('click', function () {
         let d = document.createElement('div');

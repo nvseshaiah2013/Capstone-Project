@@ -18,16 +18,12 @@ module.exports = (req,res,next) =>
         jwt.verify(token, process.env.CLUB_PB_KEY, (err, decoded) => {
             if (err) {
                 console.log(err);
-                res.status(401).json({
-                    "message": "Invalid Request1",
-                });
+                res.render("ExpireSession");
             }
             else {
                 Club.findOne({ username: decoded.username }, function (err, club) {
                     if (err) {
-                        res.status(401).json({
-                            "message":"Club username invalid"
-                        });
+                       res.render("NotFound404");
                     }
                     else {
                         req.currentUser = club;

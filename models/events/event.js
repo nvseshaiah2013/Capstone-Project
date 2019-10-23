@@ -31,7 +31,6 @@ const eventSchema = new mongoose.Schema({
     },
     categories:{
         type:[category],
-        required:true
     }
 });
 

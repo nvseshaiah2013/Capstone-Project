@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express();
 const Admin = require('./admin');
+const Events = require('../events/event');
+const Students = require('../students/student');
+const Clubs = require('../clubs/club');
+const adminAuth = require('../../middleware/adminauth');
 
 
 router.get('/login',function(req,res){
@@ -46,5 +50,32 @@ router.post('/login',function(req,res){
 //     });
 //     res.send("Saved");
 // });
+
+router.get('/students',adminAuth,function(req,res){
+    Students.find({},{password:0})
+    .then((docs)=>{
+        res.render("admins/allStudents",{students:docs});
+    })
+    .catch((err)=>{
+        res.status(403).send({"message":"Some Error Occured"});
+    });
+});
+
+
+router.get('/events',adminAuth,function(req,res){
+    Events.find({})
+    .then((docs)=>{
+        res.render("events/allEvents",{events:docs});
+    })
+    .catch((err)=>{
+
+    });
+});
+
+router.get('/allTeams',adminAuth,function(req,res){
+
+});
+
+
 
 module.exports = router;

@@ -49,11 +49,14 @@ function addParticipant(teamId){
 
 function markFinal(teamId){
    // console.log(teamId);
+   $('#mainPage').addClass('loading');
     axios.post('/student/teams/' + teamId + '/markFinal')
     .then((succ)=>{
+        $('#mainPage').removeClass('loading');
         console.log("Axios Data: " + succ.data);
     })
     .catch((fail)=>{
+        $('#mainPage').removeClass('loading');
         console.log("Failed: " + fail.data);
     });
 }

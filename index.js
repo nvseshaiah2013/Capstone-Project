@@ -13,6 +13,10 @@ app.use(express.static('public'));
 app.use('/scripts',express.static(__dirname + '/views'));
 app.use('/',routes);
 
+app.all('*',function(req,res){
+    res.render("NotFound404");
+});
+
 
 app.listen(3000,'localhost',function(){ 
     console.log("Server listening on port 3000");

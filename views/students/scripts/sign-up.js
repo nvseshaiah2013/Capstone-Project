@@ -95,6 +95,7 @@ $(document).ready(function(){
     });
     $('form').submit(function(event){
         event.preventDefault();
+        $('#signUpPage').addClass('loading');
         var f = $(this);
         if(f.form('is valid')){
             let formData = {
@@ -106,18 +107,21 @@ $(document).ready(function(){
             }
             axios.post('/student/signup',{data:formData}).then(succ=>{
                 //console.log(succ);
+                f.form('reset');
+                $('#signUpPage').removeClass('loading');
                 $('#sucMess').toggleClass('hidden');
                 setTimeout(function(){
                     $('#sucMess').toggleClass('hidden');
-                },5000);
+                },2500);
                 //console.log("Reached");
             }).catch(fail=>{
                 //console.log(fail.response.data);
+                f.form('reset');
                 $('#failMess').append('<p> ' + fail.response.data.message + '</p>');
                 $('#failMess').toggleClass('hidden');
                 setTimeout(function () {
                     $('#failMess').toggleClass('hidden');
-                }, 5000);
+                }, 2500);
             })
         }
 

@@ -1,5 +1,11 @@
 <% include ../partials/header %>
 
+<style>
+    body{
+       background:url('/assets/images/wall.jpg') !important;
+    }
+</style>
+
 </head>
 
 <body>
@@ -44,108 +50,111 @@
             </div>
         </div>
     </div>
-    <div class="ui container">
-        <div class="ui stackable grid">
-            <div class="two column row">
-                <div class="four wide column">
-                    <div class="ui card">
-                        <div class="image">
-                            <img src="/assets/images/21294.png">
-                        </div>
-                        <div class="content">
-                            <a class="header"><%= id.name %></a>
-                            <div class="meta">
-                                <span class="date">Joined on <%= id.reg_date.toDateString() %> <i
-                                        class="icon calendar outline"></i></span>
-                            </div>
-                            <div class="description">
-                                Registration No: <%= id.regn_no %>
-                            </div>
-                        </div>
-                        <div class="extra content">
-                            <a>
-                                <i class="phone icon"></i>
-                                <%= id.phone_no %>
-                            </a>
-                        </div>
-                        <div class="content">
-                            <div class="ui styled fluid accordion">
-                                <div class="title">
-                                    <i class="dropdown icon"></i>
-                                    Events
-                                </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a class="item" id="allEvents" href="#">
-                                                All Events
-                                            </a>
-                                            <a class="item" id="pastEvents" href="#">
-                                                Past Events
-                                            </a>
-                                            <a class="item" id="upcomingEvents" href="#">
-                                                Upcoming Events
-                                            </a>
-                                            <a class="item" id="liveEvents" href="#">
-                                                Live Events
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="title">
-                                    <i class="dropdown icon">
 
-                                    </i>
-                                    Profile
+    <div class="ui basic segment" id="mainPage">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <div class="two column row">
+                    <div class="four wide column">
+                        <div class="ui card">
+                            <div class="image">
+                                <img src="/assets/images/21294.png">
+                            </div>
+                            <div class="content">
+                                <a class="header"><%= id.name %></a>
+                                <div class="meta">
+                                    <span class="date">Joined on <%= id.reg_date.toDateString() %> <i
+                                            class="icon calendar outline"></i></span>
                                 </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a href="#" class="item" id="profile">
-                                                View Profile
-                                            </a>
-                                            <a href="#" class="item" id="participate">
-                                                My Participation
-                                            </a>
-                                            <a href="#" class="item" id="teams">
-                                                My Teams
-                                            </a>
+                                <div class="description">
+                                    Registration No: <%= id.regn_no %>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <a>
+                                    <i class="phone icon"></i>
+                                    <%= id.phone_no %>
+                                </a>
+                            </div>
+                            <div class="content">
+                                <div class="ui styled fluid accordion">
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Events
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a class="item" id="allEvents" href="#">
+                                                    All Events
+                                                </a>
+                                                <a class="item" id="pastEvents" href="#">
+                                                    Past Events
+                                                </a>
+                                                <a class="item" id="upcomingEvents" href="#">
+                                                    Upcoming Events
+                                                </a>
+                                                <a class="item" id="liveEvents" href="#">
+                                                    Live Events
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="title">
-                                    <i class="dropdown icon"></i>
-                                    Clubs
-                                </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a href="#" class="item" id="allClubs">
-                                                View All Clubs
-                                            </a>
-                                            <a href="#" class="item" id="allClubParticipation">
-                                                My Club Participation
-                                            </a>
-                                        </div>
+                                    <div class="title">
+                                        <i class="dropdown icon">
 
+                                        </i>
+                                        Profile
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item" id="profile">
+                                                    View Profile
+                                                </a>
+                                                <a href="#" class="item" id="participate">
+                                                    My Participation
+                                                </a>
+                                                <a href="#" class="item" id="teams">
+                                                    My Teams
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Clubs
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item" id="allClubs">
+                                                    View All Clubs
+                                                </a>
+                                                <a href="#" class="item" id="allClubParticipation">
+                                                    My Club Participation
+                                                </a>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="twelve wide column">
+                        <div class="ui hidden message" id="message">
+
+                        </div>
+                        <div id="store">
+
                         </div>
                     </div>
                 </div>
-                <div class="twelve wide column">
-                    <div class="ui hidden message" id="message">
 
-                    </div>
-                    <div id="store">
-
-                    </div>
-                </div>
             </div>
 
         </div>
-
     </div>
     <% if(auth) { %>
     <script>

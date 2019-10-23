@@ -1,5 +1,10 @@
 <% include ../partials/header %>
 
+<style>
+body{
+background:url('/assets/images/wall.jpg') !important;
+}
+</style>
 
 </head>
 
@@ -17,7 +22,14 @@
 
                 </div>
                 <div class="six wide column">
+                    <% if( typeof message !== 'undefined') { %>
+                        <div class="ui error message">
+                            <h5 class="ui header">
+                                <%= message %>
+                            </h5>
 
+                        </div>
+                    <% } %>
                     <div class="ui raised segment teal">
                         <form class="ui form large" method="POST" action="/student/dashboard" id="logIn">
                             <h2 class="ui dividing header center aligned teal">

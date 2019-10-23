@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 mongoose.set("useCreateIndex",true);
 
 mongoose.connect(
-    'mongodb://localhost:27017/lpu_colors',
+    process.env.MONGODB_URL,
     { 
         useNewUrlParser:true,
         useUnifiedTopology:true,
         useFindAndModify:false
     }).then(succ=>{
-        console.log("Successfully Connected to DB" );
+        console.log("Successfully Connected to DB " + succ);
     }).catch(err=>{
         console.log("Error: " + err);
     });

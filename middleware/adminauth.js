@@ -13,17 +13,12 @@ module.exports = (req,res,next)=>{
         jwt.verify(token, process.env.ADMIN_PB_KEY, (err, decoded) => {
             if (err) {
                 console.log(err);
-                res.status(401).json({
-                    "message": "Invalid Request",
-                    "error": err
-                });
+                res.render("ExpireSession");
             }
             else {
                 Admin.findOne({ username: decoded.username }, function (err, admin) {
                     if (err) {
-                        res.status(401).json({
-                            "message":"Invalid user"
-                        })
+                        res.render("NotFound404");
                     }
                     else {
                         req.currentUser = admin;

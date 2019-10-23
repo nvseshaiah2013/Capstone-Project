@@ -79,16 +79,16 @@ router.post('/dashboard', function (req, res) {
                     });
                 }
                 else {
-                    res.send("Login Failed");
+                    res.render("students/Login",{"message":"Login Failed - Wrong Username/Password"});
                 }
             });
 
         }
         else {
-            res.status(403).send("Invalid Credentials!");
+            res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
         }
     }).catch(err => {
-        res.status(403).send({ "message": "invalid Credentials" });
+        res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
     });
 });
 

@@ -82,8 +82,15 @@ router.post('/login',function(req,res){
     });
 });
 
-router.get('/events',function(req,res){
-    res.send("All Events");
+router.get('/events',clubAuth,function(req,res){
+    Event.find({club_id:req.currentUser._id})
+    .then((docs)=>{
+        return res.render("events/allClubEvents",{events:docs});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({"message":"Club Does Not Exist"});
+    });
 });
 
 router.get('/events/add',clubAuth,function(req,res){
@@ -103,7 +110,6 @@ router.post('/events',clubAuth,function(req,res){
         "description.venue":data.venue,
         "description.misc_details":data.misc_details,
         "description.prizes_worth":data.prizes_worth,
-        "categories":data.categories
     });
     Event.create(event).then(suc=>{
         console.log(suc);
@@ -113,6 +119,45 @@ router.post('/events',clubAuth,function(req,res){
         console.log(err);
         return res.send({"message":"Event Addition Failed"});
     })
+});
+
+router.get('/events/:eventId/addCategory',clubAuth,function(req,res){
+    Event.findOne({_id:req.params.eventId,club_id:req.currentUser._id})
+    .then((docs)=>{
+        if(docs)
+        {
+            return res.render("events/addCategory",{event:docs});
+        }
+        else
+            {
+                return res.status(403).send({"message":"No Such Event"});
+            }
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({ "message": "No Such Event" });
+    });
+});
+
+router.post('/events/:eventId/addCategory',clubAuth,function(req,res){
+    Event.findByIdAndUpdate(req.params.eventId,{"$push":{categories:req.body.data.category}},{new:true},function(err,docs){
+        if(err)
+        {
+            console.log(err);
+            return res.status(403).send({"message":"Failed to Add a New Category. Try Again"});
+        }
+        else{
+            if(docs)
+            {
+                return res.status(200).send({"message":"Success"});
+            }
+            else
+            {
+                return res.status(403).send({"message":"No Such Event Exists"});
+            }
+
+        }
+    });
 });
 
 module.exports = router;

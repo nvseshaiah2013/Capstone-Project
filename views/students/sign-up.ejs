@@ -1,5 +1,12 @@
 <% include ../partials/header %>
+
+<style>
+    body {
+        background: url('/assets/images/wall.jpg') !important;
+    }
+</style>
 </head>
+
 
 <body>
 
@@ -8,7 +15,7 @@
             <div class="row">
 
             </div>
-           
+
             <div class="three column row">
                 <div class="five wide column">
 
@@ -28,30 +35,29 @@
                         </div>
                     </div>
 
-                    <div class="ui raised segment green">
+                    <div class="ui raised segment green" id="signUpPage">
 
                         <form class="ui form" method="POST" action="/student/signup" autocomplete="off">
-                            
+
                             <h2 class="ui dividing header green aligned center">Student Sign Up</h2>
                             <div class="sixteen wide field required">
 
                                 <label>Full Name</label>
-                                <input type="text" name="name" placeholder="Name in Full " >
+                                <input type="text" name="name" placeholder="Name in Full ">
                             </div>
                             <div class="sixteen wide field required">
                                 <label>Registration Number</label>
-                                <input type="tel" name="reg_no" placeholder="Registration No. for e.g. 11708421" >
+                                <input type="tel" name="reg_no" placeholder="Registration No. for e.g. 11708421">
                             </div>
                             <div class="sixteen wide field required">
-                            
+
                                 <label>Email</label>
-                                <input type="email" name="username" placeholder="Email Id" >
+                                <input type="email" name="username" placeholder="Email Id">
                             </div>
                             <div class="sixteen wide field required">
-                            
+
                                 <label> Password</label>
-                                <input type="password" name="password" 
-                                    placeholder="Enter Password" >
+                                <input type="password" name="password" placeholder="Enter Password">
                             </div>
                             <div class="sixteen wide field required">
                                 <label>
@@ -60,7 +66,7 @@
                                 <input type="password" name="cnfm_password" placeholder="Enter Same Password" />
                             </div>
                             <div class="sixteen wide field required">
-                            
+
                                 <label>Mobile No</label>
                                 <input type="tel" name="phone_no" placeholder="Mobile no...">
                             </div>
@@ -69,8 +75,9 @@
                                     Already a Student ? Login.
                                 </a>
                             </div>
-                            <button class="ui submit button positive fluid" id="signUp" type="submit">Sign Up Now !</button>
-                            <br/>
+                            <button class="ui submit button positive fluid" id="signUp" type="submit">Sign Up Now
+                                !</button>
+                            <br />
                             <button class="ui button negative fluid" type="reset">Reset Form</button>
                         </form>
                     </div>
