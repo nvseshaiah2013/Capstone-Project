@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express();
+const moment = require('moment');
 const Student = require('./student');
 const Events = require('../events/event');
 const Team = require('../teams/teams');
 const studentAuth = require('../../middleware/studentauth');
 const adminAuth = require('../../middleware/adminauth');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 router.get('/login', function (req, res) {
     res.render("students/Login");
@@ -90,6 +92,22 @@ router.post('/dashboard', function (req, res) {
     }).catch(err => {
         res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
     });
+});
+
+router.post('/signout',studentAuth,function(req,response){
+    //console.log(tok);
+    Student.findOneAndUpdate({username:req.currentUser.username},{"$push":{expiredTokens:req.currentUser.token}},(err,res)=>{
+        if(err)
+            {
+                console.log(err);
+                return response.status(403).send({"message":"Error Logging Out"});
+            }
+        else
+            {
+                return response.status(200).send({"message":"SignOut Success"});
+            }
+    });
+    //return res.send("Hello");
 });
 
 router.get('/events', studentAuth, function (req, res) {
@@ -336,6 +354,34 @@ router.get('/:categoryId/teams',studentAuth,function(req,res){
     });
 });
 
+router.get('/:teamId/participation',studentAuth,function(req,res){
+    // Team.findOne({_id:req.params.teamId}).exec
+    Team.aggregate([
+        {
+            "$match":{ _id:ObjectId(req.params.teamId) }
+        },
+        {
+            "$lookup":{
+                from:'events',
+                localField: "events_participated.cat_id",
+                foreignField: "categories._id",
+                as: 'participation'
+            }
+        }
+    ]).exec(function(err,result)
+    {
+        if(err)
+        {
+            console.log(err);
+            return res.status(403).send({"message":err});
+        }
+        else
+        {
+            return res.status(200).send({events:result})
+        }
+    });
+});
+
 router.get('/allStudents',adminAuth,function(req,res){
     Student.find({}).then(students=>{
         return res.status(200).render("students/allStudents",{students:students});
@@ -352,6 +398,42 @@ router.get('/:eventId/details',studentAuth,function(req,res){
         if(err) return res.status(401).send({"message":"Error Occured"});
         return res.render("events/showEvent",{event:docs});
     });
+});
+
+router.get('/upcomingEvents',studentAuth,function(req,res){
+    let today = moment(new Date()).format('YYYY-MM-DD');
+    today = today + "T00:00:00.000Z";
+    Events.find({start_date:{"$gte":new Date(today)}})
+    .then((docs)=>{
+        res.status(200).send({events:docs});
+    })
+    .catch((err)=>{
+        res.status(403).send({"message":err});
+    });    
+});
+
+router.get('/liveEvents',studentAuth,function(req,res){
+    let today = moment(new Date()).format('YYYY-MM-DD');
+    today = today + "T00:00:00.000Z";
+    Events.find({ start_date:{"$lte":new Date(today)} , end_date:{"$gte":new Date(today)} })
+        .then((docs) => {
+            res.status(200).send({ events: docs });
+        })
+        .catch((err) => {
+            res.status(403).send({ "message": err });
+        }); 
+});
+
+router.get('/pastEvents',studentAuth,function(req,res){
+    let today = moment(new Date()).format('YYYY-MM-DD');
+    today = today + "T00:00:00.000Z";
+    Events.find({ end_date: { "$lte": new Date(today) } })
+        .then((docs) => {
+            res.status(200).send({ events: docs });
+        })
+        .catch((err) => {
+            res.status(403).send({ "message": err });
+        }); 
 });
 
 

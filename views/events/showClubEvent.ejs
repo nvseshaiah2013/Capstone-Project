@@ -1,0 +1,32 @@
+<% if(typeof event!== 'undefined') { %>
+    <% if(event.categories.length > 0 )  { %>
+        <div class="ui three column stackable grid">
+       <% event.categories.forEach(function(category){ %>
+       <div class="column">
+            <div class="ui raised segment">
+                <div class="ui blue ribbon label">
+                    <%= category.category_name %>
+                </div>
+                <div class="content">
+                    <p class="description">
+                        Amount : <%= category.amount %> <br/>
+                        Group Size: <%= category.group_size %>
+                    </p>
+                </div>
+                <button type="button" class="ui bottom attached label" href="#">
+                    Edit Category
+                </button>
+            </div>
+        </div>
+        <% }); %>
+        </div>
+    <% } else { %>
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="info icon"></i>
+                No Categories added yet. Please add some.
+            </div>
+            <div class="ui primary button" onclick="addCategory()">Add Category </div>
+        </div>
+    <% } %>
+<% } %>

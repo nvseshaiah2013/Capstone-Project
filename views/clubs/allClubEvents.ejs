@@ -1,0 +1,58 @@
+<div class="ui cards">
+    <% if(typeof events!== 'undefined') %>
+    <% { events.forEach(function(event) { %>
+
+    <div class="ui raised card">
+        <div class="content">
+            <div class="header"><%= event.event_name %></div>
+        </div>
+        <div class="content">
+            <h4 class="ui sub header">Important Dates</h4>
+            <div class="ui small feed">
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            Start Date : <%= event.start_date.toDateString() %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            End Date: <%= event.end_date.toDateString() %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            Registration Deadline: <%= event.reg_deadline.toDateString() %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            No. Of Categories: <%= event.categories.length %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            Venue: <%= event.description.venue %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra content">
+            <button class="ui labeled icon primary button" onclick="showDetails('<%= event._id %>')"><i
+                    class="file outline icon"></i>Show Details</button>
+        </div>
+    </div>
+
+    <%  });} %>
+</div>
+
+<script src="/scripts/clubs/scripts/allClubEvents.js"></script>

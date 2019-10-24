@@ -12,7 +12,7 @@ mongoose.connect(
         useUnifiedTopology:true,
         useFindAndModify:false
     }).then(succ=>{
-        console.log("Successfully Connected to DB " + succ);
+        console.log("Successfully Connected to DB " );
     }).catch(err=>{
         console.log("Error: " + err);
     });

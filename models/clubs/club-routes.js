@@ -2,11 +2,37 @@ const express = require('express');
 const router = express();
 const Club = require('./club');
 const Event = require('../events/event');
+const Gallery = require('../image-gallery/image-gallery');
 const clubAuth = require('../../middleware/clubauth');
 const adminAuth = require('../../middleware/adminauth');
 const Team = require('../teams/teams');
+const multer = require('multer');
 
-router.get('/add',function(req,res){
+
+//Multer Configuration
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'event-images');
+    },
+
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+
+const imageFileFilter = (req, file, cb) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        return cb(new Error('You can upload only image files!'), false);
+    }
+    cb(null, true);
+};
+
+const uploadImages = multer({ storage: storage, fileFilter: imageFileFilter });
+
+
+//Addition of Club by Admin
+
+router.get('/add',adminAuth,function(req,res){
     res.render("clubs/clubNew");
 });
 
@@ -53,7 +79,7 @@ router.post('/add',function(req,res){
         console.log(err);
        return res.statusCode(403).send({"message":"Something wrong","error":err}).end();
     })
-    return res.send("Successfully Reached End!").end();
+    return res.status(200).send("Successfully Reached End!").end();
 });
 
 router.get('/login',function(req,res){
@@ -93,9 +119,21 @@ router.get('/events',clubAuth,function(req,res){
     });
 });
 
-router.get('/events/add',clubAuth,function(req,res){
+
+router.get('/events/add', clubAuth, function (req, res) {
     res.render("events/new-event");
 });
+
+router.get('/events/:eventId',clubAuth,function(req,res){
+    Event.findOne({_id:req.params.eventId,club_id:req.currentUser._id})
+    .then((docs)=>{
+        return res.render("events/showClubEvent",{event:docs});
+    })
+    .catch((err)=>{
+        res.status(403).send({"message":"Error Occured"});
+    });
+});
+
 
 router.post('/events',clubAuth,function(req,res){
     // console.log("Reached Here");
@@ -112,7 +150,7 @@ router.post('/events',clubAuth,function(req,res){
         "description.prizes_worth":data.prizes_worth,
     });
     Event.create(event).then(suc=>{
-        console.log(suc);
+       // console.log(suc);
        // console.log("Event Save Success");
         return res.send({"message":"Event Added Successfully"});
     }).catch(err=>{
@@ -140,23 +178,48 @@ router.get('/events/:eventId/addCategory',clubAuth,function(req,res){
 });
 
 router.post('/events/:eventId/addCategory',clubAuth,function(req,res){
-    Event.findByIdAndUpdate(req.params.eventId,{"$push":{categories:req.body.data.category}},{new:true},function(err,docs){
+    Event.findOneAndUpdate({ _id:req.params.eventId, club_id:req.currentUser._id },{"$push":{categories:req.body.data.category}},{new:true},function(err,docs){
         if(err)
         {
             console.log(err);
-            return res.status(403).send({"message":"Failed to Add a New Category. Try Again"});
+            return res.status(403).send({"message":" Failed to Add a New Category. Try Again "});
         }
         else{
             if(docs)
             {
-                return res.status(200).send({"message":"Success"});
+                return res.render("events/showClubEvent",{event:docs});
             }
             else
             {
-                return res.status(403).send({"message":"No Such Event Exists"});
+                return res.status(403).send({"message":" No Such Event Exists for this user "});
             }
 
         }
+    });
+});
+
+router.post('/events/:eventId/addImage',clubAuth,uploadImages.single('imageData'),function(req,res){
+   // console.log(req);
+    Event.findOne({_id:req.params.eventId,club_id:req.currentUser._id})
+    .then((docs)=>{
+        if(!docs)
+        {
+            return res.status(403).send({"message":"No Such Event Exist"});
+        }
+        else
+            {
+                let obj = {image_src:'event-images/'+req.file.filename,caption:"Howdy"};
+                Gallery.findOneAndUpdate({event_id:req.params.eventId},{"$push":{image_links:obj}},{upsert:true,new:true})
+                .then((result)=>{
+                    return res.status(200).send({"message":"Image Uploaded Successfully"});
+                })
+                .catch((err=>{
+                    return res.status(403).send({"message":err});
+                }));
+            }
+    })
+    .catch((err)=>{
+        return res.status(403).send({ "message": err });
     });
 });
 

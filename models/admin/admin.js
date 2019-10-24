@@ -29,7 +29,8 @@ const adminSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    notifications:[notification]
+    notifications:[notification],
+    expiredTokens:[String]
 });
 
 adminSchema.pre('save',function(next){

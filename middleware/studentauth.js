@@ -16,7 +16,7 @@ module.exports = (req,res,next) => {
                 if(err)
                 {
                     console.log(err);
-                    res.render("ExpireSession");
+                    return res.render("ExpireSession");
                 }
                 else
                 {
@@ -29,6 +29,7 @@ module.exports = (req,res,next) => {
                         else
                         {
                             req.currentUser = student;
+                            req.currentUser.token = token;
                             next();
                         }
                     });

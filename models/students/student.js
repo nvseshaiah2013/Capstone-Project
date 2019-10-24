@@ -70,7 +70,8 @@ const Student = new mongoose.Schema({
        type:String,
        default:'../../public/assets/21294.png'
    },
-   notifications:[notification]
+   notifications:[notification],
+   expiredTokens:[String]
 });
 
 

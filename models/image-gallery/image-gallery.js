@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
 const images = new mongoose.Schema({
+    _id:false,
     image_src:{
         type:String,
         required:true
     },
     caption:{
-        type:String
+        type:String,
+        default:'Awesome Picture'
     }
 });
 

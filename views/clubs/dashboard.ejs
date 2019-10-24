@@ -1,8 +1,9 @@
 <% include ../partials/header %>
 <style>
-body{
-       background:url('/assets/images/wall.jpg') !important;
-    }</style>
+    body {
+        background: url('/assets/images/wall.jpg') !important;
+    }
+</style>
 </head>
 
 <body>
@@ -21,118 +22,119 @@ body{
             </div>
         </div>
     </div>
-    <div class="ui container">
-        <div class="ui stackable grid">
-            <div class="two column row">
-                <div class="four wide column">
-                    <div class="ui card">
-                        <div class="image">
-                            <img src="/assets/images/21294.png">
-                        </div>
-                        <div class="content">
-                            <a class="header"><%= club.name %></a>
-                            <div class="meta">
-                                <span class="date">Founded On <%= club.desc.found_date.toDateString() %></span>
+    <div class="ui basic segment" id="mainPage">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <div class="two column row">
+                    <div class="four wide column">
+                        <div class="ui card">
+                            <div class="image">
+                                <img src="/assets/images/21294.png">
                             </div>
-                            <div class="description">
-                                CEO: <%= club.desc.ceo %>
+                            <div class="content">
+                                <a class="header"><%= club.name %></a>
+                                <div class="meta">
+                                    <span class="date">Founded On <%= club.desc.found_date.toDateString() %></span>
+                                </div>
+                                <div class="description">
+                                    CEO: <%= club.desc.ceo %>
+                                </div>
                             </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="ui link list">
-                                <% club.contact.phone_no.forEach(function(phone){ %>
+                            <div class="extra content">
+                                <div class="ui link list">
+                                    <% club.contact.phone_no.forEach(function(phone){ %>
                                     <a class="item" href="tel:<%= phone %>">
-                                <i class="phone icon"></i>
+                                        <i class="phone icon"></i>
 
                                         <%= phone %>
                                     </a>
-                             <%   }) %>
+                                    <%   }) %>
                                 </div>
-                        </div>
+                            </div>
 
-                        <div class="content">
+                            <div class="content">
 
-                            <div class="ui styled fluid accordion">
-                                <div class="title">
-                                    <i class="icon dropdown"></i>
-                                    Events
-                                </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a href="#" class="item" id="ourEvents">
-                                                Our Events
-                                            </a>
-                                            <a href="#" class="item" id="addEvent">
-                                                Add Event
-                                            </a>
-                                            <a href="#" class="item" id="updateEvent">
-                                                Update Event Data
-                                            </a> </div>
+                                <div class="ui styled fluid accordion">
+                                    <div class="title">
+                                        <i class="icon dropdown"></i>
+                                        Events
                                     </div>
-                                </div>
-                                <div class="title">
-                                    <i class="icon dropdown">
-
-                                    </i>
-                                    Club Profile
-                                </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a href="#" class="item">
-                                                View Profile
-                                            </a>
-                                            <a href="#" class="item">
-                                                Update Profile
-                                            </a>
-                                            <a href="#" class="item">
-                                                View Account
-                                            </a>
-                                            <a href="#" class="item">
-                                                View Members
-                                            </a>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item" id="ourEvents">
+                                                    Our Events
+                                                </a>
+                                                <a href="#" class="item" id="addEvent">
+                                                    Add Event
+                                                </a>
+                                                <a href="#" class="item" id="updateEvent">
+                                                    Update Event Data
+                                                </a> </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="title">
-                                    <i class="icon dropdown">
+                                    <div class="title">
+                                        <i class="icon dropdown">
 
-                                    </i>
-                                    Students
-                                </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a href="#" class="item">
-                                                Participation History
-                                            </a>
-                                            <a href="#" class="item">
-                                                Current Registerd Students
-                                            </a>
+                                        </i>
+                                        Club Profile
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item">
+                                                    View Profile
+                                                </a>
+                                                <a href="#" class="item">
+                                                    Update Profile
+                                                </a>
+                                                <a href="#" class="item">
+                                                    View Account
+                                                </a>
+                                                <a href="#" class="item">
+                                                    View Members
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="title">
+                                        <i class="icon dropdown">
+
+                                        </i>
+                                        Students
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item">
+                                                    Participation History
+                                                </a>
+                                                <a href="#" class="item">
+                                                    Current Registerd Students
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="ten wide column">
-                    <div class="one column row">
-                        <div class="column">
-    
+                    <div class="ten wide column">
+                        <div class="one column row">
+                            <div class="column">
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="one column row">
-                        <div class="column" id="store">
-    
+                        <div class="one column row">
+                            <div class="column" id="store">
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
 
@@ -145,7 +147,7 @@ body{
     <% } %>
 
     <script src="/scripts/clubs/scripts/dashboard.js">
-       
+
     </script>
 
 
