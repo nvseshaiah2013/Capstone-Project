@@ -22,6 +22,16 @@
                 </label>
                 <input type="text" name="ceo" id="ceo" />
             </div>
+            <div class="thirteen wide field required" style="margin-top: 10px !important">
+                <label for="address">
+                    Address
+                </label>
+                <textarea name="address" id="address" cols="30" rows="4"></textarea>
+            </div>
+            <div class="thirteen wide field required">
+                <label for="found_date">Foundation Date </label>
+                <input type="date" name="found_date" id="found_date" />
+            </div>
             <div class="thirteen wide field required">
                 <label for="password">
                     Password
@@ -31,87 +41,6 @@
             <div class="thirteen wide field required">
                 <label for="confirm_pwd">Confirm Password</label>
                 <input type="password" name="confirm_pwd" id="confirm_pwd" autocomplete="current-password" />
-            </div>
-        </div>
-        <div class="ui segment inverted olive">
-            <div class="ui dividing header medium">
-                Additional details
-            </div>
-            <div class="thirteen wide field required">
-                <label for="found_date">Foundation Date </label>
-                <input type="date" name="found_date" id="found_date" />
-            </div>
-            <div id="founder">
-
-                <div class="label">
-                    Founding Members
-                </div>
-                <div class="two fields inline">
-
-                    <div class="twelve wide field">
-
-                        <input type="text" name="founders" placeholder="Name of Founder" />
-                    </div>
-
-                    <button class="ui icon button red" type="button" onclick="foundRemove('founder',this)"><i
-                            class="icon trash"></i></button>
-
-                </div>
-
-            </div>
-            <button class="ui right labeled icon button orange" type="button" id="foundAdd"> Add
-                Founder <i class="icon plus"></i></button>
-        </div>
-        <div class="ui segment ">
-            <div class="ui dividing header medium">
-                Contact Details
-            </div>
-            <div id="phone">
-
-                <h4 class="header">
-                    Phone No(s).
-                </h4>
-                <div class="two fields inline">
-                    <div class="twelve wide field">
-
-                        <input type="tel" name="phone_no" placeholder="Enter Phone No. " />
-                    </div>
-                    <button class="ui icon button red" type="button" onclick="foundRemove('phone',this)"><i
-                            class="icon trash"></i>
-                    </button>
-
-                </div>
-            </div>
-            <button class="ui right labeled icon button orange" type="button" id="addNum">
-                Add Phone No.
-                <i class="plus icon"></i>
-            </button>
-
-            <div id="emails" style="margin-top:10px !important;">
-
-                <h4 class="header">
-                    Email Id(s).
-                </h4>
-                <div class="two fields inline">
-                    <div class="twelve wide field">
-
-                        <input type="email" name="email_id" placeholder="Enter Email Id. " />
-                    </div>
-                    <button class="ui icon button red" type="button" onclick="foundRemove('emails',this)"><i
-                            class="icon trash"></i>
-                    </button>
-
-                </div>
-            </div>
-            <button class="ui right labeled icon button orange" type="button" id="addEmail">
-                Add Email Id.
-                <i class="plus icon"></i>
-            </button>
-            <div class="thirteen wide field required" style="margin-top: 10px !important">
-                <label for="address">
-                    Address
-                </label>
-                <textarea name="address" id="address" cols="30" rows="4"></textarea>
             </div>
         </div>
         <button class="ui button positive submit" type="submit">Add Club</button>

@@ -16,6 +16,16 @@ router.get('/signup', function (req, res) {
     res.render("students/sign-up");
 });
 
+
+router.get('/allStudents', adminAuth, function (req, res) {
+    Student.find({}).then(students => {
+        return res.status(200).render("students/allStudents", { students: students });
+    }).catch(err => {
+        console.log("/allStudents Route: " + err);
+        return res.status(400).send({ "message": "Error" });
+    });
+});
+
 router.post('/signup', function (req, res) {
     // console.log(req.body.data.username);
 
@@ -146,6 +156,32 @@ router.get('/teams', studentAuth, function (req, res) {
 
 });
 
+//Creates a new Team
+router.post('/teams', studentAuth, function (req, res) {
+    if (!req.body.data) return res.status(401).send({ "message": "No Data Received" });
+    let team = new Team({
+        "owner_name.regn_no": req.currentUser.regn_no,
+        "team_name": req.body.data.team_name,
+        "owner_name.name": req.currentUser.name,
+    });
+    team.save((err, docs) => {
+        if (err) {
+            console.log(err);
+            return res.status(401).send({ "message": "Team Creation Unsuccessful" });
+        }
+        else {
+            Student.findOneAndUpdate({ regn_no: req.currentUser.regn_no }, { "$push": { myTeams: docs._id } })
+                .then(succ => {
+                    return res.status(200).send({ "message": "Team successfully created" });
+                })
+                .catch(fail => {
+                    console.log("Student Document Id Addition Failed for " + req.currentUser.regn_no + " " + fail);
+                    return res.status(401).send({ "message": "Team Id Addition in Student Document Failed" });
+                });
+            return res.status(200).send({ "message": "Team Successfully Created" });
+        }
+    });
+}); 
 
 //Adds a new member to the team
 router.post('/teams/:id/addMember', studentAuth, function (req, res) {
@@ -207,33 +243,7 @@ router.post('/teams/:id/addMember', studentAuth, function (req, res) {
 
 });
 
-//Creates a new Team
-router.post('/teams',studentAuth,function(req,res){
-    if(!req.body.data) return res.status(401).send({"message":"No Data Received"});
-    let team = new Team({
-        "owner_name.regn_no": req.currentUser.regn_no,
-        "team_name": req.body.data.team_name,
-        "owner_name.name": req.currentUser.name,
-    });
-    team.save((err,docs)=>{
-        if(err){
-            console.log(err);
-            return res.status(401).send({"message":"Team Creation Unsuccessful"});
-        }
-        else    
-            {
-                Student.findOneAndUpdate({regn_no:req.currentUser.regn_no},{"$push":{myTeams:docs._id}})
-                .then(succ=>{
 
-                })
-                .catch(fail=>{
-                    console.log("Student Document Id Addition Failed for " + req.currentUser.regn_no + " " + fail);
-                    return res.status(401).send({"message":"Team Id Addition in Student Document Failed"});
-                });
-                return res.status(200).send({"message":"Team Successfully Created"});
-            }
-    });
-}); 
 
 router.post('/teams/:id/markFinal',studentAuth,function(req,res){
     let id = req.params.id;
@@ -254,8 +264,8 @@ router.post('/teams/:id/markFinal',studentAuth,function(req,res){
 });
 
 //Event Registration through Team
-router.post('/:categoryId/register/:teamId',function(req,res){
-    Team.findOne({_id:req.params.teamId,isFinal:true},(err,teams)=>{
+router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
+    Team.findOne({_id:req.params.teamId,isFinal:true,"owner_name.regn_no":req.currentUser.regn_no},(err,teams)=>{
         if(err) {
             console.log("Error:" + err);
             return res.status(401).send({"message":"Error Occured in Registration"});
@@ -263,7 +273,7 @@ router.post('/:categoryId/register/:teamId',function(req,res){
         if(!teams)
         {
             console.log("No Team Found!");
-            return res.statusCode(401).send({"message":"Team Id is wrong"});
+            return res.statusCode(401).send({"message":"Team Id is wrong or you are not owner of the Team"});
         }
         else
         {
@@ -280,12 +290,14 @@ router.post('/:categoryId/register/:teamId',function(req,res){
                     // console.log("teams.participants" + teams.participants.length);
                     // console.log( events.categories);
                     // res.send("Happy");
+                    if(moment(Date.now()).isAfter(events.reg_deadline))
+                        return res.status(403).send({"message":"Event Registration Deadline Over"});
                     if ((teams.participants.length + 1) === (events.categories[0].group_size) && !teams.events_participated.find(function (value) {
                         return value.cat_id == req.params.categoryId;
                     }))
                     {
                        //console.log( );
-                        teams.events_participated.push({cat_id:req.params.categoryId});
+                        teams.events_participated.push({cat_id:req.params.categoryId,"payments.status":"Not Paid"});
                         teams.save((err,succ)=>{
                             if(err){
                                 console.log("Save error" + err);
@@ -307,6 +319,51 @@ router.post('/:categoryId/register/:teamId',function(req,res){
 
     });
 });
+
+router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
+    Event.findOne({"categories.cat_id":req.params.categoryId},{"categories.$":1})
+    .then((event)=>{
+        if(event)
+        {
+            if(!(moment(Date.now()).isAfter(event.reg_deadline)))
+            Team.findOne({ "events_participated.cat_id": req.params.categoryId, _id: req.params.teamId, "owner_name.regn_no": req.currentUser.regn_no })
+                .then((team) => {
+                    if (team) {
+                        let index = team.events_participated.findIndex(function (value) {
+                            return value.cat_id == req.params.categoryId;
+                        });
+                        if (team.events_participated[index].payments.status === 'Not Paid') {
+                            team.events_participated.splice(index, 1);
+                            team.save((err, success) => {
+                                if (!err)
+                                    return res.status(200).send({ "message": "Deregister Successfull" });
+                            });
+                        }
+                        else {
+                            res.status(403).send({ "message": "You cannot deregister as you have already paid" });
+                        }
+                    }
+                    else {
+                        res.status(403).send({ "message": "Unauthorized Request or You are Not registered" });
+                    }
+                })
+                .catch((err) => {
+                    return res.status(403).send({ "message": "Deregistration Unsuccessful" });
+                });
+            else
+                return res.status(403).send({"message":"Deadline Passed"});
+
+        }
+        else
+        {
+            return res.status(200).send({"message":"No such category"});
+        }
+    })
+    .catch((err)=>{
+        return res.status(403).send({"message":"No Such Event"})
+    });
+});
+
 
 router.get('/:categoryId/Ownedteams',studentAuth,function(req,res){
     Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1},(err,events)=>{
@@ -382,14 +439,7 @@ router.get('/:teamId/participation',studentAuth,function(req,res){
     });
 });
 
-router.get('/allStudents',adminAuth,function(req,res){
-    Student.find({}).then(students=>{
-        return res.status(200).render("students/allStudents",{students:students});
-    }).catch(err=>{
-        console.log("/allStudents Route: " + err);
-        return res.status(400).send({"message":"Error"});
-    });
-});
+
 
 //GET EVENT DETAILS BY ID
 

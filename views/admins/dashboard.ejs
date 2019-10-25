@@ -1,5 +1,9 @@
 <% include ../partials/header %>
-
+<style>
+    body {
+        background: url('/assets/images/wall.jpg') !important;
+    }
+</style>
 </head>
 <body>
     <div class="ui menu blue inverted large">
@@ -28,6 +32,13 @@
                 <div id="store">
                     
                 </div>
+            <% if(auth) { %>
+            <script>
+                localStorage.setItem('__colors__', "<%- auth %>");
+                axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
+
+            </script>
+            <% } %>
     </div>
 
 <script src="/scripts/admins/scripts/dashboard.js"></script>

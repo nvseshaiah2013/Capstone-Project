@@ -4,6 +4,7 @@ const Admin = require('./admin');
 const Events = require('../events/event');
 const Students = require('../students/student');
 const Clubs = require('../clubs/club');
+const Teams = require('../teams/teams');
 const adminAuth = require('../../middleware/adminauth');
 
 
@@ -11,7 +12,7 @@ router.get('/login',function(req,res){
     res.render("admins/login");
 });
 
-router.post('/login',function(req,res){
+router.post('/dashboard',function(req,res){
     Admin.findOne({username:req.body.username}).then(admin=>{
         if(admin)
         {
@@ -68,12 +69,18 @@ router.get('/events',adminAuth,function(req,res){
         res.render("events/allEvents",{events:docs});
     })
     .catch((err)=>{
-
+        res.status(403).send({"message":"Error"});
     });
 });
 
 router.get('/allTeams',adminAuth,function(req,res){
-
+    Teams.find({})
+    .then((teams)=>{
+        return res.status(200).render("admins/allTeams",{teams:teams});
+    })
+    .catch((err)=>{
+        res.status(403).send({"message":"Finding team error"});
+    });
 });
 
 

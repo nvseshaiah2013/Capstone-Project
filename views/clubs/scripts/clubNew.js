@@ -1,35 +1,16 @@
-function foundRemove(parent, input) {
-    document.querySelector('#' + parent).removeChild(input.parentNode);
-}
-$(document).ready(function () {
-    $(document).on('click', '#foundAdd',function () {
-        $('<div class="two fields inline"> \
-        <div class="twelve wide field"><input type="text" name="founders" data-validate="founder" placeholder="Name of Founder" /></div>\
-            <button class= "ui icon button red" type = "button" onclick = "foundRemove(this)" > <i class="icon trash"></i></button>\
-        </div>').appendTo('#founder');
-    });
-    $('#addNum').bind('click', function () {
-        let d = document.createElement('div');
-        $(d).addClass('two fields inline');
-        d.innerHTML = `
-                <div class="twelve wide field"><input type="tel" name="phone_no" pattern="[1-9]{1}[0-9]{9}" placeholder="Enter Phone No. " /></div>
-                <button class="ui icon button red" type="button" onclick="foundRemove('phone',this)" ><i class="icon trash"></i></button>
-                `;
-        $('#phone').append(d);
-    });
-    $('#addEmail').bind('click', function () {
-        let d = document.createElement('div');
-        $(d).addClass('two fields inline');
-        d.innerHTML = `
-                <div class="twelve wide field"><input type="email" name="email_id" placeholder="Enter Email Id. " /></div>
-                <button class="ui icon button red" type="button" onclick="foundRemove('emails',this)"><i class="icon trash"></i></button></div>
-                `;
-        $('#emails').append(d);
-    });
 
+$(document).ready(function () {
+    document.querySelector('[name="found_date"]').valueAsDate = moment().toDate();
+    $.fn.form.settings.rules.isAfterOrEqual = function (value) {
+        if (typeof value == 'undefined')
+            return false;
+        if (value == '')
+            return false;
+        return moment().isSameOrAfter(value);
+    }
     $('.ui.form').form({
         inline:true,
-        on:'blur',
+        on:'blur',        
         fields:{
             club_name:{
                 identifier:'club_name',
@@ -95,56 +76,10 @@ $(document).ready(function () {
                     {
                         type:'empty',
                         prompt: 'It is a required field'
-                    }
-                ]
-            },
-            founders:{
-                identifier:'founders',
-                rules:[
-                    {
-                        type: 'empty',
-                        prompt: 'It is a required field'
-                    }
-                ] 
-
-            },
-            founder:{
-                identifier:'founders',
-                rules:[
-                    {
-                        type: 'empty',
-                        prompt: 'It is a required field'
-                    }
-                ]
-            },
-            phone_no: {
-                identifier: 'phone_no',
-                rules: [
-                    {
-                        type: 'empty',
-                        prompt: 'Enter Phone No.'
                     },
                     {
-                        type: 'exactLength[10]',
-                        prompt: 'Length should be 10'
-                    },
-                    {
-                        type: 'regExp[/^[1-9]{1}[0-9]{9}$/]',
-                        prompt: 'Enter valid no'
-                    }
-                ]
-            },
-            email_id:{
-                identifier:'email_id',
-                rules: [
-                    {
-                        type: 'empty',
-                        prompt: 'Please fill the field'
-                    },
-
-                    {
-                        type: 'email',
-                        prompt: 'Please enter valid Email'
+                        type:'isAfterOrEqual',
+                        prompt:'Found Date cannot be beyond today'
                     }
                 ]
             }
@@ -157,26 +92,6 @@ $(document).ready(function () {
         console.log(f);
         if(f.form('is valid'))
         {
-            let founder = document.querySelectorAll('input[name="founders"]');
-            let phone = document.querySelectorAll('input[name="phone_no"]');
-            let email = document.querySelectorAll('input[name="email_id"]');
-            let founders = [];
-            let phones = [];
-            let emails = [];
-            var i=0;
-            for(i=0;i<founder.length;++i)
-            {
-                founders.push(founder[i].value);
-               // console.log(founder)
-            }
-            for(i=0;i<phone.length;++i)
-            {
-                phones.push(phone[i].value);
-            }
-            for(i=0;i<email.length;++i)
-            {
-                emails.push(email[i].value);
-            }
             let Data = {
                 club_name: $('input[name="club_name"]').val(),
                 found_date: $('input[name="found_date"]').val(),
@@ -184,14 +99,11 @@ $(document).ready(function () {
                 ceo: $('input[name="ceo"]').val(),
                 username: $('input[name="username"]').val(),
                 address: $('#address').val(),
-                email_id:emails,
-                founders:founders,
-                phone_no:phones
             }
             axios.post('/clubs/add',
             {data:Data})
             .then((succ)=>{
-                console.log("Success");
+                console.log("Success" + succ);
             })
             .catch((fail)=>{
                 console.log(fail);

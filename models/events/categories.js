@@ -1,7 +1,18 @@
 const mongoose = require('mongoose');
 
-const categoriesSchema = new mongoose.Schema({
-   
+const winner = new mongoose.Schema({
+    _id:false,
+    team_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+    },
+    position:{
+        type:String,
+        default:"None"
+    }
+});
+
+const categoriesSchema = new mongoose.Schema({   
     category_name:{
         type:String,
         required:true

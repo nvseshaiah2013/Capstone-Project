@@ -14,8 +14,9 @@ const owner = new mongoose.Schema({
 
 const payment = new mongoose.Schema({
     _id:false,
-    text:{
-        type:String
+    status:{
+        type:String,
+        default:"Not Paid"
     }
 });
 
@@ -34,7 +35,28 @@ const events = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    payments:[payment]
+    payments:{type:payment,required:true}
+});
+
+const certificate = new mongoose.Schema({
+    club_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        index:true
+    },
+    cat_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        index:true
+    },
+    src:{
+        type:String,
+        required:true,
+    },
+    issuedOn:{
+        type:Date,
+        default:Date.now()
+    }
 });
 
 
@@ -57,7 +79,8 @@ const team = new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
-    events_participated:[events]
+    events_participated:[events],
+    certificates:[certificate]
 });
 
 module.exports = mongoose.model('team',team);
