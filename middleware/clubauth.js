@@ -27,6 +27,7 @@ module.exports = (req,res,next) =>
                     }
                     else {
                         req.currentUser = club;
+                        req.currentUser.token = token;
                         next();
                     }
                 });

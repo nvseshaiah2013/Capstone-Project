@@ -77,10 +77,10 @@ function makeCertificate(eventName,categoryName,teamName,clubName,filename,owner
                 layout: {
                     //set custom borders size and color
                     hLineWidth: function (i, node) {
-                        return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                        return (i === 0 || i === node.table.body.length) ? 3 : 1;
                     },
                     vLineWidth: function (i, node) {
-                        return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                        return (i === 0 || i === node.table.widths.length) ? 3 : 1;
                     },
                     hLineColor: function (i, node) {
                         return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
@@ -98,6 +98,6 @@ function makeCertificate(eventName,categoryName,teamName,clubName,filename,owner
 }
 
 
-makeCertificate('Youth Vibe 2019','Nukkad Natak','Trail Blazers','SCSE','sample.pdf','Ankit',['Neha','Rashmi','Soundarya','Nagasuri Venkata Seshaiah'],'56413');
+//makeCertificate('Youth Vibe 2019','Nukkad Natak','Trail Blazers','SCSE','sample.pdf','Ankit',['Neha','Rashmi','Soundarya','Nagasuri Venkata Seshaiah'],'56413');
 
 module.exports = makeCertificate;

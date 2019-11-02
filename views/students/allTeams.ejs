@@ -1,14 +1,20 @@
-<div class="ui basic modal" id="newTeam">
-    <h1 class="header"> Create New Team </h1>
-    <div class="content">
+<div class="ui mini modal" id="newTeam">
 
-        <div class="ten wide field required">
-            <label>
-                Enter Team Name
-            </label>
-            <input type="text" id="new_team_name" name="new_team_name" />
+
+    <div class="content">
+        <h3 class="ui block header">
+
+            Create A New Team
+        </h3>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="tumblr icon"></i>
+                <input type="text" id="new_team_name" value="" placeholder="Team Name">
+            </div>
         </div>
     </div>
+
+
     <div class="actions">
         <div class="ui red basic cancel button">
             <i class="remove icon"></i>
@@ -16,44 +22,44 @@
         </div>
         <div class="ui green ok button" id="okTeam">
             <i class="checkmark icon"></i>
-            Go Ahead to Create Team
+            Create Team
         </div>
     </div>
 </div>
 
-<div class="ui basic modal" id="participantAdd">
-    <div class="ui header">
-        Add New Participant
-    </div>
+<div class="ui tiny modal" id="participantAdd">
     <div class="content">
         <div class="ui form">
+            <div class="ui block header">
+                New Participant
+            </div>
             <div class="inline fields">
-                <div class="six wide field required">
-                    <label>
-                        Enter Regn No.
-                    </label>
-                    <input type="text" name="regn_no" />
+                <div class="field">
+                   <div class="ui left icon input">
+                       <i class="icon id card outline"></i>
+                       <input type="text" name="regn_no" placeholder="Registration No"/>
+                    </div>
                 </div>
-                <div class="five wide field required">
-                    <label>
-                        Enter Secret Token
-                    </label>
-                    <input type="text" name="secretToken" />
-                </div>
-            </div>
-            <div class="actions">
-                <div class="ui red basic cancel inverted button" >
-                    <i class="remove icon"></i>
-                    Cancel
-                </div>
-                <div class="ui green ok button" id="participantAddForm">
-                    <i class="checkmark icon"></i>
-                    Add Member
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="icon lock"></i>
+                        <input type="text" name="secretToken" placeholder="Secret Token" />
+                    </div>
                 </div>
             </div>
+            
         </div>
     </div>
-    
+    <div class="actions">
+        <div class="ui red basic cancel button">
+            <i class="remove icon"></i>
+            Cancel
+        </div>
+        <div class="ui green basic ok button" id="participantAddForm">
+            <i class="checkmark icon"></i>
+            Add Member
+        </div>
+    </div>
 </div>
 
 
@@ -129,9 +135,10 @@
                     <button class="ui button olive inline">Show Participated Events</button>
                 </div>
                 <% } else { %>
-                <div >
+                <div>
                     <%   if(own.participants.length <= 3 ) { %>
-                    <button class="ui button positive" onclick="addParticipant('<%= own._id %>')">Add participant</button>
+                    <button class="ui button positive" onclick="addParticipant('<%= own._id %>')">Add
+                        participant</button>
                     <% } %>
                     <button class="ui button negative" onclick="markFinal('<%= own._id %>')">Mark as Final</button>
                 </div>

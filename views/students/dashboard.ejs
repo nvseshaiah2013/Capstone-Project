@@ -1,15 +1,15 @@
 <% include ../partials/header %>
 
 <style>
-    body{
-       background:url('/assets/images/wall.jpg') !important;
+    body {
+        background: url('/assets/images/wall.jpg') !important;
     }
 </style>
 
 </head>
 
 <body>
-    <div class="ui menu purple top large inverted">
+    <div class="ui menu red top large inverted">
         <div class="ui container">
             <a class="item header" href="#">LPU Colors </a>
             <a class="item active"><i class="home icon"></i> Home </a>
@@ -46,17 +46,20 @@
 
 
                 </div>
-                <a class="item"><i class="sign out icon"></i> Sign Out</a>
+                <a class="item" href="#" id="student_signOut"><i class="sign out icon"></i> Sign Out</a>
             </div>
         </div>
     </div>
-
+    <form action="/" method="GET" id="formSignOut"></form>
     <div class="ui basic segment" id="mainPage">
+        <div class="ui dimmer" id="loaderItem">
+            <div class="ui medium text loader">Getting Content For You</div>
+        </div>
         <div class="ui container">
             <div class="ui stackable grid">
                 <div class="two column row">
                     <div class="four wide column">
-                        <div class="ui card">
+                        <div class="ui red card">
                             <div class="image">
                                 <img src="/assets/images/21294.png">
                             </div>
@@ -112,8 +115,8 @@
                                                 <a href="#" class="item" id="profile">
                                                     View Profile
                                                 </a>
-                                                <a href="#" class="item" id="participate">
-                                                    My Participation
+                                                <a href="#" class="item" id="certificates">
+                                                    My Certificates
                                                 </a>
                                                 <a href="#" class="item" id="teams">
                                                     My Teams
@@ -139,6 +142,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -147,8 +151,11 @@
 
                         </div>
                         <div id="store">
-
+                            <div id="showLiveEvents"></div>
+                            <div id="showUpcomingEvents"></div>
+                            <div id="showPastEvents"></div>
                         </div>
+
                     </div>
                 </div>
 

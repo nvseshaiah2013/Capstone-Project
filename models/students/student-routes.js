@@ -16,16 +16,6 @@ router.get('/signup', function (req, res) {
     res.render("students/sign-up");
 });
 
-
-router.get('/allStudents', adminAuth, function (req, res) {
-    Student.find({}).then(students => {
-        return res.status(200).render("students/allStudents", { students: students });
-    }).catch(err => {
-        console.log("/allStudents Route: " + err);
-        return res.status(400).send({ "message": "Error" });
-    });
-});
-
 router.post('/signup', function (req, res) {
     // console.log(req.body.data.username);
 
@@ -156,6 +146,16 @@ router.get('/teams', studentAuth, function (req, res) {
 
 });
 
+router.get('/notifications', studentAuth, function (req, res) {
+    Student.findOne({regn_no:req.currentUser.regn_no}, { notifications: 1 })
+        .then((notifications) => {
+            res.status(200).send({ notifications: notifications });
+        })
+        .catch((err) => {
+            res.status(403).send({ "message": "error fetching notifications" });
+        })
+});
+
 //Creates a new Team
 router.post('/teams', studentAuth, function (req, res) {
     if (!req.body.data) return res.status(401).send({ "message": "No Data Received" });
@@ -172,13 +172,14 @@ router.post('/teams', studentAuth, function (req, res) {
         else {
             Student.findOneAndUpdate({ regn_no: req.currentUser.regn_no }, { "$push": { myTeams: docs._id } })
                 .then(succ => {
-                    return res.status(200).send({ "message": "Team successfully created" });
+                    //console.log(succ);
+                    return res.status(200).send({ "message": "Team successfully created "});
                 })
                 .catch(fail => {
                     console.log("Student Document Id Addition Failed for " + req.currentUser.regn_no + " " + fail);
                     return res.status(401).send({ "message": "Team Id Addition in Student Document Failed" });
                 });
-            return res.status(200).send({ "message": "Team Successfully Created" });
+           // return res.status(200).send({ "message": "Team Successfully Created" });
         }
     });
 }); 
@@ -453,9 +454,9 @@ router.get('/:eventId/details',studentAuth,function(req,res){
 router.get('/upcomingEvents',studentAuth,function(req,res){
     let today = moment(new Date()).format('YYYY-MM-DD');
     today = today + "T00:00:00.000Z";
-    Events.find({start_date:{"$gte":new Date(today)}})
+    Events.find({start_date:{"$gt":new Date(today)}})
     .then((docs)=>{
-        res.status(200).send({events:docs});
+        res.render("students/upcomingEvents",{events:docs});
     })
     .catch((err)=>{
         res.status(403).send({"message":err});
@@ -467,7 +468,7 @@ router.get('/liveEvents',studentAuth,function(req,res){
     today = today + "T00:00:00.000Z";
     Events.find({ start_date:{"$lte":new Date(today)} , end_date:{"$gte":new Date(today)} })
         .then((docs) => {
-            res.status(200).send({ events: docs });
+            res.render("students/currentEvents",{ events: docs });
         })
         .catch((err) => {
             res.status(403).send({ "message": err });
@@ -477,9 +478,9 @@ router.get('/liveEvents',studentAuth,function(req,res){
 router.get('/pastEvents',studentAuth,function(req,res){
     let today = moment(new Date()).format('YYYY-MM-DD');
     today = today + "T00:00:00.000Z";
-    Events.find({ end_date: { "$lte": new Date(today) } })
+    Events.find({ end_date: { "$lt": new Date(today) } })
         .then((docs) => {
-            res.status(200).send({ events: docs });
+            res.render("students/pastEvents",{ events: docs });
         })
         .catch((err) => {
             res.status(403).send({ "message": err });

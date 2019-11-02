@@ -135,7 +135,10 @@ $(document).ready(function () {
             console.log(suc);
         })
         .catch(err=>{
-            console.log(err);
+            if ($('#mainPage').hasClass('loading')) {
+                $('#mainPage').removeClass('loading');
+            }
+            console.log(err.data);
         })
     });
 });

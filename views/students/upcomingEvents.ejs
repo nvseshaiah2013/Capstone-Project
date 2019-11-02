@@ -1,9 +1,10 @@
-<h3 class="ui block header">
-    All Events
+<h3 class="ui block inverted red header">
+    All Upcoming Events
 </h3>
 
 <div class="ui cards">
     <% events.forEach(function(event) { %>
+
     <div class="ui raised card">
         <div class="content">
             <div class="header"><%= event.event_name %></div>
@@ -56,5 +57,5 @@
 
     <%  }); %>
 </div>
-<script src="/scripts/events/scripts/allEvents.js"></script>
-    
+
+<script src="/scripts/students/scripts/upcomingEvents.js"></script>

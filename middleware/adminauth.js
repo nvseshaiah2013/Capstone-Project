@@ -22,6 +22,7 @@ module.exports = (req,res,next)=>{
                     }
                     else {
                         req.currentUser = admin;
+                        req.currentUser.token = token;
                         next();
                     }
                 });

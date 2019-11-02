@@ -12,6 +12,21 @@ router.get('/login',function(req,res){
     res.render("admins/login");
 });
 
+router.post('/signout', adminAuth, function (req, response) {
+    //console.log(tok);
+    Admin.findOneAndUpdate({ _id: req.currentUser._id }, { "$push": { expiredTokens: req.currentUser.token } }, (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(403).send({ "message": "Error Logging Out" });
+        }
+        else {
+            return response.status(200).send({ "message": "SignOut Success" });
+        }
+    });
+    //return res.send("Hello");
+});
+
+
 router.post('/dashboard',function(req,res){
     Admin.findOne({username:req.body.username}).then(admin=>{
         if(admin)
@@ -36,7 +51,49 @@ router.post('/dashboard',function(req,res){
     }).catch(err=>{
         res.status(401).send({ "message": "Unauthorized","error":err });
     })
-})
+});
+
+router.post('/sendNotification/student/:studentId', adminAuth, function (req, res) {
+    let data = req.body.data;
+    let notification = {
+        heading: data.heading,
+        text: data.text
+    };
+    Student.findOneAndUpdate({ regn_no: req.params.studentId }, { "$push": { notifications: notification } }, (err, result) => {
+        if (err) {
+            return res.status(403).send({ "message": "Cannot send Notification" });
+        }
+        else {
+            return res.status(200).send({ "message": "Notification Sent" });
+        }
+    });
+});
+
+router.post('/sendNotification/clubs/:clubId', adminAuth, function (req, res) {
+    let data = req.body.data;
+    let notification = {
+        heading: data.heading,
+        text: data.text
+    };
+    Club.findOneAndUpdate({ _id: req.params.clubId }, { "$push": { notifications: notification } }, (err, result) => {
+        if (err) {
+            return res.status(403).send({ "message": "Cannot send Notification" });
+        }
+        else {
+            return res.status(200).send({ "message": "Notification Sent" });
+        }
+    });
+});
+
+router.get('/notifications', adminAuth, function (req, res) {
+    Admin.findById(req.currentUser._id, { notifications: 1 })
+        .then((notifications) => {
+            res.status(200).send({ notifications: notifications });
+        })
+        .catch((err) => {
+            res.status(403).send({ "message": "error fetching notifications" });
+        })
+});
 
 // router.post('/signup',function(req,res){
 //     Admin.create([{username:req.body.username,password:req.body.password}],function(err,doc){
@@ -53,7 +110,7 @@ router.post('/dashboard',function(req,res){
 // });
 
 router.get('/students',adminAuth,function(req,res){
-    Students.find({},{password:0})
+    Students.find({},{password:0,secretToken:0})
     .then((docs)=>{
         res.render("admins/allStudents",{students:docs});
     })
@@ -66,7 +123,7 @@ router.get('/students',adminAuth,function(req,res){
 router.get('/events',adminAuth,function(req,res){
     Events.find({})
     .then((docs)=>{
-        res.render("events/allEvents",{events:docs});
+        res.render("admins/allEvents",{events:docs});
     })
     .catch((err)=>{
         res.status(403).send({"message":"Error"});

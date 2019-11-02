@@ -11,6 +11,7 @@ const multer = require('multer');
 const moment = require('moment');
 const fs = require('fs');
 const ObjectId = require('mongoose').Types.ObjectId;
+const dateValidate = require('../../validations/dateValidation');
 
 
 const makeCertificate = require('../../utility/makeCertificate');
@@ -28,7 +29,7 @@ const storage = multer.diskStorage({
 });
 
 const imageFileFilter = (req, file, cb) => {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|JPEG|PNG|GIF|JPG)$/)) {
         return cb(new Error('You can upload only image files!'), false);
     }
     cb(null, true);
@@ -86,14 +87,36 @@ router.post('/add',function(req,res){
     return res.status(200).send("Successfully Reached End!").end();
 });
 
+router.get('/founders',clubAuth,function(req,res){
+    Club.findOne({_id:req.currentUser._id},{"desc.founders":1})
+    .then((founder)=>{
+        return res.status(200).send({founders:founder});
+    })
+    .catch((err)=>{
+        return res.status(403).send({"message":"Error"});
+    })
+});
+
 router.post('/addFounder',clubAuth,function(req,res){
     Club.findOneAndUpdate({_id:req.currentUser._id},{"$push":{"desc.founders":req.body.data.founder}},{new:true})
     .then((docs)=>{
         return res.render("clubs/profile",{club:docs});
     })
     .catch((err)=>{
+        console.log(err);
         return res.status(403).send({"message":"Founder Addition Failed"});
     });
+});
+
+router.get('/members', clubAuth, function (req, res) {
+    Club.findOne({ _id: req.currentUser._id }, { "desc.members": 1 })
+        .then((member) => {
+            return res.status(200).send({ members: member });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(403).send({ "message": "Error" });
+        })
 });
 
 router.post('/addMember',clubAuth,function(req,res){
@@ -123,9 +146,50 @@ router.post('/addMember',clubAuth,function(req,res){
     })
 });
 
+router.post('/sendNotification/:studentId', clubAuth, function (req, res) {
+    let data = req.body.data;
+    let notification = {
+        heading: data.heading,
+        text: data.text
+    };
+    Student.findOneAndUpdate({ regn_no: req.params.studentId }, { "$push": { notifications: notification } }, (err, result) => {
+        if (err) {
+            return res.status(403).send({ "message": "Cannot send Notification" });
+        }
+        else {
+            return res.status(200).send({ "message": "Notification Sent" });
+        }
+    });
+});
+
+router.get('/notifications',clubAuth,function(req,res){
+    Club.findById(req.currentUser._id,{notifications:1})
+    .then((notifications)=>{
+        res.status(200).send({notifications:notifications});
+    })
+    .catch((err)=>{
+        res.status(403).send({"message":"error fetching notifications"});
+    })
+});
+
 router.get('/login',function(req,res){
     res.render("clubs/login");
 });
+
+router.post('/signout', clubAuth, function (req, response) {
+    //console.log(tok);
+    Club.findOneAndUpdate({ _id: req.currentUser._id }, { "$push": { expiredTokens: req.currentUser.token } }, (err, res) => {
+        if (err) {
+            console.log(err);
+            return response.status(403).send({ "message": "Error Logging Out" });
+        }
+        else {
+            return response.status(200).send({ "message": "SignOut Success" });
+        }
+    });
+    //return res.send("Hello");
+});
+
 
 router.post('/login',function(req,res){
     Club.findOne({username:req.body.username}).then(succ=>{
@@ -250,22 +314,22 @@ router.get('/issuedCertificates/:certificateId',clubAuth,function(req,res){
     });
 });
 
-
-router.get('/events/:eventId',clubAuth,function(req,res){
-    Event.findOne({_id:req.params.eventId,club_id:req.currentUser._id})
-    .then((docs)=>{
-        return res.render("events/showClubEvent",{event:docs});
-    })
-    .catch((err)=>{
-        res.status(403).send({"message":"Error Occured"});
-    });
-});
-
-
 router.post('/events',clubAuth,function(req,res){
-    // console.log("Reached Here");
-    // console.log(req.body.data);
     let data = req.body.data;
+    //console.log(data);
+    if (!dateValidate.sameOrAfterToday(data.start_date) || !dateValidate.sameOrAfterToday(data.end_date)
+        || !dateValidate.sameOrAfterToday(data.reg_deadline) )
+    {
+        //console.log("Inside 1");
+        return res.status(403).send({"message":"Invalid Dates"});
+    }
+   // console.log(data);
+    if(!(dateValidate.sameBefore(data.reg_deadline,data.start_date)  && dateValidate.sameBefore(data.start_date,data.end_date)))
+    {
+         // console.log("after 2");
+          return res.status(403).send({ "message": "Invalid Dates" });
+    }    
+    //console.log(data);
     let event = new Event({
         "event_name":data.event_name,
         "club_id":req.currentUser._id,
@@ -279,11 +343,21 @@ router.post('/events',clubAuth,function(req,res){
     Event.create(event).then(suc=>{
        // console.log(suc);
        // console.log("Event Save Success");
-        return res.send({"message":"Event Added Successfully"});
+        return res.status(200).send({"message":"Event Added Successfully"});
     }).catch(err=>{
         console.log(err);
-        return res.send({"message":"Event Addition Failed"});
+        return res.status(200).send({"message":"Event Addition Failed"});
     })
+});
+
+router.get('/events/:eventId', clubAuth, function (req, res) {
+    Event.findOne({ _id: req.params.eventId, club_id: req.currentUser._id })
+        .then((docs) => {
+            return res.render("events/showClubEvent", { event: docs });
+        })
+        .catch((err) => {
+            res.status(403).send({ "message": "Error Occured" });
+        });
 });
 
 router.get('/events/:eventId/addCategory',clubAuth,function(req,res){
@@ -326,7 +400,33 @@ router.post('/events/:eventId/addCategory',clubAuth,function(req,res){
     });
 });
 
-router.post('/events/:eventId/addImage',clubAuth,uploadImages.single('imageData'),function(req,res){
+router.get('/events/:categoryId/registeredTeams',clubAuth,function(req,res){
+    Event.findOne({club_id:req.currentUser._id,"categories._id":req.params.categoryId})
+    .then((event)=>{
+        if(!event)
+        {
+            return res.status(403).send({ "message": "error" });
+        }
+        else
+        {
+            Team.find({"events_participated.cat_id":req.params.categoryId},{team_name:1,owner_name:1},(err,teams)=>{
+                if(err)
+                {
+                    return res.status(403).send({"message":"Error"});
+                }
+                else
+                    {
+                        return res.render("clubs/registeredTeams",{teams:teams});
+                    }
+            });
+        }
+    })
+    .catch((err)=>{
+        return res.status(403).send({"message":"error"});
+    });
+});
+
+router.post('/images/:eventId/addImage',clubAuth,uploadImages.single('imageData'),function(req,res){
    // console.log(req);
     Event.findOne({_id:req.params.eventId,club_id:req.currentUser._id})
     .then((docs)=>{
@@ -360,9 +460,31 @@ router.get('/images/:eventId/:imageLink/',clubAuth,function(req,res){
         }
         else
             {
-                
+                Gallery.findOne({event_id:req.params.eventId,"image_links.image_src":req.params.imageLink},{"image_links.$":1})
+                .then((images)=>{
+                    fs.readFileSync(images.image_links[0].image_src,function(err,content){
+
+                    });
+                })
             }
-    })
+    });
+});
+
+router.get('/images/:eventId/all',clubAuth,function(req,res){
+    Event.findOne({ _id: req.params.eventId, club_id: req.currentUser._id },{image_links:1})
+        .then((docs) => {
+            if (!docs) {
+                return res.status(403).send({ "message": "Error Occured" });
+            }
+            else {
+                Gallery.findOne({ event_id: req.params.eventId })
+                    .then((images) => {
+                        return res.status(200).send({images:images});
+                    })
+            }
+        }).catch((err)=>{
+            return res.status(404).send({"message":"error"});
+        })
 });
 
 module.exports = router;
