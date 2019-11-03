@@ -216,7 +216,7 @@ router.post('/login',function(req,res){
 router.get('/events',clubAuth,function(req,res){
     Event.find({club_id:req.currentUser._id})
     .then((docs)=>{
-        return res.render("events/allClubEvents",{events:docs});
+        return res.render("clubs/allClubEvents",{events:docs});
     })
     .catch((err)=>{
         console.log(err);
@@ -379,7 +379,8 @@ router.get('/events/:eventId/addCategory',clubAuth,function(req,res){
 });
 
 router.post('/events/:eventId/addCategory',clubAuth,function(req,res){
-    Event.findOneAndUpdate({ _id:req.params.eventId, club_id:req.currentUser._id },{"$push":{categories:req.body.data.category}},{new:true},function(err,docs){
+    console.log(req.body.data);
+    Event.findOneAndUpdate({ _id:req.params.eventId, club_id:req.currentUser._id },{"$push":{categories:req.body.data}},{new:true},function(err,docs){
         if(err)
         {
             console.log(err);
@@ -389,7 +390,7 @@ router.post('/events/:eventId/addCategory',clubAuth,function(req,res){
             if(docs)
             {
                 console.log("Success");
-                return res.render("events/showClubEvent",{event:docs});
+                return res.render("events/addCategory",{event:docs});
             }
             else
             {
@@ -451,7 +452,8 @@ router.post('/images/:eventId/addImage',clubAuth,uploadImages.single('imageData'
     });
 });
 
-router.get('/images/:eventId/:imageLink/',clubAuth,function(req,res){
+router.get('/images/:eventId/getImage',clubAuth,function(req,res){
+    console.log(req.body.imageLink);
     Event.findOne({_id:req.params.eventId,club_id:req.currentUser._id})
     .then((docs)=>{
         if(!docs)
@@ -460,11 +462,33 @@ router.get('/images/:eventId/:imageLink/',clubAuth,function(req,res){
         }
         else
             {
-                Gallery.findOne({event_id:req.params.eventId,"image_links.image_src":req.params.imageLink},{"image_links.$":1})
+                console.log(image_links.image_src.split('.'));
+                Gallery.findOne({event_id:req.params.eventId,"image_links.image_src":req.body.imageLink},{"image_links.$":1})
                 .then((images)=>{
-                    fs.readFileSync(images.image_links[0].image_src,function(err,content){
+                    console.log(images.image_links[0]);
+                    // fs.readFileSync(images.image_links[0].image_src,function(err,content){
+                    //     if(err)
+                    //     {
+                    //         return res.status(403).send({"message":"Image Read Failed"});
+                    //     }
+                    //     else
+                    //     {
+                    //         res.writeHead(200,{'Content-Type':'image/png'});
+                    //         return res.end(content,'binary');
+                    //     }
 
+                    // });
+                    //return res.sendFile(images.image_links[0].image_src);
+                    fs.readFile(images.image_links[0].image_src,'base64',(err,image)=>{
+                        const dataURL = 'data:image/png;base64, ' + image;
+                    
+                        return res.send('<img src="' + dataURL +'">');
                     });
+
+                       
+                })
+                .catch((err)=>{
+                    return res.status(403).send({"message":"Error Sending File " + err});
                 })
             }
     });

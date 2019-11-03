@@ -1,7 +1,16 @@
-<h3 class="ui block header">
+<h3 class="ui inverted block header">
     All Live Events
 </h3>
 
+<% if(events.length  == 0) { %>
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="pdf file outline icon"></i>
+            No documents are listed for this customer.
+        </div>
+        <div class="ui primary button">Add Document</div>
+    </div>
+<% } else  { %>
 <div class="ui cards">
     <% events.forEach(function(event) { %>
 
@@ -57,5 +66,6 @@
 
     <%  }); %>
 </div>
+<% } %>
 
 <script src="/scripts/students/scripts/currentEvents.js"></script>

@@ -6,5 +6,11 @@ $(document).ready(function(){
         }).catch(fail=>{
             $('#store').html('<b>Fetch Failed </b>');
         });
-    })
+    });
+    $('.ui.accordion').accordion();
+    init();
 });
+
+function init(){
+    $('#store').html("<h1><b>Hello World</b></h1>");
+}

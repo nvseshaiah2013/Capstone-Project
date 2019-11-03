@@ -2,6 +2,15 @@
     All Past Events
 </h3>
 
+<% if(events.length == 0) { %>
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="calendar times icon"></i>
+            No Past Events as of Now.
+        </div>
+    </div>
+<% } else { %>
+
 <div class="ui cards">
     <% events.forEach(function(event) { %>
 
@@ -57,5 +66,6 @@
 
     <%  }); %>
 </div>
+<% } %>
 
 <script src="/scripts/students/scripts/pastEvents.js"></script>

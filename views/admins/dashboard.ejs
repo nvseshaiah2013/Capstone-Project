@@ -1,10 +1,12 @@
 <% include ../partials/header %>
 <style>
     body {
-        background: url('/assets/images/wall.jpg') !important;
+        /* background: url('/assets/images/wall.jpg') !important; */
+        background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
     }
 </style>
 </head>
+
 <body>
     <div class="ui menu blue inverted large">
         <div class="ui container">
@@ -22,25 +24,109 @@
         </div>
     </div>
     <div class="ui container">
-        <div class="ui raised segment">
+        <div class="ui stackable grid">
+            <div class="four wide column">
+                <div class="ui fluid blue segment">
 
-            Admin Page
-            <%= auth %>
-            <%= id %>
-            <a href="#" id="newClub" >Add New Club</a>
-        </div>
-                <div id="store">
-                    
+                    <div class="ui styled accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Students
+                        </div>
+                        <div class="content">
+                            <div class="transition hidden">
+                                <div class="ui link list">
+                                    <a class="item" id="viewAllStudents" href="#">
+                                        All Students
+                                    </a>
+                                    <a class="item" id="viewBatchWiseStudents" href="#">
+                                        Batch-wise Students
+                                    </a>
+                                    <a class="item" id="viewStudentProfile" href="#">
+                                        View Student Profile
+                                    </a>
+                                    <a class="item" id="addNewStudent" href="#">
+                                        Add New Student
+                                    </a>
+                                    <a class="item" id="viewAllTeams" href="#">
+                                        View Student Teams
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <i class="dropdown icon">
+
+                            </i>
+                            Admin Profile
+                        </div>
+                        <div class="content">
+                            <div class="transition hidden">
+                                <div class="ui link list">
+                                    <a href="#" class="item" id="viewProfile">
+                                        View Profile
+                                    </a>
+                                    <a href="#" class="item" id="updatePassword">
+                                        Update Password
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Clubs
+                        </div>
+                        <div class="content">
+                            <div class="transition hidden">
+                                <div class="ui link list">
+                                    <a href="#" class="item" id="viewAllClubs">
+                                        View All Clubs
+                                    </a>
+                                    <a href="#" class="item" id="newClub">
+                                        Add New Club
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Events
+                        </div>
+                        <div class="content">
+                            <div class="transition hidden">
+                                <div class="ui link list">
+                                    <a href="#" class="item" id="viewAllEvents">
+                                        View All Events
+                                    </a>
+                                    <a href="#" class="item" id="newClub">
+                                        Add New Club
+                                    </a>
+                                    <a href="#" class="item" id="viewAllEventCertificates">
+                                        Issued Certificates
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            <% if(auth) { %>
-            <script>
-                localStorage.setItem('__colors__', "<%- auth %>");
-                axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
+            </div>
+            <div class="ten wide column">
+                <div id="store">
 
-            </script>
-            <% } %>
+                </div>
+            </div>
+        </div>
+
+        <% if(auth) { %>
+        <script>
+            localStorage.setItem('__colors__', "<%- auth %>");
+            axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
+
+        </script>
+        <% } %>
     </div>
 
-<script src="/scripts/admins/scripts/dashboard.js"></script>
+    <script src="/scripts/admins/scripts/dashboard.js"></script>
 
-<% include ../partials/footer %>
+    <% include ../partials/footer %>

@@ -7,12 +7,18 @@
                 <div class="ui blue ribbon label">
                     <%= category.category_name %>
                 </div>
-                <div class="content">
-                    <p class="description">
-                        Amount : <%= category.amount %> <br/>
-                        Group Size: <%= category.group_size %>
-                    </p>
-                </div>
+                
+                
+                        <div class="ui red ribbon label">
+
+                            Amount : <%= category.amount %> 
+                        </div>
+                        <div class="ui orange ribbon label">
+
+                            Group Size: <%= category.group_size %>
+                        </div>
+                    
+                
                 <button type="button" class="ui bottom attached label" href="#">
                     Edit Category
                 </button>

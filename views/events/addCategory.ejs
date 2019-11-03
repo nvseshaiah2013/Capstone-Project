@@ -1,23 +1,156 @@
-<div class="ui raised segment">
-    <h4 class="ui dividing header">
-        Add New Category
-    </h4>
-    <form class="ui form">
-        <div class="sixteen wide field required">
-            <label> Category Name </label>
-            <input type="text" name="category_name" />
-        </div>
-        <div class="sixteen wide field required">
-            <label> Group Size </label>
-            <input type="number" name="group_size" />
-        </div>
-        <div class="sixteen wide field required">
-            <label> Amount </label>
-            <input type="number" name="amount" />
-        </div>
-        <div class="inline">
-            <button type="submit" class="ui positive button">Add Category</button>
-            <button type="reset" class="ui negative button">Reset</button>
-        </div>
-    </form>
+<div class="ui modal" id="newCategoryAdd">
+    <div class="content">
+        <form class="ui form" id="newCategoryAddForm">
+            <div class="ui block header">
+                New Category
+            </div>
+            <div class="fields">
+                <div class="required field">
+                    <label>
+                        Category Name:
+                    </label>
+                    <div class="ui left icon input">
+                        <i class="icon id card "></i>
+                        <input type="text" name="category_name" placeholder="Category Name." />
+                    </div>
+                </div>
+                <div class="field">
+                    <label>
+                        Amount:
+                    </label>
+                    <div class="ui left icon input">
+                        <i class="icon rupee sign"></i>
+                        <input type="number" name="amount" placeholder="Amount." />
+                    </div>
+                </div>
+                <div class="field">
+                    <label>
+                        Group Size:
+                    </label>
+                    <div class="ui left icon input">
+                        <i class="icon edit">
+
+                        </i>
+                        <input type="text" name="group_size" placeholder="Group Size" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <button type="reset" class="ui red basic cancel button">
+            <i class="remove icon"></i>
+            Cancel
+        </button>
+        <button type="submit" class="ui green basic ok button" onclick="addCategory()">
+            <i class="checkmark icon"></i>
+            Add Category
+        </button>
+    </div>
+
+
 </div>
+
+<% if(event.categories.length == 0){  %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="menu icon"></i>
+        No categories are added for this event.
+    </div>
+    <div class="ui primary button" onclick="openModal()">Add Category</div>
+</div>
+<% } else { %>
+<div class="ui segment">
+    <div class="ui primary button" onclick="openModal()">Add Category</div>
+    <div class="ui cards">
+        <% event.categories.forEach(function(category){ %>
+        <div class="compact card">
+            <div class="content">
+
+                <div class="header">
+                    <%= category.category_name %>
+                </div>
+                <div class="meta">
+                    Group Size: <%= category.group_size %>
+                </div>
+                <div class="description">
+                    Participation Fee: <%= category.amount %>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="ui basic red button">Delete Category</div>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+<% } %>
+
+
+<script>
+    selectedEvent = "<%= event._id %>";
+    $(document).ready(function () {
+        $('#newCategoryAddForm').form({
+            on: 'blur',
+            inline: true,
+            fields: {
+                category_name: {
+                    identifier: 'category_name',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Cannot be empty'
+                        }
+                    ]
+                },
+                amount: {
+                    identifier: 'amount',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Cannot be empty'
+                        },
+                        {
+                            type: 'integer',
+                            prompt: 'Should be a integer value'
+                        }
+                    ]
+                }
+                , group_size: {
+                    identifier: 'group_size',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Cannot be empty'
+                        },
+                        {
+                            type: 'integer',
+                            prompt: 'Should be a integer value'
+                        }
+                    ]
+                }
+            }
+        });
+    });
+    function addCategory() {
+        if ($('#newCategoryAddForm').form('is valid')) {
+            var category = {
+                category_name: $('[name="category_name"]').val(),
+                group_size:$('[name="group_size"]').val(),
+                amount:$('[name="amount"]').val()
+            };
+            axios.post('/clubs/events/' + selectedEvent + '/addCategory',{data:category})
+            .then((succ)=>{
+                $('#newCategoryAddForm').form('reset');
+                $('#store').html(succ.data);
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+            
+        }
+    }
+    function openModal() {
+        $('#newCategoryAdd').modal('show');
+    }
+</script>

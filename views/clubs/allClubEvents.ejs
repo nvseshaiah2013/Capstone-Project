@@ -1,6 +1,14 @@
+<% if(events.length == 0 ) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="bullhorn icon"></i>
+        You have not added any events yet.
+    </div>
+    <div class="ui primary button">Add Event</div>
+</div>
+<% } else { %>
 <div class="ui cards">
-    <% if(typeof events!== 'undefined') %>
-    <% { events.forEach(function(event) { %>
+    <% events.forEach(function(event) { %>
 
     <div class="ui raised card">
         <div class="content">
@@ -48,11 +56,12 @@
         </div>
         <div class="extra content">
             <button class="ui labeled icon primary button" onclick="showDetails('<%= event._id %>')"><i
-                    class="file outline icon"></i>Show Details</button>
+                    class="dna icon"></i>Show Details</button>
         </div>
     </div>
 
-    <%  });} %>
+    <%  }); %>
 </div>
+<% } %>
 
 <script src="/scripts/clubs/scripts/allClubEvents.js"></script>

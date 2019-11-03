@@ -9,6 +9,15 @@ $(document).ready(function () {
             console.log(err);
         })
     });
+    $('#ourEvents').on('click',function(event){
+        event.preventDefault();
+        axios.get('/clubs/events/').then((succ)=>{
+            $('#store').html(succ.data);
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+    });
 });
 
 var selectedEvent;
