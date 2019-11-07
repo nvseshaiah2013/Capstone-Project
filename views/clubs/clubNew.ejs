@@ -1,4 +1,4 @@
-<form class="ui form" id="newClub">
+<form class="ui form" id="newClub" method="POST">
     <div class="ui raised segment olive">
         <div class="ui dividing header large">Add New Club</div>
         <div class="ui segment">
@@ -43,7 +43,7 @@
                 <input type="password" name="confirm_pwd" id="confirm_pwd" autocomplete="current-password" />
             </div>
         </div>
-        <button class="ui button positive submit" type="submit">Add Club</button>
+        <button class="ui button positive submit" type="submit" id="newClubButton">Add Club</button>
         <button class="ui button negative" type="reset"> Reset </button>
     </div>
 </form>

@@ -1,0 +1,20 @@
+<% if(clubs == null) { %>
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="boxes icon"></i>
+            No clubs are active in this university.
+        </div>
+    </div>
+<% } else { %>
+    <div class="ui raised segments">
+    <% clubs.forEach(function(club){ %>
+        <div class="ui segment">
+            <div class="ui top attached label">
+                <%= club.name %>
+            </div>
+            <a class="ui red ribbon label">Address: </a>
+            <span> <%= club.address %> </span>
+        </div>
+    <% }); %>
+    </div>
+<% } %>

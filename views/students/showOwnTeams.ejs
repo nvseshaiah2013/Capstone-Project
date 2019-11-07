@@ -28,10 +28,11 @@
 
 <% } else { %>
     <div class="ui placeholder segment">
-        <div class="ui header">
-            No Matching Teams Found. Go Ahead and Create One
+        <div class="ui icon header">
+            <i class="user outline icon"></i>
+                You do not own any team of given size.
         </div>
-        <button class="ui primary button">Create New Team</button>
+        <div class="ui positive button" id="createNewTeam">New Team</div>
     </div>
 <% } %>
 
@@ -44,10 +45,11 @@
                 console.log(succ.data);
             })
             .catch((fail)=>{
-                console.log(fail.data);
+                console.log(fail);
             });
         }
         else console.log("failed");
 
     }
+    $('#createNewTeam').on('click',getTeams);
 </script>

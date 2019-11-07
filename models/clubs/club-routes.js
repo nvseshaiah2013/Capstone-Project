@@ -9,6 +9,7 @@ const adminAuth = require('../../middleware/adminauth');
 const Team = require('../teams/teams');
 const multer = require('multer');
 const moment = require('moment');
+const path = require('path');
 const fs = require('fs');
 const ObjectId = require('mongoose').Types.ObjectId;
 const dateValidate = require('../../validations/dateValidation');
@@ -59,32 +60,34 @@ router.post('/add',function(req,res){
             Club.findOne({username:req.body.data.username}).then(suc=>{
                 if(!suc)
                 {
-                    club.save();
+                    club.save(function(err,product){
+                        if(err)
+                            return res.status(403).send({ "message": "Error Occured" + err }).end();
+                    });
                     console.log("Saved");
-                    return  res.statusCode(200).send({"message":"save Success!"}).end();
+                    return  res.status(200).send({"message":"save Success!"}).end();
                 }
                 else
                 {
-                    console.log("username already in use");
-                
-                  return  res.statusCode(401).send({"message":"username already in use"}).end();
+                    console.log("username already in use");                
+                    return  res.status(403).send({"message":"username already in use"}).end();
                 }
 
             }).catch(err=>{
-             // return  res.status(401).send({"message":"Error Occured" + err}).end();
+              return  res.status(403).send({"message":"Error Occured" + err}).end();
             });
         }
         else
         {
             console.log("Name Exists");
-           return res.statusCode(401).send({"message":"Club Name Already Exists"}).end();
+           return res.status(403).send({"message":"Club Name Already Exists"}).end();
         }
 
     }).catch(err=>{
         console.log(err);
-       return res.statusCode(403).send({"message":"Something wrong","error":err}).end();
+       return res.status(403).send({"message":"Something wrong","error":err}).end();
     })
-    return res.status(200).send("Successfully Reached End!").end();
+   // return res.status(200).send("Successfully Reached End!").end();
 });
 
 router.get('/founders',clubAuth,function(req,res){
@@ -350,6 +353,10 @@ router.post('/events',clubAuth,function(req,res){
     })
 });
 
+router.get('/events/addCategoryModal',clubAuth,function(req,res){
+    return res.render("events/addCategoryModal");
+});
+
 router.get('/events/:eventId', clubAuth, function (req, res) {
     Event.findOne({ _id: req.params.eventId, club_id: req.currentUser._id })
         .then((docs) => {
@@ -479,10 +486,10 @@ router.get('/images/:eventId/getImage',clubAuth,function(req,res){
 
                     // });
                     //return res.sendFile(images.image_links[0].image_src);
+                    var ext = path.extname(images.image_links[0].image_src);
                     fs.readFile(images.image_links[0].image_src,'base64',(err,image)=>{
-                        const dataURL = 'data:image/png;base64, ' + image;
-                    
-                        return res.send('<img src="' + dataURL +'">');
+                        const dataURL = 'data:image/' + ext.toLowerCase() + ';base64, ' + image;                    
+                        return res.send(dataURL);
                     });
 
                        

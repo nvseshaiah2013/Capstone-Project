@@ -12,14 +12,6 @@ const owner = new mongoose.Schema({
     }
 });
 
-const payment = new mongoose.Schema({
-    _id:false,
-    status:{
-        type:String,
-        default:"Not Paid"
-    }
-});
-
 const events = new mongoose.Schema({
     _id:false,
     cat_id:{
@@ -34,8 +26,7 @@ const events = new mongoose.Schema({
     isRefunded:{
         type:Boolean,
         default:false
-    },
-    payments:{type:payment,required:true}
+    }
 });
 
 const certificate = new mongoose.Schema({

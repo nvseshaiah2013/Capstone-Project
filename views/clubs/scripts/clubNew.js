@@ -86,12 +86,12 @@ $(document).ready(function () {
         }
     });
 
-    $('form').submit(function(event){
+    $('#newClubButton').on('click',function(event){
         event.preventDefault();
-        var f = $(this);
-        console.log(f);
-        if(f.form('is valid'))
+         console.log(this);
+        if($('.ui.form').form('is valid'))
         {
+            $('#store').addClass('loading');
             let Data = {
                 club_name: $('input[name="club_name"]').val(),
                 found_date: $('input[name="found_date"]').val(),
@@ -103,12 +103,14 @@ $(document).ready(function () {
             axios.post('/clubs/add',
             {data:Data})
             .then((succ)=>{
-                console.log("Success" + succ);
+                //console.log("Success" + succ);
+                $('#store').removeClass('loading');
             })
             .catch((fail)=>{
                 console.log(fail);
+                $('#store').removeClass('loading');
             });
-            console.log("Valid");
+           // console.log("Valid");
         }
     });
 });

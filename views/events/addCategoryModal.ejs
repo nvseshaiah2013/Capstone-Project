@@ -1,0 +1,131 @@
+<div class="ui modal" id="newCategoryAdd">
+    <div class="content">
+        <form class="ui form" id="newCategoryAddForm" method="POST" action="#" onsubmit="return false;">
+            <div class="ui block header">
+                New Category
+            </div>
+            <div class="fields">
+                <div class="required field">
+                    <label>
+                        Category Name:
+                    </label>
+                    <div class="ui left icon input">
+                        <i class="icon id card "></i>
+                        <input type="text" name="category_name" placeholder="Category Name." />
+                    </div>
+                </div>
+                <div class="required field">
+                    <label>
+                        Amount:
+                    </label>
+                    <div class="ui left icon input">
+                        <i class="icon rupee sign"></i>
+                        <input type="number" name="amount" placeholder="Amount." />
+                    </div>
+                </div>
+                <div class="required field">
+                    <label>
+                        Group Size:
+                    </label>
+                    <div class="ui left icon input">
+                        <i class="icon edit">
+
+                        </i>
+                        <input type="text" name="group_size" placeholder="Group Size" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ui segment">
+        <button form="newCategoryAddForm" type="submit" class="ui green basic ok button" onclick="newCategory()">
+            <i class="checkmark icon"></i>
+            Add Category
+        </button>    
+    </div>
+    <div class="actions">
+        <button type="reset" class="ui red basic cancel button">
+            <i class="remove icon"></i>
+            Cancel
+        </button>
+    </div>
+</div>
+
+<script>
+    function newCategory() {
+            //event.preventDefault();
+            console.log('Entered');
+            if ($('#newCategoryAddForm').form('is valid')) {
+                var category = {
+                    category_name: $('[name="category_name"]').val(),
+                    group_size: $('[name="group_size"]').val(),
+                    amount: $('[name="amount"]').val()
+                };
+                // document.querySelector('[name="category_name"]').value = '';
+                // document.querySelector('[name="group_size"]').value = '';
+                // document.querySelector('[name="amount"]').value = '';
+                
+                axios.post('/clubs/events/' + selectedEvent + '/addCategory', { data: category })
+                    .then((succ) => {
+                        $('#store').html(succ.data);
+                        $('#newCategoryAdd').modal('hide dimmer');
+                        document.getElementById('newCategoryAdd').remove();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+
+            } else
+                console.log("exit");
+        //    // $('#newCategoryAddForm').form('clear');
+        //    $('[name="category_name"]').val('');
+        //     $('[name="group_size"]').val('');
+        //     $('[name="amount"]').val('');
+        }
+    $(document).ready(function () {
+            $('#newCategoryAddForm').form({
+                on: 'blur',
+                inline: true,
+                fields: {
+                    category_name: {
+                        identifier: 'category_name',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Cannot be empty'
+                            }
+                        ]
+                    },
+                    amount: {
+                        identifier: 'amount',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Cannot be empty'
+                            },
+                            {
+                                type: 'integer',
+                                prompt: 'Should be a integer value'
+                            }
+                        ]
+                    }
+                    , group_size: {
+                        identifier: 'group_size',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Cannot be empty'
+                            },
+                            {
+                                type: 'integer',
+                                prompt: 'Should be a integer value'
+                            }
+                        ]
+                    }
+                }
+            });
+        });
+    $('#newCategoryAdd').modal({
+            closable: true,
+        }).modal('show');
+</script>

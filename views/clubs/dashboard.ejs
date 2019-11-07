@@ -13,11 +13,15 @@
                     <i class="icon user"></i> Hi <%= club.name %>
                 </a>
                 <a class="item" href="#"><i class="icon bell"></i> Notifications <i class="ui dropdown icon"></i></a>
-                <a class="item" href="#"><i class="icon sign out"></i> Sign Out</a>
+                <a class="item" href="#" id="club_signout"><i class="icon sign out"></i> Sign Out</a>
             </div>
         </div>
     </div>
+    <form method="GET" action="/" id="formSignOut"></form>
     <div class="ui basic segment" id="mainPage">
+        <div class="ui dimmer" id="loaderItem">
+            <div class="ui medium text loader">Getting Content For You</div>
+        </div>
         <div class="ui container">
             <div class="ui stackable grid">
                 <div class="two column row">
@@ -81,12 +85,7 @@
                                                 <a href="#" class="item">
                                                     View Profile
                                                 </a>
-                                                <a href="#" class="item">
-                                                    Update Profile
-                                                </a>
-                                                <a href="#" class="item">
-                                                    View Account
-                                                </a>
+                                                
                                                 <a href="#" class="item">
                                                     View Members
                                                 </a>
@@ -106,7 +105,7 @@
                                                     Issued Certificates
                                                 </a>
                                                 <a href="#" class="item">
-                                                    Current Registered Students
+                                                    Current Registered Teams
                                                 </a>
                                             </div>
                                         </div>

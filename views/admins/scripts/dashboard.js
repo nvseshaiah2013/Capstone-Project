@@ -9,6 +9,19 @@ $(document).ready(function(){
     });
     $('.ui.accordion').accordion();
     init();
+    $('#admin_signout').on('click',function(event){
+        event.preventDefault();
+        $('#loaderItem').addClass('active');
+        axios.post('/admins/signout')
+        .then((succ)=>{
+            delete axios.defaults.headers.common['Authorization'];
+            localStorage.removeItem('__colors__');
+            $('#formSignOut').submit();
+        })
+        .catch((err)=>{
+            $('#formSignOut').submit();
+        });
+    });
 });
 
 function init(){

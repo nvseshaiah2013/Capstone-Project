@@ -1,56 +1,3 @@
-<div class="ui modal" id="newCategoryAdd">
-    <div class="content">
-        <form class="ui form" id="newCategoryAddForm">
-            <div class="ui block header">
-                New Category
-            </div>
-            <div class="fields">
-                <div class="required field">
-                    <label>
-                        Category Name:
-                    </label>
-                    <div class="ui left icon input">
-                        <i class="icon id card "></i>
-                        <input type="text" name="category_name" placeholder="Category Name." />
-                    </div>
-                </div>
-                <div class="field">
-                    <label>
-                        Amount:
-                    </label>
-                    <div class="ui left icon input">
-                        <i class="icon rupee sign"></i>
-                        <input type="number" name="amount" placeholder="Amount." />
-                    </div>
-                </div>
-                <div class="field">
-                    <label>
-                        Group Size:
-                    </label>
-                    <div class="ui left icon input">
-                        <i class="icon edit">
-
-                        </i>
-                        <input type="text" name="group_size" placeholder="Group Size" />
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="actions">
-        <button type="reset" class="ui red basic cancel button">
-            <i class="remove icon"></i>
-            Cancel
-        </button>
-        <button type="submit" class="ui green basic ok button" onclick="addCategory()">
-            <i class="checkmark icon"></i>
-            Add Category
-        </button>
-    </div>
-
-
-</div>
-
 <% if(event.categories.length == 0){  %>
 <div class="ui placeholder segment">
     <div class="ui icon header">
@@ -61,7 +8,10 @@
 </div>
 <% } else { %>
 <div class="ui segment">
-    <div class="ui primary button" onclick="openModal()">Add Category</div>
+    <div class="ui basic segment">
+
+        <div class="ui positive button" onclick="openModal()">Add Category</div>
+    </div>
     <div class="ui cards">
         <% event.categories.forEach(function(category){ %>
         <div class="compact card">
@@ -89,68 +39,42 @@
 
 <script>
     selectedEvent = "<%= event._id %>";
-    $(document).ready(function () {
-        $('#newCategoryAddForm').form({
-            on: 'blur',
-            inline: true,
-            fields: {
-                category_name: {
-                    identifier: 'category_name',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: 'Cannot be empty'
-                        }
-                    ]
-                },
-                amount: {
-                    identifier: 'amount',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: 'Cannot be empty'
-                        },
-                        {
-                            type: 'integer',
-                            prompt: 'Should be a integer value'
-                        }
-                    ]
-                }
-                , group_size: {
-                    identifier: 'group_size',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: 'Cannot be empty'
-                        },
-                        {
-                            type: 'integer',
-                            prompt: 'Should be a integer value'
-                        }
-                    ]
-                }
-            }
-        });
-    });
-    function addCategory() {
-        if ($('#newCategoryAddForm').form('is valid')) {
-            var category = {
-                category_name: $('[name="category_name"]').val(),
-                group_size:$('[name="group_size"]').val(),
-                amount:$('[name="amount"]').val()
-            };
-            axios.post('/clubs/events/' + selectedEvent + '/addCategory',{data:category})
-            .then((succ)=>{
-                $('#newCategoryAddForm').form('reset');
-                $('#store').html(succ.data);
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
+    // function addCategory() {
+    //     //event.preventDefault();
+    //     console.log('Entered');
+    //     if ($('#newCategoryAddForm').form('is valid')) {
+    //         var category = {
+    //             category_name: $('[name="category_name"]').val(),
+    //             group_size:$('[name="group_size"]').val(),
+    //             amount:$('[name="amount"]').val()
+    //         };
+    //         // document.querySelector('[name="category_name"]').value = '';
+    //         // document.querySelector('[name="group_size"]').value = '';
+    //         // document.querySelector('[name="amount"]').value = '';
+    //        $('#newCategoryAddForm').form('reset');
+    //        axios.post('/clubs/events/' + selectedEvent + '/addCategory',{data:category})
+    //         .then((succ)=>{
+    //             $('#store').html(succ.data);
+    //         })
+    //         .catch((err)=>{
+    //             console.log(err);
+    //         })
             
-        }
-    }
+    //     }else 
+    //         console.log("exit");
+    // }
     function openModal() {
-        $('#newCategoryAdd').modal('show');
+        $('#mainPage').addClass('loading');
+        axios.get('/clubs/events/addCategoryModal')
+        .then((response)=>{
+            $('#store').append($.parseHTML(response.data,null,true));
+            if($('#mainPage').hasClass('loading'))
+                $('#mainPage').removeClass('loading');
+        })
+        .catch((err)=>{            
+            if ($('#mainPage').hasClass('loading'))
+                $('#mainPage').removeClass('loading');
+            console.log(err);
+        });
     }
 </script>

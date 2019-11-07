@@ -1,7 +1,14 @@
-<h3 class="ui block inverted red header">
-    All Upcoming Events
+<h3 class="ui block primary red header">
+    UPCOMING EVENTS
 </h3>
-
+<% if(events.length  == 0) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="calendar times icon"></i>
+        No Upcoming Events as of Now.
+    </div>
+</div>
+<% } else  { %>
 <div class="ui cards">
     <% events.forEach(function(event) { %>
 
@@ -57,5 +64,5 @@
 
     <%  }); %>
 </div>
-
+<% } %>
 <script src="/scripts/students/scripts/upcomingEvents.js"></script>

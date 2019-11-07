@@ -95,19 +95,19 @@ router.get('/notifications', adminAuth, function (req, res) {
         })
 });
 
-// router.post('/signup',function(req,res){
-//     Admin.create([{username:req.body.username,password:req.body.password}],function(err,doc){
-//         if(err)
-//         {
-//             console.log(err + " Occured");
-//         }
-//         else
-//         {
-//             console.log("Saved Successfully");
-//         }
-//     });
-//     res.send("Saved");
-// });
+router.post('/signup',function(req,res){
+    Admin.create([{username:req.body.username,password:req.body.password}],function(err,doc){
+        if(err)
+        {
+            console.log(err + " Occured");
+        }
+        else
+        {
+            console.log("Saved Successfully");
+        }
+    });
+    res.send("Saved");
+});
 
 router.get('/students',adminAuth,function(req,res){
     Students.find({},{password:0,secretToken:0})

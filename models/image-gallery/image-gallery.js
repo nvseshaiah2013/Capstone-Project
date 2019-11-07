@@ -13,6 +13,7 @@ const images = new mongoose.Schema({
 });
 
 const image_gallery = new mongoose.Schema({
+    _id:false,
     event_id:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,

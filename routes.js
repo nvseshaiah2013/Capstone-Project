@@ -6,6 +6,7 @@ const authAdmin =require('./middleware/adminauth');
 const studentRoutes = require('./models/students/student-routes');
 const clubRoutes = require('./models/clubs/club-routes');
 const AdminRoutes = require('./models/admin/admin-routes');
+const Payment = require('./models/payments/payment-routes');
 
 //To enable req.body parsing
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -13,6 +14,7 @@ router.use(bodyParser.json());
 router.use('/student',studentRoutes);
 router.use('/clubs',clubRoutes);
 router.use('/admins',AdminRoutes);
+router.use('/payments',Payment);
 
 //Routes
 router.get('/', function (req, res) {

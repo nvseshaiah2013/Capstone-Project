@@ -1,0 +1,19 @@
+<div class="ui small images" id="imagesgallery"></div>
+
+<%  if(imageList == null ) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="expand icon"></i>
+        No Images added by club yet for this event.
+    </div>
+</div>
+<% } else {  %>
+  <%  imageList.image_links.forEach(function(image){ %>
+    <!-- <img class="ui image" src="" onclick="this.src =Image('<%= image.image_src %>','<%= imageList.event_id %>')" alt="Image Loading... " /> -->
+    <!-- <%= image.image_src %> -->
+    <script>
+        getPic('<%= image.image_src %>','<%= imageList.event_id %>');
+    </script>
+ <%   }); %>
+
+    <% } %>

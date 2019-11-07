@@ -5,7 +5,6 @@ const category = require('./categories');
 const eventSchema = new mongoose.Schema({
     event_name:{
         type:String,
-        unique:true,
         required:true
     },
     club_id:{

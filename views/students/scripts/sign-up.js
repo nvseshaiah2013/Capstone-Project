@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $('.ui.form').form({
-        on:'blur',
+        on:'change',
         inline:true,
         fields:{
             username:{

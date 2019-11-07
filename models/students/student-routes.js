@@ -4,9 +4,14 @@ const moment = require('moment');
 const Student = require('./student');
 const Events = require('../events/event');
 const Team = require('../teams/teams');
+const Gallery = require('../image-gallery/image-gallery');
 const studentAuth = require('../../middleware/studentauth');
 const adminAuth = require('../../middleware/adminauth');
+const path = require('path');
+const fs = require('fs');
+const Club = require('../clubs/club');
 const ObjectId = require('mongoose').Types.ObjectId;
+const dateValidation = require('../../validations/dateValidation');
 
 router.get('/login', function (req, res) {
     res.render("students/Login");
@@ -14,6 +19,17 @@ router.get('/login', function (req, res) {
 
 router.get('/signup', function (req, res) {
     res.render("students/sign-up");
+});
+
+router.get('/clubs',studentAuth,function(req,res){
+    Club.find({},{password:0})
+    .then((clubs)=>{
+        return res.render("students/viewAllClubs",{clubs:clubs});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({"message":"Error Occured"});
+    });
 });
 
 router.post('/signup', function (req, res) {
@@ -55,7 +71,7 @@ router.post('/signup', function (req, res) {
                         student.save();
                     });
                     //console.log(student + " Inserted\n");
-                    res.status(200).send({ "message": "Success" });
+                    res.status(201).send({ "message": "Success" });
                 }
             }).catch(err => {
                 console.log("Error: " + err);
@@ -76,27 +92,34 @@ router.post('/dashboard', function (req, res) {
                     user.genJWT(function (err, token) {
                         if (err) console.log("Token Error: " + err);
                         else {
-                            res.render("students/dashboard", { auth: token, id: user });
+                            Student.findOneAndUpdate({ username: req.body.username }, { "$push": { activeTokens: token } }, (err, students) => {
+                                if (err) {
+                                    console.log(err);
+                                    return res.render("students/Login",{ "message": "Error Logging In" });
+                                }
+                            });
+                            return res.render("students/dashboard", { auth: token, id: user });
                         }
                     });
                 }
                 else {
-                    res.render("students/Login",{"message":"Login Failed - Wrong Username/Password"});
+                    return res.render("students/Login",{"message":"Login Failed - Wrong Username/Password"});
                 }
             });
 
         }
         else {
-            res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
+            return res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
         }
     }).catch(err => {
-        res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
+        console.log(err);
+        return res.render("students/Login", { "message": "Login Failed - Wrong Username/Password" });
     });
 });
 
 router.post('/signout',studentAuth,function(req,response){
     //console.log(tok);
-    Student.findOneAndUpdate({username:req.currentUser.username},{"$push":{expiredTokens:req.currentUser.token}},(err,res)=>{
+    Student.findOneAndUpdate({username:req.currentUser.username},{"$pull":{activeTokens:req.currentUser.token}},(err,res)=>{
         if(err)
             {
                 console.log(err);
@@ -186,7 +209,7 @@ router.post('/teams', studentAuth, function (req, res) {
 
 //Adds a new member to the team
 router.post('/teams/:id/addMember', studentAuth, function (req, res) {
-    console.log(req.body.data);
+    //console.log(req.body.data);
     const teamId = req.params.id;
     var member = {
         regn_no: req.body.data.regn_no,
@@ -278,7 +301,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
         }
         else
         {
-            Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1},(err,events)=>{
+            Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1,"reg_deadline":1},(err,events)=>{
                 if(err){
                     console.log("Error: " + err);
                     return res.status(401).send({"message":"Error Occured in Registration"});
@@ -291,8 +314,11 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
                     // console.log("teams.participants" + teams.participants.length);
                     // console.log( events.categories);
                     // res.send("Happy");
-                    if(moment(Date.now()).isAfter(events.reg_deadline))
-                        return res.status(403).send({"message":"Event Registration Deadline Over"});
+                    if(dateValidation.after(new Date(),events.reg_deadline))
+                        {
+                            //console.log("Not Over");
+                            return res.status(401).send({"message":"Event Registration Deadline Over"});
+                        }
                     if ((teams.participants.length + 1) === (events.categories[0].group_size) && !teams.events_participated.find(function (value) {
                         return value.cat_id == req.params.categoryId;
                     }))
@@ -485,6 +511,55 @@ router.get('/pastEvents',studentAuth,function(req,res){
         .catch((err) => {
             res.status(403).send({ "message": err });
         }); 
+});
+
+router.get('/images/all',studentAuth,function(req,res){
+    Events.find({isDeleted:false})
+    .then((events)=>{
+        return res.render("students/imageGallery",{events:events});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({"message":"Error Occured"});
+    });
+});
+
+router.post('/images/:eventId/getImage',studentAuth,function(req,res){
+    //console.log("enter");
+    //console.log(req.body);
+    //console.log(req.body.params);
+    Gallery.findOne({event_id:req.params.eventId,"image_links.image_src":req.body.data},{"image_links.$":1})
+    .then((images)=>{
+        if(!images)
+        {
+            return res.status(403).send({"message":"Error occured"});
+        }
+        var ext = path.extname(images.image_links[0].image_src);
+      //  console.log("Ext: " + ext);
+        fs.readFile(images.image_links[0].image_src, 'base64', (err, image) => {
+            const dataURL = 'data:image/'+ ext.toLowerCase() + ';base64, ' + image;
+            //console.log(dataURL);
+           return res.status(200).send('<img class="ui image" src="' + dataURL + '">' );
+            //return res.status(200).send( dataURL);
+
+        });
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({"message":"Error Occured"});
+    })
+});
+
+router.get('/images/:eventId/all',studentAuth,function(req,res){
+    //console.log(req.params.eventId);
+    Gallery.findOne({event_id:req.params.eventId})
+    .then((images)=>{
+        return res.render("students/studentImages",{imageList:images});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({"message":"Error Occured"});
+    });
 });
 
 
