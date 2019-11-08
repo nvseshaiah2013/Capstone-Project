@@ -1,3 +1,32 @@
+function newEventForm(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    let Data = {
+        event_name: $('[name="event_name"]').val(),
+        start_date: $('[name="start_date"]').val(),
+        end_date: $('[name="end_date"]').val(),
+        reg_deadline: $('[name="reg_date"]').val(),
+        prizes_worth: $('[name="prizes_worth"]').val(),
+        venue: $('[name="venue"]').val(),
+        misc_details: $('[name="misc_details"]').val()
+    };
+
+    axios.post('/clubs/events', { data: Data })
+        .then(suc => {
+            if ($('#mainPage').hasClass('loading')) {
+                $('#mainPage').removeClass('loading');
+            }
+            console.log(suc);
+        })
+        .catch(err => {
+            if ($('#mainPage').hasClass('loading')) {
+                $('#mainPage').removeClass('loading');
+            }
+            console.log(err.data);
+        })
+}
+
 $(document).ready(function () {
     $.fn.form.settings.rules.validDate = function(value)
     {
@@ -113,32 +142,5 @@ $(document).ready(function () {
     document.querySelector('[name="start_date"]').valueAsDate = (moment().add(2,'days')).toDate();
     document.querySelector('[name="end_date"]').valueAsDate = (moment().add(2, 'days')).toDate();
     document.querySelector('[name="reg_date"]').valueAsDate = (moment().add(1, 'days')).toDate();
-    $('#eventForm').bind('click',function(event){
-        event.preventDefault();
-        $('#mainPage').addClass('loading');
-        let Data = {
-            event_name: $('[name="event_name"]').val(),
-            start_date: $('[name="start_date"]').val(),
-            end_date: $('[name="end_date"]').val(),
-            reg_deadline:$('[name="reg_date"]').val(),
-            prizes_worth:$('[name="prizes_worth"]').val(),
-            venue:$('[name="venue"]').val(),
-            misc_details:$('[name="misc_details"]').val()
-        };
-
-        axios.post('/clubs/events',{data:Data})
-        .then(suc=>{
-           if( $('#mainPage').hasClass('loading') )
-           {
-               $('#mainPage').removeClass('loading');
-           }
-            console.log(suc);
-        })
-        .catch(err=>{
-            if ($('#mainPage').hasClass('loading')) {
-                $('#mainPage').removeClass('loading');
-            }
-            console.log(err.data);
-        })
-    });
+    $('#eventForm').bind('click',newEventForm);
 });

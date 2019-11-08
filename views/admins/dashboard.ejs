@@ -24,112 +24,111 @@
         </div>
     </div>
     <form method="GET" action="/" id="formSignOut"></form>
-    <div class="ui container">
-        <div class="ui dimmer" id="loaderItem">
-            <div class="ui medium text loader">Getting Content For You</div>
-        </div>
-        <div class="ui stackable grid">
-            <div class="four wide column">
-                <div class="ui fluid blue segment">
+    <div class="ui basic segment" id="mainPage">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <div class="four wide column">
+                    <div class="ui fluid blue segment">
 
-                    <div class="ui styled accordion">
-                        <div class="title">
-                            <i class="dropdown icon"></i>
-                            Students
-                        </div>
-                        <div class="content">
-                            <div class="transition hidden">
-                                <div class="ui link list">
-                                    <a class="item" id="viewAllStudents" href="#">
-                                        All Students
-                                    </a>
-                                    <a class="item" id="viewBatchWiseStudents" href="#">
-                                        Batch-wise Students
-                                    </a>
-                                    <a class="item" id="viewStudentProfile" href="#">
-                                        View Student Profile
-                                    </a>
-                                    <a class="item" id="addNewStudent" href="#">
-                                        Add New Student
-                                    </a>
-                                    <a class="item" id="viewAllTeams" href="#">
-                                        View Student Teams
-                                    </a>
+                        <div class="ui styled accordion">
+                            <div class="title">
+                                <i class="dropdown icon"></i>
+                                Students
+                            </div>
+                            <div class="content">
+                                <div class="transition hidden">
+                                    <div class="ui link list">
+                                        <a class="item" id="viewAllStudents" href="#">
+                                            All Students
+                                        </a>
+                                        <a class="item" id="viewBatchWiseStudents" href="#">
+                                            Batch-wise Students
+                                        </a>
+                                        <a class="item" id="viewStudentProfile" href="#">
+                                            View Student Profile
+                                        </a>
+                                        <a class="item" id="addNewStudent" href="#">
+                                            Add New Student
+                                        </a>
+                                        <a class="item" id="viewAllTeams" href="#">
+                                            View Student Teams
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="title">
-                            <i class="dropdown icon">
+                            <div class="title">
+                                <i class="dropdown icon">
 
-                            </i>
-                            Admin Profile
-                        </div>
-                        <div class="content">
-                            <div class="transition hidden">
-                                <div class="ui link list">
-                                    <a href="#" class="item" id="viewProfile">
-                                        View Profile
-                                    </a>
-                                    <a href="#" class="item" id="updatePassword">
-                                        Update Password
-                                    </a>
+                                </i>
+                                Admin Profile
+                            </div>
+                            <div class="content">
+                                <div class="transition hidden">
+                                    <div class="ui link list">
+                                        <a href="#" class="item" id="viewProfile">
+                                            View Profile
+                                        </a>
+                                        <a href="#" class="item" id="updatePassword">
+                                            Update Password
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="title">
-                            <i class="dropdown icon"></i>
-                            Clubs
-                        </div>
-                        <div class="content">
-                            <div class="transition hidden">
-                                <div class="ui link list">
-                                    <a href="#" class="item" id="viewAllClubs">
-                                        View All Clubs
-                                    </a>
-                                    <a href="#" class="item" id="newClub">
-                                        Add New Club
-                                    </a>
-                                </div>
-
+                            <div class="title">
+                                <i class="dropdown icon"></i>
+                                Clubs
                             </div>
-                        </div>
-                        <div class="title">
-                            <i class="dropdown icon"></i>
-                            Events
-                        </div>
-                        <div class="content">
-                            <div class="transition hidden">
-                                <div class="ui link list">
-                                    <a href="#" class="item" id="viewAllEvents">
-                                        View All Events
-                                    </a>
-                                    <a href="#" class="item" id="newClub">
-                                        Add New Club
-                                    </a>
-                                    <a href="#" class="item" id="viewAllEventCertificates">
-                                        Issued Certificates
-                                    </a>
+                            <div class="content">
+                                <div class="transition hidden">
+                                    <div class="ui link list">
+                                        <a href="#" class="item" id="viewAllClubs">
+                                            View All Clubs
+                                        </a>
+                                        <a href="#" class="item" id="newClub">
+                                            Add New Club
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="title">
+                                <i class="dropdown icon"></i>
+                                Events
+                            </div>
+                            <div class="content">
+                                <div class="transition hidden">
+                                    <div class="ui link list">
+                                        <a href="#" class="item" id="viewAllEvents">
+                                            View All Events
+                                        </a>
+                                        <a href="#" class="item" id="newClub">
+                                            Add New Club
+                                        </a>
+                                        <a href="#" class="item" id="viewAllEventCertificates">
+                                            Issued Certificates
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="ten wide column">
-                <div class="ui basic segment" id="store">
+                <div class="ten wide column">
+                    <div class="ui basic segment" id="store">
 
+                    </div>
                 </div>
             </div>
+
         </div>
-
-        <% if(auth) { %>
-        <script>
-            localStorage.setItem('__colors__', "<%- auth %>");
-            axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
-
-        </script>
-        <% } %>
     </div>
+    <% if(auth) { %>
+    <script>
+        localStorage.setItem('__colors__', "<%- auth %>");
+        axios.defaults.headers.common['Authorization'] = "Bearer " + "<%- auth %> ";
+
+    </script>
+    <% } %>
 
     <script src="/scripts/admins/scripts/dashboard.js"></script>
 

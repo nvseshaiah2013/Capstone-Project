@@ -301,7 +301,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
         }
         else
         {
-            Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1,"reg_deadline":1},(err,events)=>{
+            Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1,"reg_deadline":1,"event_name":1},(err,events)=>{
                 if(err){
                     console.log("Error: " + err);
                     return res.status(401).send({"message":"Error Occured in Registration"});
@@ -324,13 +324,26 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
                     }))
                     {
                        //console.log( );
-                        teams.events_participated.push({cat_id:req.params.categoryId,"payments.status":"Not Paid"});
+                        teams.events_participated.push({cat_id:req.params.categoryId});
                         teams.save((err,succ)=>{
                             if(err){
                                 console.log("Save error" + err);
                             }
                             else{
-                                console.log(succ);
+                                // console.log(succ);
+                                let registrationNos = [teams.owner_name.regn_no];
+                                for(var i=0;i<teams.participants.length;++i)
+                                {
+                                    registrationNos.push(teams.participants[i].regn_no);
+                                }
+                                let notification = {
+                                    heading:"Event Registered",
+                                    text: "Event Name: " + events.event_name + "\nCategory Name: " + events.categories[0].category_name
+                                }
+                                Student.updateMany({regn_no:{$in:registrationNos}},{"$push":{notifications:notification}})
+                                .catch((err)=>{
+                                    console.log(err);
+                                })
                                 return res.status(200).send({"message":"Successfully Registered"});
                             }
                         });

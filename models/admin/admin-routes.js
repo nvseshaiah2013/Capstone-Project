@@ -14,7 +14,7 @@ router.get('/login',function(req,res){
 
 router.post('/signout', adminAuth, function (req, response) {
     //console.log(tok);
-    Admin.findOneAndUpdate({ _id: req.currentUser._id }, { "$push": { expiredTokens: req.currentUser.token } }, (err, res) => {
+    Admin.findOneAndUpdate({ _id: req.currentUser._id }, { "$pull": { activeTokens: req.currentUser.token } }, (err, res) => {
         if (err) {
             console.log(err);
             return response.status(403).send({ "message": "Error Logging Out" });
@@ -40,16 +40,21 @@ router.post('/dashboard',function(req,res){
                         admin.genJWT(function(err,token){
                             if (err) console.log("Token Error: " + err);
                             else {
-                                res.render("admins/dashboard", { auth: token, id: admin });
+                                Admin.findOneAndUpdate({username:req.body.username},{"$push":{activeTokens:token}})
+                                .catch((err)=>{
+                                    return res.status(401).send({ "message": "Login Failed Try Again", "error": err });
+                                });
+                                return res.render("admins/dashboard", { auth: token, id: admin });
                             }
                         });
                     }
-                    else res.status(403).send({"message":"Unauthorized"});
+                    else 
+                        return res.status(401).send({"message":"Unauthorized"});
                 }
             })
         }
     }).catch(err=>{
-        res.status(401).send({ "message": "Unauthorized","error":err });
+        return res.status(401).send({ "message": "Unauthorized","error":err });
     })
 });
 

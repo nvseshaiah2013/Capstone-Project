@@ -181,7 +181,7 @@ router.get('/login',function(req,res){
 
 router.post('/signout', clubAuth, function (req, response) {
     //console.log(tok);
-    Club.findOneAndUpdate({ _id: req.currentUser._id }, { "$push": { expiredTokens: req.currentUser.token } }, (err, res) => {
+    Club.findOneAndUpdate({ _id: req.currentUser._id }, { "$pull": { activeTokens: req.currentUser.token } }, (err, res) => {
         if (err) {
             console.log(err);
             return response.status(403).send({ "message": "Error Logging Out" });
@@ -202,12 +202,21 @@ router.post('/login',function(req,res){
                 if(err) throw err;
                 if(result){
                     succ.genJWT(function(err,token){
-                        if(err) res.send("Some Problem Occured");
-                        else res.status(200).render("clubs/dashboard",{auth:token,club:succ});
+                        if(err) 
+                            return res.status(401).send("Some Problem Occured");
+                        else 
+                            {
+                                Club.findOneAndDelete({username:req.body.username},{"$push":{activeTokens:token}})
+                                .catch((err)=>{
+                                    console.log(err);
+                                    return res.status(401).json({ "message": "Unauthorized" });
+                                });
+                                return res.status(200).render("clubs/dashboard",{auth:token,club:succ});
+                            }
                     });
                 }
                 else{
-                    res.status(401).json({"message":"Unauthorized"});
+                    return res.status(401).json({"message":"Unauthorized"});
                 }
             });
         }

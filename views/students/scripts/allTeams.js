@@ -36,6 +36,35 @@ function markFinal(teamId){
     });
 }
 
+function addTeamForm(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+
+    if ($('#new_team_name').val()) {
+        axios.post('/student/teams', { data: { "team_name": $('#new_team_name').val() } })
+            .then(succ => {
+                console.log(succ.data);
+                $('#mainPage').removeClass('loading');
+            })
+            .catch(fail => {
+                console.log(fail.data);
+                $('#mainPage').removeClass('loading');
+            });
+    }
+    document.querySelector('#new_team_name').remove();
+    axios.get('/student/teams').then(result => {
+        $('#store').html(result.data);
+        if ($('#mainPage').hasClass('loading')) {
+            $('#mainPage').removeClass('loading');
+        }
+    }).catch(err => {
+        console.log(err);
+        if ($('#mainPage').hasClass('loading')) {
+            $('#mainPage').removeClass('loading');
+        }
+    });
+}
 
 $(document).ready(function () {
     $('#createTeam').bind('click', function (evt) {
@@ -51,31 +80,5 @@ $(document).ready(function () {
                 ;
         })
         ;
-    $('#okTeam').bind('click', function (evt) {
-        $('#mainPage').addClass('loading');
-
-        if ($('#new_team_name').val()) {
-            axios.post('/student/teams', { data: { "team_name": $('#new_team_name').val() } })
-                .then(succ => {
-                    console.log(succ.data);
-                    $('#mainPage').removeClass('loading');
-                })
-                .catch(fail => {
-                    console.log(fail.data);
-                    $('#mainPage').removeClass('loading');
-                });
-        }
-        document.querySelector('#new_team_name').remove();
-        axios.get('/student/teams').then(result => {
-            $('#store').html(result.data);
-            if ($('#mainPage').hasClass('loading')) {
-                $('#mainPage').removeClass('loading');
-            }
-        }).catch(err => {
-            console.log(err);
-            if ($('#mainPage').hasClass('loading')) {
-                $('#mainPage').removeClass('loading');
-            }
-        });
-    });
+    $('#okTeam').on('click',addTeamForm);
 });

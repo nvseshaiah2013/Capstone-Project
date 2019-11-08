@@ -1,3 +1,30 @@
+function newClubForm(event)
+{
+    event.preventDefault();
+    console.log(this);
+    if ($('.ui.form').form('is valid')) {
+        $('#store').addClass('loading');
+        let Data = {
+            club_name: $('input[name="club_name"]').val(),
+            found_date: $('input[name="found_date"]').val(),
+            password: $('input[name="password"]').val(),
+            ceo: $('input[name="ceo"]').val(),
+            username: $('input[name="username"]').val(),
+            address: $('#address').val(),
+        }
+        axios.post('/clubs/add',
+            { data: Data })
+            .then((succ) => {
+                //console.log("Success" + succ);
+                $('#store').removeClass('loading');
+            })
+            .catch((fail) => {
+                console.log(fail);
+                $('#store').removeClass('loading');
+            });
+        // console.log("Valid");
+    }
+}
 
 $(document).ready(function () {
     document.querySelector('[name="found_date"]').valueAsDate = moment().toDate();
@@ -85,32 +112,5 @@ $(document).ready(function () {
             }
         }
     });
-
-    $('#newClubButton').on('click',function(event){
-        event.preventDefault();
-         console.log(this);
-        if($('.ui.form').form('is valid'))
-        {
-            $('#store').addClass('loading');
-            let Data = {
-                club_name: $('input[name="club_name"]').val(),
-                found_date: $('input[name="found_date"]').val(),
-                password: $('input[name="password"]').val(),
-                ceo: $('input[name="ceo"]').val(),
-                username: $('input[name="username"]').val(),
-                address: $('#address').val(),
-            }
-            axios.post('/clubs/add',
-            {data:Data})
-            .then((succ)=>{
-                //console.log("Success" + succ);
-                $('#store').removeClass('loading');
-            })
-            .catch((fail)=>{
-                console.log(fail);
-                $('#store').removeClass('loading');
-            });
-           // console.log("Valid");
-        }
-    });
+    $('#newClubButton').on('click',newClubForm);
 });

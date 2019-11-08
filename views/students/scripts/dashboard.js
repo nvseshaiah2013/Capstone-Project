@@ -153,6 +153,21 @@ function getPic(imageLink, eventId) {
         });
 }
 
+function studentSignOut(evt)
+{
+    evt.preventDefault();
+    $('#loaderItem').addClass('active');
+    axios.post('/student/signout')
+        .then((response) => {
+            delete axios.defaults.headers.common['Authorization'];
+            localStorage.removeItem('__colors__');
+            $('#formSignOut').submit();
+        })
+        .catch((error) => {
+            $('#formSignOut').submit();
+        });
+}
+
 $(document)
     .ready(function () {
         $('.ui.dropdown').dropdown();
@@ -163,19 +178,7 @@ $(document)
         $('#liveEvents').on('click',getLiveEvents);
         $('#upcomingEvents').on('click',getUpcomingEvents);
         $('#viewImageGallery').on('click',imageGallery);
-        $('#student_signOut').on('click',function(evt){
-            evt.preventDefault();
-            $('#loaderItem').addClass('active');
-            axios.post('/student/signout')
-            .then((response)=>{
-                delete axios.defaults.headers.common['Authorization'];
-                localStorage.removeItem('__colors__');
-                $('#formSignOut').submit();
-            })
-            .catch((error)=>{
-                $('#formSignOut').submit();
-            });            
-        });
+        $('#student_signOut').on('click',studentSignOut);
     });
 
 var selectedCategory;
