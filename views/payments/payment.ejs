@@ -1,0 +1,74 @@
+<% include ../partials/header %>
+
+<div class="ui container">
+    <div class="ui stackable grid">
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="five column row">
+            <div class="two wide column">
+
+            </div>
+            <div class="two wide column">
+
+            </div>
+            <div class="eight wide column">
+                <% if(payment.STATUS == 'TXN_SUCCESS') { %>
+                <div class="ui placeholder segment">
+                    <div class="ui block green header">
+                        Payment Success
+                    </div>
+                    <div class="ui icon header">
+                        <i class="thumbs up outline icon"></i>
+                        <%= payment.RESPMSG %>
+                    </div>
+                    <button class="ui active negative button">
+                        <i class="home icon"></i>
+                        Go Home
+                    </button>
+                </div>
+                <% } else if(payment.STATUS == 'TXN_FAILURE') { %>
+                    <div class="ui placeholder segment">
+                        <div class="ui block red header">
+                            Payment Failure
+                        </div>
+                        <div class="ui icon header">
+                            <i class="thumbs down outline icon"></i>
+                            <%= payment.RESPMSG %>
+                        </div>
+                        <button class="ui active negative button">
+                            <i class="home icon"></i>
+                            Go Home
+                        </button>
+                    </div>
+                <% } else { %>
+                    <div class="ui placeholder segment">
+                        <div class="ui block blue header">
+                            Payment Pending
+                        </div>
+                        <div class="ui icon header">
+                            <i class="exclamation icon"></i>
+                            <%= payment.RESPMSG %>
+                        </div>
+                    <button class="ui active negative button">
+                        <i class="home icon"></i>
+                        Go Home
+                    </button>
+                    </div>
+                <% } %>
+            </div>
+            <div class="two wide column">
+
+            </div>
+            <div class="two wide column">
+
+            </div>
+        </div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+    </div>
+
+</div>
+
+<% include ../partials/footer %>

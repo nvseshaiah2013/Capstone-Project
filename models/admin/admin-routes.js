@@ -5,6 +5,7 @@ const Events = require('../events/event');
 const Students = require('../students/student');
 const Clubs = require('../clubs/club');
 const Teams = require('../teams/teams');
+const Payment = require('../payments/payment');
 const adminAuth = require('../../middleware/adminauth');
 
 

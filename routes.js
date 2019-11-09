@@ -17,6 +17,10 @@ router.use('/admins',AdminRoutes);
 router.use('/payments',Payment);
 
 //Routes
+
+router.get('/paymentPage',function(req,res){
+    res.render('sample');
+})
 router.get('/', function (req, res) {
     res.redirect('/landing'); 
 });
