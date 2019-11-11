@@ -19,6 +19,11 @@ const events = new mongoose.Schema({
         index:true,
         required:true
     },
+    event_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        index:true,
+        required:true
+    },
     isDeleted:{
         type:Boolean,
         default:false
@@ -26,6 +31,10 @@ const events = new mongoose.Schema({
     isRefunded:{
         type:Boolean,
         default:false
+    },
+    payment_status:{
+        type:String,
+        default:'Not Paid'
     }
 });
 

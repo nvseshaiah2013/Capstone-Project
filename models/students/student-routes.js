@@ -5,8 +5,9 @@ const Student = require('./student');
 const Events = require('../events/event');
 const Team = require('../teams/teams');
 const Gallery = require('../image-gallery/image-gallery');
+const VideoGallery = require('../video-gallery/video-gallery');
+const Feedback = require('../feedback/feedback');
 const studentAuth = require('../../middleware/studentauth');
-const adminAuth = require('../../middleware/adminauth');
 const path = require('path');
 const fs = require('fs');
 const Club = require('../clubs/club');
@@ -297,7 +298,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
         if(!teams)
         {
             console.log("No Team Found!");
-            return res.statusCode(401).send({"message":"Team Id is wrong or you are not owner of the Team"});
+            return res.status(401).send({"message":"Team Id is wrong or you are not owner of the Team"});
         }
         else
         {
@@ -324,7 +325,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
                     }))
                     {
                        //console.log( );
-                        teams.events_participated.push({cat_id:req.params.categoryId});
+                        teams.events_participated.push({cat_id:req.params.categoryId,event_id:events._id});
                         teams.save((err,succ)=>{
                             if(err){
                                 console.log("Save error" + err);
@@ -338,7 +339,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
                                 }
                                 let notification = {
                                     heading:"Event Registered",
-                                    text: "Event Name: " + events.event_name + "\nCategory Name: " + events.categories[0].category_name
+                                    text: events.event_name + "/"+events.categories[0].category_name
                                 }
                                 Student.updateMany({regn_no:{$in:registrationNos}},{"$push":{notifications:notification}})
                                 .catch((err)=>{
@@ -361,7 +362,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
 });
 
 router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
-    Event.findOne({"categories.cat_id":req.params.categoryId},{"categories.$":1})
+    Event.findOne({"categories.cat_id":req.params.categoryId},{"categories.$":1,"reg_deadline":1})
     .then((event)=>{
         if(event)
         {
@@ -372,7 +373,7 @@ router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
                         let index = team.events_participated.findIndex(function (value) {
                             return value.cat_id == req.params.categoryId;
                         });
-                        if (team.events_participated[index].payments.status === 'Not Paid') {
+                        if (team.events_participated[index].payment_status === 'Not Paid') {
                             team.events_participated.splice(index, 1);
                             team.save((err, success) => {
                                 if (!err)
@@ -388,6 +389,7 @@ router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
                     }
                 })
                 .catch((err) => {
+                    console.log(err);
                     return res.status(403).send({ "message": "Deregistration Unsuccessful" });
                 });
             else
@@ -400,6 +402,7 @@ router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
         }
     })
     .catch((err)=>{
+        console.log(err);
         return res.status(403).send({"message":"No Such Event"})
     });
 });
@@ -490,6 +493,7 @@ router.get('/:eventId/details',studentAuth,function(req,res){
     });
 });
 
+
 router.get('/upcomingEvents',studentAuth,function(req,res){
     let today = moment(new Date()).format('YYYY-MM-DD');
     today = today + "T00:00:00.000Z";
@@ -526,8 +530,32 @@ router.get('/pastEvents',studentAuth,function(req,res){
         }); 
 });
 
+router.get('/profile',studentAuth,function(req,res){
+    Student
+    .aggregate([
+        {
+            "$match":{regn_no:req.currentUser.regn_no}
+        },
+        {
+            "$lookup":{
+                from:'teams',
+                localField:'myTeams',
+                foreignField:'_id',
+                as:'owned_teams'
+
+            }
+        }
+    ])
+    .exec(function(err,result){
+        if(err)
+            return res.status(401).send({"message":err});
+        else
+            return res.render("students/profile",{profile:result});
+    })
+}); 
+
 router.get('/images/all',studentAuth,function(req,res){
-    Events.find({isDeleted:false})
+    Events.find({})
     .then((events)=>{
         return res.render("students/imageGallery",{events:events});
     })
@@ -550,9 +578,11 @@ router.post('/images/:eventId/getImage',studentAuth,function(req,res){
         var ext = path.extname(images.image_links[0].image_src);
       //  console.log("Ext: " + ext);
         fs.readFile(images.image_links[0].image_src, 'base64', (err, image) => {
-            const dataURL = 'data:image/'+ ext.toLowerCase() + ';base64, ' + image;
+            const dataURL = '<div class="card"><div class="image"><img src="data:image/' + ext.toLowerCase().split('.')[1] + ';base64, ' + image
+                + '" alt="Image Loading" ></div><div class="content"><a class="header">' + images.image_links[0].caption + "</a></div></div>";
+
             //console.log(dataURL);
-           return res.status(200).send('<img class="ui image" src="' + dataURL + '">' );
+           return res.status(200).send(dataURL);
             //return res.status(200).send( dataURL);
 
         });

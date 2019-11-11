@@ -1,0 +1,64 @@
+<% if(events.length  == 0) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="camera retro icon"></i>
+        No Event Images added Yet.
+    </div>
+</div>
+<% } else  { %>
+<div class="ui segment">
+    <div class="ui stackable grid">
+
+        <div class="five wide column">
+            <select class="ui fluid search selection dropdown" id="getGallery">
+                <div class="default text">Select Event </div>
+
+                <% events.forEach(function(event){ %>
+                <option value='<%= event._id %>'> <%= event.event_name %></option>
+                <% }); %>
+
+            </select>
+        </div>
+        <div class="seven wide column">
+
+        </div>
+        <div class="four wide column">
+
+            <button type="button" class="ui basic teal button" onclick="getImages()">Get Event Images</button>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<div class="ui basic segment" id="allImages">
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.ui.dropdown').dropdown();
+    });
+    function getImages() {
+        //event.preventDefault();
+        $('#store').addClass('loading');
+        //console.log(event.value);
+        console.log($('#getGallery').val());
+        if ($('#getGallery').val())
+            axios.get('/clubs/images/' + $('#getGallery').val() + '/all')
+                .then((response) => {
+                    if ($('#store').hasClass('loading')) {
+                        $('#store').removeClass('loading');
+                    }
+                    $('#allImages').html(response.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    if ($('#store').hasClass('loading')) {
+                        $('#store').removeClass('loading');
+                    }
+                });
+        if ($('#store').hasClass('loading')) {
+            $('#store').removeClass('loading');
+        }
+    }
+</script>

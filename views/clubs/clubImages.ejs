@@ -1,0 +1,106 @@
+<div class="ui cards" id="imagesgallery"></div>
+
+<%  if(imageList == null ) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="expand icon"></i>
+        No Images added by club yet for this event.
+    </div>
+</div>
+<% } else {  %>
+   
+
+        <%  imageList.image_links.forEach(function(image){ %>
+                       <script>
+                getPic('<%= image.image_src %>', '<%= imageList.event_id %>');
+                </script>
+<%   }); %>
+
+<% } %>
+
+<div class="ui raised segment">
+    <div class="ui styled accordion">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            Add Image
+        </div>
+        <div class="active content">
+            <form class="ui form" method="POST" id="addImageForm" enctype="multipart/form-data">
+                <div class="fields">
+                    <div class="required field">
+                        <label>
+                            Image Source
+                        </label>
+                        <input type="file" name="imageData" />
+                    </div>
+                    <div class="required field">
+                        <label>
+                            Image Caption
+                        </label>
+                        <input type="text" name="caption" placeholder="Enter Caption" />
+                    </div>
+                </div>
+                <button type="submit" class="ui positive button" id="addImageButton">Add Image</button>
+                <button type="reset" class="ui secondary button">Reset</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+
+    function addImage(evt) {
+        evt.preventDefault();
+        $('#mainPage').addClass('loading');
+        //axios.post('/clubs/')
+       
+        if($('.ui.form').form('is valid')){
+             let obj = new FormData();
+            obj.append('imageData', document.getElementsByName('imageData')[0].files[0]);
+            obj.append('caption', document.getElementsByName('caption')[0].value);
+            axios.post('/clubs/images/' + $('#getGallery').val() + '/addImage',obj,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            })
+            .then((response)=>{
+                console.log(response.data);
+            })
+            .catch((err)=>{
+                console.log(err.data);
+            })
+        }
+        $('#mainPage').removeClass('loading');
+    }
+
+    $(document).ready(function(){
+        $('#addImageButton').on('click',addImage);
+        $('.ui.form').form({
+            on:'blur',
+            inline:true,
+            fields:{
+                imageData:{
+                    identifier:'imageData',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'Upload the file please'
+                        }
+                    ]
+                },
+                caption:{
+                    identifier:'caption',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'Enter caption please'
+                        }
+                    ]
+                }
+            }
+        });
+    });
+
+</script>

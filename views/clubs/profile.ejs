@@ -1,0 +1,126 @@
+<div class="ui container">
+    <div class="ui piled segment">
+        <h4 class="ui block header">
+            CLUB PROFILE
+        </h4>
+        <div class="ui segments">
+            <div class="ui top attached segment">
+                <h5 class="ui block header secondary">
+                    Basic Details
+                </h5>
+                <div class="ui relaxed divided list">
+                    <div class="item">
+                        <i class="large id card outline middle aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Name Of the Club</a>
+                            <div class="description"> <%= profile.name %> </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="large id card aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Username of the Club</a>
+                            <div class="description"><%= profile.username %> </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="large calendar check aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Registration Date</a>
+                            <div class="description"><%= profile.reg_date.toLocaleDateString() %></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui attached segment">
+                <h5 class="ui block header secondary">
+                    Contact Details
+                </h5>
+                <div class="ui relaxed divided list">
+                    <div class="item">
+                        <i class="large address book outline aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Address</a>
+                            <div class="description"> <%= profile.contact.address %> </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="large phone aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Mobile Nos</a>
+                            <div class="ui very relaxed horizontal list">
+                                <% profile.contact.phone_no.forEach(function(phone){ %>
+                                <div class="item">                                
+                                    <div class="content">
+                                        <a class="header"><%= phone %> </a>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="large id badge aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Email Ids</a>
+                            <div class="ui very relaxed horizontal list">
+                                <% profile.contact.email_id.forEach(function(email){ %>
+                                <div class="item">
+                                    <div class="content">
+                                        <a class="header"><%= email %> </a>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui bottom attached segment">
+                <h5 class="ui block header secondary">
+                    Other Details
+                </h5>
+                <div class="ui relaxed divided list">
+                    <div class="item">
+                        <i class="large calendar plus aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Foundation Date</a>
+                            <div class="description"> <%= profile.desc.found_date.toLocaleDateString() %> </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="large github middle aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Founders</a>
+                            <div class="ui very relaxed horizontal list">
+                                <% profile.desc.founders.forEach(function(founder){ %>
+                                <div class="item">
+                                    <div class="content">
+                                        <a class="header"><%= founder %> </a>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="large github middle aligned icon"></i>
+                        <div class="content">
+                            <a class="header">Member</a>
+                            <div class="ui very relaxed horizontal list">
+                                <% profile.desc.members.forEach(function(member){ %>
+                                <div class="item">
+                                    <div class="content">
+                                        <a class="header">Name: <%= member.name %> </a>
+                                        <div class="summary">Designation: <%= member.designation %></div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

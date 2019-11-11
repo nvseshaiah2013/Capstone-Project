@@ -129,6 +129,12 @@ function paymentStatus(req, res) {
                 //console.log(paymentObj.cat_iD);
                 Payment.create(paymentObj)
                     .then(response => {
+                        if(response.RESPMSG == '01')
+                        Team.findOneAndUpdate({_id:req.params.teamId,"events_participated.cat_id":req.params.catId},
+                        {"$set":{"events_participated.payment_status":"Paid"}})
+                        .catch((err)=>{
+                            console.log(err);
+                        })
                         return res.redirect('/payments/pay/paymentStatus/?orderId=' + paymentObj.ORDERID);
                     })
                     .catch(err => {

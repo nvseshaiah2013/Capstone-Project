@@ -16,6 +16,16 @@
 
                 </div>
                 <div class="six wide column" >
+                    <% if(typeof message != 'undefined') { %>
+                        <div class="ui error message">
+                            <div class="ui header">
+                                Error Message
+                            </div>
+                            <p>
+                                <%= message %>
+                            </p>
+                        </div>
+                    <% } %>    
 
                     <div class="ui raised segment teal">
                         <form class="ui form large" method="POST" action="/clubs/login" id="logIn">
@@ -47,23 +57,7 @@
                                 Log In
                             </button>
                             <br />
-                            <div class="three column row">
-                                <div class="five wide column">
-                                    <h5 class="ui header blue right floated">
-                                        New Club ? Request Credentials
-                                    </h5>
-                                </div>
-                                <div class="two wide column">
-
-                                </div>
-                                <br />
-                                <div class="eight wide column">
-                                    <button type="button" class="ui button olive fluid" id="signUp">
-                                        Sign Up !
-                                    </button>
-
-                                </div>
-                            </div>
+                            <div class="row"></div>
                         </form>
                     </div>
                 </div>

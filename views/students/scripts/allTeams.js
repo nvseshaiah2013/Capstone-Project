@@ -64,6 +64,9 @@ function addTeamForm(evt)
             $('#mainPage').removeClass('loading');
         }
     });
+    if ($('#mainPage').hasClass('loading')) {
+        $('#mainPage').removeClass('loading');
+    }
 }
 
 $(document).ready(function () {

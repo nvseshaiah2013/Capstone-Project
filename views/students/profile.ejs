@@ -1,0 +1,74 @@
+<div class="ui piled segment">
+    <div class="ui block header">
+        Student Profile
+    </div>
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui piled segment">
+                <a class="ui red ribbon label">Name</a>
+                <span><%= profile[0].name %></span>
+                <p></p>
+                <a class="ui blue ribbon label">Username</a> 
+                    <span>
+                        <%= profile[0].username %>
+                    </span>
+                <p></p>
+                <a class="ui teal ribbon label">Registration No.</a>
+                <span>
+                    <%= profile[0].regn_no %>
+                </span>
+                <p></p>
+                
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui piled segment">
+                <a class="ui orange ribbon label">Secret Token</a>
+                <span>
+                    <%= profile[0].secretToken %>
+                </span>
+                <p></p>
+                <a class="ui teal ribbon label">Student Created On: </a>
+                <span>
+                   <%= profile[0].reg_date.toLocaleDateString() %>
+                </span>
+                <p></p>
+                <a class="ui olive ribbon label">No. Of Owned Teams</a>
+                <span>
+                    <%= profile[0].owned_teams.length %>
+                </span>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="ui segment">
+                <div class="ui block header">
+                    Owned Teams
+                </div>
+                <div class="ui cards">
+                <% profile[0].owned_teams.forEach(function(team){ %>
+                    <div class="card">
+                        <div class="ui top attached label">
+                            <%= team.team_name %>
+                        </div>
+                        <div class="ui segment">
+                            <h5 class="ui header">
+
+                                Participants: <%= team.participants.length %>
+                            </h5>
+                            <h5 class="ui header">
+                            
+                                No. Of Events: <%= team.events_participated.length %>
+                            </h5>
+                            <h5 class="ui header">
+                            
+                                Issued Certificates: <%= team.certificates.length %>
+                            </h5>
+                        </div>
+                    </div>
+                <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

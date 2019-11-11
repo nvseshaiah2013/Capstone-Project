@@ -5,7 +5,7 @@
     <div class="ui menu blue inverted large">
         <div class="ui container">
             <a class="item header" href="#">
-                LPU Colors
+                LPU COLORS
             </a>
             <a class="active item" href="#">Home</a>
             <div class="right menu">
@@ -19,9 +19,6 @@
     </div>
     <form method="GET" action="/" id="formSignOut"></form>
     <div class="ui basic segment" id="mainPage">
-        <div class="ui dimmer" id="loaderItem">
-            <div class="ui medium text loader">Getting Content For You</div>
-        </div>
         <div class="ui container">
             <div class="ui stackable grid">
                 <div class="two column row">
@@ -47,7 +44,7 @@
 
                                         <%= phone %>
                                     </a>
-                                    <%   }) %>
+                                    <%   }); %>
                                 </div>
                             </div>
 
@@ -70,6 +67,12 @@
                                                 <a href="#" class="item" id="eventImages">
                                                     Image Gallery
                                                 </a>
+                                                <a href="#" class="item" id="eventVideos">
+                                                    Video Gallery
+                                                </a>
+                                                <a href="#" class="item" id="announceWinner">
+                                                    Announce Winner
+                                                </a>
                                                 </div>
                                         </div>
                                     </div>
@@ -77,17 +80,20 @@
                                         <i class="icon dropdown">
 
                                         </i>
-                                        Club Profile
+                                        Profile
                                     </div>
                                     <div class="content">
                                         <div class="transition hidden">
                                             <div class="ui link list">
-                                                <a href="#" class="item">
-                                                    View Profile
+                                                <a href="#" class="item" id="myClubProfile">
+                                                    Our Profile
                                                 </a>
                                                 
                                                 <a href="#" class="item">
-                                                    View Members
+                                                    Our Members
+                                                </a>
+                                                <a href="#" class="item">
+                                                    Change Password
                                                 </a>
                                             </div>
                                         </div>
@@ -101,11 +107,35 @@
                                     <div class="content">
                                         <div class="transition hidden">
                                             <div class="ui link list">
-                                                <a href="#" class="item">
+                                                <a href="#" class="item" id="viewIssuedCerts">
                                                     Issued Certificates
                                                 </a>
-                                                <a href="#" class="item">
-                                                    Current Registered Teams
+                                                <a href="#" class="item" id="viewRegisteredTeams">
+                                                    Registered Teams
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="title">
+                                        <i class="icon dropdown">
+                                    
+                                        </i>
+                                        Payments
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item" id="viewAllTransactions">
+                                                    All Transactions
+                                                </a>
+                                                <a href="#" class="item" id="viewAllSuccess">
+                                                    Successful Transactions
+                                                </a>
+                                                <a href="#" class="item" id="viewAllFailed">
+                                                    Failed Transactions
+                                                </a>
+                                                <a href="#" class="item" id="viewAllPending">
+                                                    Pending Transactions
                                                 </a>
                                             </div>
                                         </div>

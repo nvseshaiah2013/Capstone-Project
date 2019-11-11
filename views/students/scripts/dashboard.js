@@ -168,6 +168,20 @@ function studentSignOut(evt)
         });
 }
 
+function myProfile(evt)
+{
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/student/profile')
+    .then((response)=>{
+        $('#store').html(response.data);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+    $('#store').removeClass('loading');
+}
+
 $(document)
     .ready(function () {
         $('.ui.dropdown').dropdown();
@@ -179,6 +193,7 @@ $(document)
         $('#upcomingEvents').on('click',getUpcomingEvents);
         $('#viewImageGallery').on('click',imageGallery);
         $('#student_signOut').on('click',studentSignOut);
+        $('#profile').on('click',myProfile);
     });
 
 var selectedCategory;

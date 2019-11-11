@@ -16,30 +16,15 @@
                 <div class="item ui dropdown"><i class="icon bell"></i>Notifications <i class="ui dropdown icon"></i>
 
                     <div class="menu">
+                        <% id.notifications.forEach(function(notification){ %>
+                        
                         <a class="item">
-                            <div class="header">Item 1</div>
-                            <div class="text">description of Item</div>
+                            <%= notification.heading %>
+                            <br/>
+                            <%= notification.text %>
                         </a>
                         <div class="ui section divider"></div>
-                        <a class="item">
-                            <div class="header">Item 1</div>
-                            <div class="text">description of Item</div>
-                        </a>
-                        <div class="ui section divider"></div>
-                        <a class="item">
-                            <div class="header">Item 1</div>
-                            <div class="text">description of Item</div>
-                        </a>
-                        <div class="ui section divider"></div>
-                        <a class="item">
-                            <div class="header">Item 1</div>
-                            <div class="text">description of Item</div>
-                        </a>
-                        <div class="ui section divider"></div>
-                        <a class="item">
-                            <div class="header">Item 1</div>
-                            <div class="text">description of Item</div>
-                        </a>
+                        <% }); %>
                     </div>
 
 
@@ -111,7 +96,7 @@
                                         <div class="transition hidden">
                                             <div class="ui link list">
                                                 <a href="#" class="item" id="profile">
-                                                    View Profile
+                                                    My Profile
                                                 </a>
                                                 <a href="#" class="item" id="certificates">
                                                     My Certificates
@@ -132,19 +117,48 @@
                                                 <a href="#" class="item" id="allClubs">
                                                     View All Clubs
                                                 </a>
+                                                <a href="#" class="item" id="createPersonalEvent">
+                                                    Host My Event
+                                                </a>
                                             </div>
 
                                         </div>
                                     </div>
                                     <div class="title">
                                         <i class="dropdown icon"></i>
-                                        Image Gallery
+                                        Gallery
                                     </div>
                                     <div class="content">
                                         <div class="transition hidden">
                                             <div class="ui link list">
                                                 <a href="#" class="item" id="viewImageGallery">
-                                                    Gallery
+                                                    Image Gallery
+                                                </a>
+                                                <a href="#" class="item" id="viewVideoGallery">
+                                                    Video Gallery
+                                                </a>
+                                            </div>
+                                    
+                                        </div>
+                                    </div>
+                                    <div class="title">
+                                        <i class="dropdown icon"></i>
+                                        Payments
+                                    </div>
+                                    <div class="content">
+                                        <div class="transition hidden">
+                                            <div class="ui link list">
+                                                <a href="#" class="item" id="viewAllTransactions">
+                                                    All Transactions
+                                                </a>
+                                                <a href="#" class="item" id="viewSuccessTransactions">
+                                                    Successful Transactions
+                                                </a>
+                                                <a href="#" class="item" id="viewFailedTransactions">
+                                                    Failed Transactions
+                                                </a>
+                                                <a href="#" class="item" id="viewPendingTransactions">
+                                                    Pending Transactions
                                                 </a>
                                             </div>
                                     

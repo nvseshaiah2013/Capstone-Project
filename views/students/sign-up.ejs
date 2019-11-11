@@ -16,19 +16,23 @@
                 </div>
                 <div class="six wide column">
                     <div class="ui success hidden message" id="sucMess">
+                        <i class="icon close"></i>
                         <div class="header">
-                            Form Submitted Successfully
+                            Form Submission Success
                         </div>
                         <p>
                             You are now registered Go to Login To Continue
-                        </p>
+                        </p>                    
                     </div>
                     <div class="ui error hidden message" id="failMess">
+                        <i class="icon close"></i>
                         <div class="header">
                             Form Submission Failed
-                        </div>
+                        </div>                   
+                        <p>
+                            You credentials might be invalid.
+                        </p>
                     </div>
-
                     <div class="ui raised segment green" id="signUpPage">
 
                         <form class="ui form" method="POST" action="/student/signup" autocomplete="off">

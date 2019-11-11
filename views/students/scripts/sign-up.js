@@ -108,23 +108,24 @@ $(document).ready(function(){
             axios.post('/student/signup',{data:formData}).then(succ=>{
                 //console.log(succ);
                 f.form('reset');
-                $('#signUpPage').removeClass('loading');
-                $('#sucMess').toggleClass('hidden');
-                setTimeout(function(){
-                    $('#sucMess').toggleClass('hidden');
-                },2500);
+                $('#sucMess').removeClass('hidden');
                 //console.log("Reached");
             }).catch(fail=>{
                 //console.log(fail.response.data);
                 f.form('reset');
                 $('#failMess').append('<p> ' + fail.response.data.message + '</p>');
-                $('#failMess').toggleClass('hidden');
-                setTimeout(function () {
-                    $('#failMess').toggleClass('hidden');
-                }, 2500);
+                $('#failMess').removeClass('hidden');
             })
         }
-
+        $('#signUpPage').removeClass('loading');
     });
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+                ;
+        })
+        ;
 
 });
