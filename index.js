@@ -27,7 +27,7 @@ secureServer.listen(app.get('secPort'), () => {
     console.log('Server listening on port ', app.get('secPort'));
 });
 
-secureServer.on('error', () => { console.log("Error Starting secure server") });
+secureServer.on('error', (err) => { console.log(err) });
 secureServer.on('listening', ()=>{console.log("Server Started")});
 
 app.all('*', (req, res, next) => {

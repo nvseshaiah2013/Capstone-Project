@@ -13,6 +13,21 @@ router.get('/login',function(req,res){
     res.render("admins/login");
 });
 
+router.post('/query',function(req,res){
+    let data = {
+        name:req.body.name,
+        email:req.body.email,
+        feedback:req.body.feedback
+    }
+    Admin.findOneAndUpdate({},{$push:{contactRequests:data}})
+    .then((suc)=>{
+        return res.redirect('/landing')
+    })
+    .catch(err=>{
+        return res.status(401).redirect('/landing');
+    });
+});
+
 router.post('/signout', adminAuth, function (req, response) {
     //console.log(tok);
     Admin.findOneAndUpdate({ _id: req.currentUser._id }, { "$pull": { activeTokens: req.currentUser.token } }, (err, res) => {

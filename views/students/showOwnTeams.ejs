@@ -1,4 +1,15 @@
 
+<% function isRegistered(events_participated) {
+    let i;
+    let len = events_participated.length;
+    for(i=0; i<len; ++i)
+    {
+        if(selectCat == events_participated[i].cat_id)
+            return true;
+    }
+    return false;
+ } %>
+
 <% if(teams.length > 0 ) { %>
 <div class="ui attached segment">
     <h3 class="ui header">
@@ -17,10 +28,17 @@
                     <% }); %>
                 </div>
             </div>
+            <% if (isRegistered( team.events_participated )) { %>
+                <div class="ui bottom attached negative button" onclick="deregisterForEvent('<%= team._id %>')">
+                    <i class="minus icon"></i>
+                        Deregister
+                </div>
+            <% } else { %>
             <div class="ui bottom attached positive button" onclick="registerForEvent('<%= team._id %>')">
                 <i class="add icon"></i>
                 Register
             </div>
+            <% } %>
         </div>
      <% }); %>   
     </div>
@@ -38,6 +56,9 @@
 
 <script>
     function registerForEvent(teamId){
+        $('#mainPage').addClass('loading');
+        console.log("t"+teamId);
+        console.log(selectedCategory);
         if(teamId && selectedCategory)
         {
             axios.post('/student/' + selectedCategory +'/register/' + teamId)
@@ -45,11 +66,26 @@
                 console.log(succ.data);
             })
             .catch((fail)=>{
-                console.log(fail);
+                console.log(fail.data);
             });
         }
         else console.log("failed");
-
+        $('#mainPage').removeClass('loading');
+    }
+    function deregisterForEvent(teamId)
+    {
+        $('#mainPage').addClass('loading');
+        if (teamId && selectedCategory) {
+            axios.post('/student/' + selectedCategory + '/deregister/' + teamId)
+                .then((succ) => {
+                    console.log(succ.data);
+                })
+                .catch((fail) => {
+                    console.log(fail);
+                });
+        }
+        else console.log("failed");
+        $('#mainPage').removeClass('loading');
     }
     $('#createNewTeam').on('click',getTeams);
 </script>

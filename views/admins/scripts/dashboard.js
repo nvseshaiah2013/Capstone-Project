@@ -28,9 +28,6 @@ function adminSignOut(event)
         });
 }
 
-function init() {
-    $('#store').html("<h1><b>Hello World</b></h1>");
-}
 
 $(document).ready(function(){
     $('#newClub').on('click',clubNew);

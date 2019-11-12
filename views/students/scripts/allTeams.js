@@ -27,13 +27,12 @@ function markFinal(teamId){
    $('#mainPage').addClass('loading');
     axios.post('/student/teams/' + teamId + '/markFinal')
     .then((succ)=>{
-        $('#mainPage').removeClass('loading');
         console.log("Axios Data: " + succ.data);
     })
-    .catch((fail)=>{
-        $('#mainPage').removeClass('loading');
+    .catch((fail)=>{       
         console.log("Failed: " + fail.data);
     });
+    $('#mainPage').removeClass('loading');
 }
 
 function addTeamForm(evt)
@@ -67,6 +66,22 @@ function addTeamForm(evt)
     if ($('#mainPage').hasClass('loading')) {
         $('#mainPage').removeClass('loading');
     }
+}
+
+function getMyParticipation(teamId)
+{
+    selectedTeam = teamId;
+    $('#mainPage').addClass('loading');
+    //console.log(teamId);
+    axios.get('/student/' + teamId + '/participation')
+    .then((response)=>{
+        $('#store').html(response.data);
+    })
+    .catch((reject)=>{
+
+    });
+    $('#mainPage').removeClass('loading');
+
 }
 
 $(document).ready(function () {

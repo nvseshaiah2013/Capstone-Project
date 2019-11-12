@@ -2,8 +2,9 @@
     <div class="ui block header">
         Student Profile
     </div>
-    <div class="ui two column grid">
-        <div class="column">
+    <div class="ui stackable grid">
+    <div class="ui three column grid">
+        <div class="seven wide column">
             <div class="ui piled segment">
                 <a class="ui red ribbon label">Name</a>
                 <span><%= profile[0].name %></span>
@@ -21,7 +22,7 @@
                 
             </div>
         </div>
-        <div class="column">
+        <div class="seven wide column">
             <div class="ui piled segment">
                 <a class="ui orange ribbon label">Secret Token</a>
                 <span>
@@ -53,15 +54,12 @@
                         </div>
                         <div class="ui segment">
                             <h5 class="ui header">
-
                                 Participants: <%= team.participants.length %>
                             </h5>
-                            <h5 class="ui header">
-                            
+                            <h5 class="ui header">                            
                                 No. Of Events: <%= team.events_participated.length %>
                             </h5>
-                            <h5 class="ui header">
-                            
+                            <h5 class="ui header">                            
                                 Issued Certificates: <%= team.certificates.length %>
                             </h5>
                         </div>
@@ -70,5 +68,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>

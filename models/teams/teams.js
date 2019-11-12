@@ -28,10 +28,6 @@ const events = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    isRefunded:{
-        type:Boolean,
-        default:false
-    },
     payment_status:{
         type:String,
         default:'Not Paid'

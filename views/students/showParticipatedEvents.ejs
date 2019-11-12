@@ -1,0 +1,76 @@
+<% function findDetail(Event,events){
+    let i = events.findIndex(function(val){
+        return (val._id).toString() == (Event.event_id).toString();
+    });
+    var j=-1; 
+    if(i!=-1)
+    {
+       j = events[i].categories.findIndex(function(val){
+            return (Event.cat_id).toString() == (val._id).toString();
+       });
+    }
+    if(i!=-1 && j!=-1)
+    return events[i].event_name + '^' + events[i].categories[j].category_name + '^' + events[i].categories[j].group_size + '^' + events[i].categories[j].amount; 
+} %>
+
+<% if(events_participated.length == 0) { %>
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="camera retro icon"></i>
+            No Event participation yet.
+        </div>
+    </div>
+<% } else { %>
+
+<div class="ui cards">
+    <% events_participated.forEach(function(event){ %>
+    <div class="compact card">
+    <div class="content">
+        <% findDetail(event,events).split('^').forEach(function(value,index) { %>
+           <% if(index == 0){ %>
+            
+                <div class="ui top red attached label">
+                   Event Name:  <%= value %>
+                </div>
+           <% } else if(index == 1) { %>
+                <div class="header">
+                    Category name: <%= value %>
+                </div>
+            <% } else if(index == 2) { %>
+                <div class="meta">
+                 Group Size:  <%= value %>
+                </div>
+            <% } else if(index == 3) { %>
+                <div class="description">
+                   Amount:  <%= value %>
+                </div>
+           <% } %>
+        <% }); %>   
+    </div> 
+        <div class="extra content">
+                    <% if(event.payment_status == 'Not Paid'){ %>
+                    <div class="ui basic green button" onclick="Pay('<%= event.cat_id %>')">
+                        Pay
+                    </div>
+                    <% } else { %>
+                    <div class="ui bottom attached label">
+                        Paid
+                    </div>
+                    <% } %>
+                </div>
+    </div>
+    <% }); %>
+   
+</div>
+<% } %>
+<form name="pay" method="POST">
+
+</form>
+
+<script>
+    function Pay(catId)
+    {
+        document.getElementsByName('pay')[0].action = '/payments/pay/' + selectedTeam + '/' + catId;
+        document.getElementsByName('pay')[0].submit();
+    }
+</script>

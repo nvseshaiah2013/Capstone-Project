@@ -15,6 +15,7 @@ const path = require('path');
 const fs = require('fs');
 const ObjectId = require('mongoose').Types.ObjectId;
 const dateValidate = require('../../validations/dateValidation');
+const video_parser = require('../../utility/youtube_parser');
 
 
 const makeCertificate = require('../../utility/makeCertificate');
@@ -522,6 +523,71 @@ router.get('/images/galleryPage', clubAuth, function (req, res) {
             console.log(err);
             return res.status(500).send({ "message": "Some Error Occured" });
         })
+});
+
+router.get('/videos/galleryPage',clubAuth,function(req,res){
+    Event.find({ club_id: req.currentUser._id }, { _id: 1, event_name: 1 })
+        .then((events) => {
+            return res.render("clubs/clubVideoGallery", { events: events });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send({ "message": "Some Error Occured" });
+        })
+});
+
+router.get('/videos/:eventId/all', clubAuth, function (req, res) {
+    Event.findOne({ _id: req.params.eventId, club_id: req.currentUser._id }, { video_links: 1 })
+        .then((docs) => {
+            if (!docs) {
+                return res.status(403).send({ "message": "Error Occured" });
+            }
+            else {
+                VideoGallery.findOne({ event_id: req.params.eventId })
+                    .then((videos) => {
+                        return res.status(200).render("clubs/clubVideos", { videoList: videos });
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                        return res.status(500).send({ "message": "error" });
+                    })
+            }
+        }).catch((err) => {
+            return res.status(404).send({ "message": "error" });
+        })
+});
+
+router.post('/videos/:eventId/addVideo', clubAuth, function (req, res) {
+    // console.log(req);
+    Event.findOne({ _id: req.params.eventId, club_id: req.currentUser._id })
+        .then((docs) => {
+            if (!docs) {
+                return res.status(403).send({ "message": "No Such Event Exist" });
+            }
+            else {
+                // console.log(req.body);
+                // console.log(req.body.data);
+                var val = video_parser(req.body.videoData);
+                if(val){
+                    let obj = { video_src: val, caption: req.body.caption };
+                    VideoGallery.findOneAndUpdate({ event_id: req.params.eventId }, { "$push": { video_links: obj } }, { upsert: true, new: true })
+                    .then((result) => {
+                        return res.status(200).send({ "message": "Video url Uploaded Successfully" });
+                    })
+                    .catch((err => {
+                        return res.status(403).send({ "message": err });
+                    }));
+                }
+                else
+                {
+                    return res.status(403).send({ "message": "Invalid URL" });
+                }
+            }
+        })
+    
+        .catch((err) => {
+            return res.status(403).send({ "message": err });
+        });
 });
 
 module.exports = router;

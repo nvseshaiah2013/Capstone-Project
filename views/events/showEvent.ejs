@@ -1,3 +1,12 @@
+<% function isSameBefore(reg_deadline){
+    
+    let today = new Date();
+    today.setHours(0,0,0,0);
+    let thatDay = new Date(reg_deadline);
+    thatDay.setHours(0,0,0,0);
+    return (today <= thatDay);
+} %>
+
 <div class="ui fluid container">
     <div class="ui segments">
 
@@ -35,9 +44,13 @@
                                 Participation Fee: <%= category.amount %>
                             </div>
                         </div>
+                        
+                            <% if( isSameBefore( event.reg_deadline ) ){ %>
                         <div class="extra content">                            
                                 <div class="ui basic green button" onclick="showTeams('<%= category._id %>')">Show My Teams</div>                                 
                         </div>
+                   <% } %>
+                
                     </div>
                 <% }); %>
             </div>

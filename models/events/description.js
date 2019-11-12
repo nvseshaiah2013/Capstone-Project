@@ -9,7 +9,7 @@ const description = new mongoose.Schema({
     },
     misc_details:{
         type:String,
-        default:"Event is going to be very nice"
+        default:"Multiple team registrations are not allowed if anyone does, all the team members will be disqualified."
     },
     prizes_worth:{
         type:Number,

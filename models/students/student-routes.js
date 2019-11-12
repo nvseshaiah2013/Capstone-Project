@@ -33,6 +33,30 @@ router.get('/clubs',studentAuth,function(req,res){
     });
 });
 
+router.get('/clubs/eventsOrganised/:clubId',studentAuth,function(req,res){
+    Events.find({club_id:req.params.clubId})
+    .then((events)=>{
+        return res.status(200).render("students/clubOrgEvents",{events:events});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(500).send({"message":"Some Error Occured"});
+    })
+});
+
+
+router.get('/clubs/:clubId',studentAuth,function(req,res){
+    Club.findOne({_id:req.params.clubId},{password:0})
+    .then((club)=>{
+        return res.status(200).render("clubs/profile",{profile:club});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(401).send({"message":err});
+    })
+});
+
+
 router.post('/signup', function (req, res) {
     // console.log(req.body.data.username);
 
@@ -290,6 +314,7 @@ router.post('/teams/:id/markFinal',studentAuth,function(req,res){
 
 //Event Registration through Team
 router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
+    //console.log("entered");
     Team.findOne({_id:req.params.teamId,isFinal:true,"owner_name.regn_no":req.currentUser.regn_no},(err,teams)=>{
         if(err) {
             console.log("Error:" + err);
@@ -315,6 +340,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
                     // console.log("teams.participants" + teams.participants.length);
                     // console.log( events.categories);
                     // res.send("Happy");
+                   // console.log(events.reg_deadline);
                     if(dateValidation.after(new Date(),events.reg_deadline))
                         {
                             //console.log("Not Over");
@@ -362,7 +388,7 @@ router.post('/:categoryId/register/:teamId',studentAuth,function(req,res){
 });
 
 router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
-    Event.findOne({"categories.cat_id":req.params.categoryId},{"categories.$":1,"reg_deadline":1})
+    Events.findOne({"categories._id":req.params.categoryId},{"categories.$":1,"reg_deadline":1})
     .then((event)=>{
         if(event)
         {
@@ -373,6 +399,10 @@ router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
                         let index = team.events_participated.findIndex(function (value) {
                             return value.cat_id == req.params.categoryId;
                         });
+                        if(index == -1)
+                        {
+                            return res.status(403).send({ "message": "Unauthorized Request or You are Not registered" });
+                        }
                         if (team.events_participated[index].payment_status === 'Not Paid') {
                             team.events_participated.splice(index, 1);
                             team.save((err, success) => {
@@ -381,11 +411,11 @@ router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
                             });
                         }
                         else {
-                            res.status(403).send({ "message": "You cannot deregister as you have already paid" });
+                           return res.status(403).send({ "message": "You cannot deregister as you have already paid" });
                         }
                     }
                     else {
-                        res.status(403).send({ "message": "Unauthorized Request or You are Not registered" });
+                        return res.status(403).send({ "message": "Unauthorized Request or You are Not registered" });
                     }
                 })
                 .catch((err) => {
@@ -398,7 +428,7 @@ router.post('/:categoryId/deregister/:teamId', studentAuth,function (req, res) {
         }
         else
         {
-            return res.status(200).send({"message":"No such category"});
+            return res.status(401).send({"message":"No such category"});
         }
     })
     .catch((err)=>{
@@ -425,7 +455,8 @@ router.get('/:categoryId/Ownedteams',studentAuth,function(req,res){
                 return res.status(401).send({"message":"Error Occured"});
             }
             // console.log("\nTeams:" + teams);
-            res.render("students/showOwnTeams",{teams:teams});
+            return res.render("students/showOwnTeams",{teams:teams,selectCat:req.params.categoryId});
+                // return res.send({ teams: teams });
         });
     }
     });
@@ -477,9 +508,52 @@ router.get('/:teamId/participation',studentAuth,function(req,res){
         }
         else
         {
-            return res.status(200).send({events:result})
+            return res.status(200).render("students/showParticipatedEvents",{events:result[0].participation,events_participated:result[0].events_participated})
         }
     });
+    // Team.findOne({_id:req.params.teamId},{team_name:1,events_participated:1})
+    // .then((response)=>{
+    //     if(!response)
+    //     {
+    //         return res.status(401).send({"message":"Not participated in any such event"});
+    //     }
+    //     else{
+    //         let obj = [];
+    //         for(var i=0;i<response.events_participated.length;++i)
+    //         {
+    //             obj.push(response.events_participated[i].cat_id);
+    //         }
+    //         Events.find({"categories._id":{"$in":obj}},{"categories.$":1,event_name:1})
+    //         .then((events)=>{
+    //             for(var j=0;j<events.length;++j)
+    //             {
+    //                 var temp = response.events_participated.find(function(value){
+    //                     console.log(value.cat_id + '-' + events[j].categories[0]._id);
+    //                     return value._id != events[j].categories[0]._id;
+    //                 });
+    //                 if(!temp)
+    //                 {
+    //                     console.log(temp);
+    //                 }
+    //                 else
+    //                 {
+    //                     //console.log(temp);
+    //                     events[j].payment_status = temp.payment_status;
+    //                 }
+    //             }
+    //             return res.status(200).send(events);
+    //         })
+    //         .catch((err)=>{
+    //             console.log(err);
+    //             return res.status(500).send({"message":err});
+    //         })
+    //     }
+
+    // })
+    // .catch((err)=>{
+    //     console.log(err);
+    //     return res.status(500).send({"message":err});
+    // });
 });
 
 
@@ -603,6 +677,39 @@ router.get('/images/:eventId/all',studentAuth,function(req,res){
         console.log(err);
         return res.status(403).send({"message":"Error Occured"});
     });
+});
+
+router.get('/videos/galleryPage',studentAuth,function(req,res){
+    Events.find({},{_id:1,event_name:1})
+    .then((events)=>{
+        return res.render("students/studentVideoGallery", { events: events });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send({ "message": "Some Error Occured" });
+        })
+});
+
+
+router.get('/videos/:eventId/all', studentAuth, function (req, res) {
+    Events.findOne({ _id: req.params.eventId}, { video_links: 1 })
+        .then((docs) => {
+            if (!docs) {
+                return res.status(403).send({ "message": "Error Occured" });
+            }
+            else {
+                VideoGallery.findOne({ event_id: req.params.eventId })
+                    .then((videos) => {
+                        return res.status(200).render("students/studentVideos", { videoList: videos });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        return res.status(500).send({ "message": "error" });
+                    })
+            }
+        }).catch((err) => {
+            return res.status(404).send({ "message": "error" });
+        })
 });
 
 

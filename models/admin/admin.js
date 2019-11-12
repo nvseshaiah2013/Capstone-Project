@@ -20,6 +20,12 @@ const notification = new mongoose.Schema({
     }
 });
 
+const contactRequest = new mongoose.Schema({
+    name:String,
+    email:String,
+    feedback:String
+});
+
 const adminSchema = new mongoose.Schema({
     username:{
         type:String,
@@ -30,7 +36,8 @@ const adminSchema = new mongoose.Schema({
         required:true
     },
     notifications:[notification],
-    expiredTokens:[String]
+    expiredTokens:[String],
+    contactRequests:[contactRequest]
 });
 
 adminSchema.pre('save',function(next){

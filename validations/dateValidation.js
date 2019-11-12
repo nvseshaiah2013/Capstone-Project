@@ -15,7 +15,7 @@ module.exports = {
         // console.log("Date 2: " + date2);
         // console.log("Date 1: " + moment(date1, 'YYYY-MM-DD'));
         // console.log("Date 2: " + moment(date2, 'YYYY-MM-DD'));
-        return (moment(date1,'YYYY-MM-DD')).isAfter(moment(date2,'YYYY-MM-DD'));
+        return (moment(date1,'YYYY-MM-DD')).isAfter(moment(date2,'YYYY-MM-DD').add(1,'days'));
     },
     sameBefore:function(date1, date2)
     {

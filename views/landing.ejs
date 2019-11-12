@@ -13,7 +13,6 @@
             padding: 1em 0em;
             background-image:url('assets/images/banner.jpg') !important;
             background-size:cover !important;
-            filter:brightness(80%);
         }
 
 
@@ -26,15 +25,15 @@
         }
 
         .masthead h1.ui.header {
-            margin-top: 3em;
+            margin-top: 1.5em;
             margin-bottom: 0em;
-            font-size: 4em;
-            font-weight: normal;
+            font-size: 4.1em;
+            font-weight: bolder;
         }
 
         .masthead h2 {
             font-size: 1.7em;
-            font-weight: normal;
+            font-weight: bolder;
         }
 
         .ui.vertical.stripe {
@@ -155,7 +154,7 @@
     <!-- Following Menu -->
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
-            <a class="active item">LPU Colors</a>
+            <a class="active item" href="#mast">LPU Colors</a>
             <a class="item" href="#about">About</a>
             <a class="item" href="#contact">Contact</a>
             <div class="right menu">
@@ -171,7 +170,7 @@
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-        <a class="active item">LPU Colors</a>
+        <a class="active item" href="#mast">LPU Colors</a>
         <a class="item" href="#about">About</a>
         <a class="item" href="#contact">Contact</a>
         <a class="item" href="/student/login">Student Log In</a>
@@ -181,30 +180,30 @@
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment bann">
-
+        <div class="ui inverted vertical masthead center aligned segment bann" id="mast">
             <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
                     <a class="toc item">
                         <i class="sidebar icon"></i>
                     </a>
-                    <a class="active item">LPU Colors</a>
-                    <a class="item" href="#about" id="black">About</a>
-                    <a class="item" href="#contact">Contact</a>
+                    
+                    <a class="item"><img src="/assets/images/logo5.png" class="ui medium image" /></a>
+                    <a class="item header" href="#about">About</a>
+                    <a class="item header" href="#contact">Contact</a>
                     <div class="right item">
-                        <a class="ui button teal" href="/student/login">Student Log In</a>
-                        <a class="ui inverted button olive" href="/clubs/login">Club Log In</a>
+                        <a class="ui button red" href="/student/login">Student Log In</a>
+                        <a class="ui button black" href="/clubs/login">Club Log In</a>
                     </div>
                 </div>
             </div>
-
+           <br>
             <div class="ui text container">
                 <h1 class="ui inverted header">
                     Showcase Your Talent!
                 </h1>
-                <h2>Participate. Win. Celebrate. Repeat. <i class="bullhorn icon"></i></h2> 
+                <h2 class="ui inverted header">Participate. Win. Celebrate. Repeat. <i class="bullhorn icon"></i></h2> 
                 <br/>
-                <a href="/student/login" class="ui huge primary button"> Participate! <i class="right arrow icon"></i></a>
+                <a href="/student/login" class="ui massive primary button"> Participate! <i class="right arrow icon"></i></a>
             </div>
 
         </div>
@@ -275,23 +274,65 @@
                <h3 class="ui header">
                 Get into Touch With Us
                </h3>
-            <form class="ui form">
-                <div class="field">
+            <form class="ui form" method="POST" action="/admins/query">
+                <div class="required field">
                     <label>Name</label>
                     <input type="text" name="name" placeholder="Name">
                 </div>
-                <div class="field">
+                <div class=" required field">
                     <label>Email Id</label>
                     <input type="email" name="email" placeholder="Email Id">
                 </div>
-                <div class="field">
-                    <div class="ui checkbox">
-                        <input type="checkbox" tabindex="0" class="hidden" name="check" id="check">
-                        <label>Subsribe to News letter</label>
-                    </div>
+                <div class="required field">
+                    <label>Query/Feedback</label>
+                    <textarea name="feedback" cols="30" rows="3" placeholder="Enter Feedback/Query"></textarea>
                 </div>
-                <button class="ui button" type="submit">Submit</button>
+               
+                <button class="ui positive button" type="submit">Submit</button>
+                <button class="ui negative button" type="reset">Reset</button>
             </form>
             </div>
         </div>
+<script>
+    $(document).ready(function(){
+        $('.ui.form').form({
+            on:'change',
+            inline:true,
+            fields:{
+                name:{
+                    identifier:'name',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'Name not provided'
+                        }
+                    ]
+                }
+                ,
+                email:{
+                    identifier:'email',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'Email is required'
+                        }
+                        ,{
+                            type:'email',
+                            prompt:'Email is not valid'
+                        }
+                    ]
+                }
+                ,
+                feedback:{
+                    identifier:'feedback',
+                    rules:[
+                        {
+                            type:'empty'
+                        }
+                    ]
+                }
+            }
+        });
+    });
+</script>
 <% include partials/footer %>

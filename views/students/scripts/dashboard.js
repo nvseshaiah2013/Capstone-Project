@@ -77,6 +77,19 @@ function imageGallery(event)
     });
 }
 
+function getVideoGallery(evt) {
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/student/videos/galleryPage')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#mainPage').removeClass('loading');
+}
+
 function getLiveEvents(event)
 {
     event.preventDefault();
@@ -194,6 +207,8 @@ $(document)
         $('#viewImageGallery').on('click',imageGallery);
         $('#student_signOut').on('click',studentSignOut);
         $('#profile').on('click',myProfile);
+        $('#viewVideoGallery').on('click',getVideoGallery);
+        $('#myProfile').on('click',myProfile);
     });
 
 var selectedCategory;

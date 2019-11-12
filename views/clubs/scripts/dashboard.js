@@ -81,6 +81,20 @@ function getImageGallery(evt)
     $('#mainPage').removeClass('loading');
 }
 
+function getVideoGallery(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/videos/galleryPage')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#mainPage').removeClass('loading');
+}
+
 window.onload = getOurEvents;
 $(document).ready(function () {    
     $('.ui.accordion').accordion();
@@ -89,6 +103,7 @@ $(document).ready(function () {
     $('#ourEvents').on('click',getOurEvents);
     $('#myClubProfile').on('click',getProfile);
     $('#eventImages').on('click',getImageGallery);
+    $('#eventVideos').on('click', getVideoGallery);
 });
 
 var selectedEvent;

@@ -1,0 +1,27 @@
+<%  if(videoList == null ) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="expand icon"></i>
+        No Videos added by club yet for this event.
+    </div>
+</div>
+<% } else {  %>
+
+<div class="ui segment fluid" id="videos">
+    <%  videoList.video_links.forEach(function(video){ %>
+    <div class="ui attached segment">
+        <div class="ui block header tertiary">
+            <%= video.caption %>
+        </div>
+        <iframe width="100%" height="320" name="Videos" frameborder="0"
+            src="https://www.youtube.com/embed/<%= video.video_src %>"
+            allow="accelerometer; autoplay;encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+
+    </div>
+
+    <%   }); %>
+</div>
+
+<% } %>
+</div>

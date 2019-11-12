@@ -46,7 +46,7 @@ const clubSchema = new mongoose.Schema({
         default:Date.now()
     },
     notifications:[notification],
-    expiredTokens:[String]
+    activeTokens:[String]
 });
 
 

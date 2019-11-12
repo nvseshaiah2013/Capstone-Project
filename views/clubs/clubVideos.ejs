@@ -1,0 +1,113 @@
+<%  if(videoList == null ) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="expand icon"></i>
+        No Videos added by club yet for this event.
+    </div>
+</div>
+<% } else {  %>
+
+<div class="ui segment fluid" id="videos">
+<%  videoList.video_links.forEach(function(video){ %>
+    <div class="ui attached segment">
+        <div class="ui block header tertiary">
+            <%= video.caption %>
+        </div>
+        <iframe width="100%" height="320" name="Videos" frameborder="0" src="https://www.youtube.com/embed/<%= video.video_src %>" allow="accelerometer; autoplay;encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+                
+    </div>
+   
+<%   }); %>
+</div>
+
+<% } %>
+
+<div class="ui raised segment">
+    <div class="ui styled accordion">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            Add Video
+        </div>
+        <div class="active content">
+            <form class="ui form" method="POST" id="addVideoForm">
+                <div class="fields">
+                    <div class="required field">
+                        <label>
+                            Video URL
+                        </label>
+                        <input type="url" name="videoData" placeholder="Enter Video Url" />
+                    </div>
+                    <div class="required field">
+                        <label>
+                            Video Caption
+                        </label>
+                        <input type="text" name="caption" placeholder="Enter Caption" />
+                    </div>
+                </div>
+                <button type="submit" class="ui positive button" id="addVideoButton">Add Video</button>
+                <button type="reset" class="ui secondary button">Reset</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+
+    function addVideo(evt) {
+        evt.preventDefault();
+        $('#mainPage').addClass('loading');
+        //axios.post('/clubs/')
+
+        if ($('.ui.form').form('is valid')) {
+            let obj = {
+                videoData:document.getElementsByName('videoData')[0].value,
+                caption:document.getElementsByName('caption')[0].value,
+            };
+            axios.post('/clubs/videos/' + $('#getGallery').val() + '/addVideo', obj)
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((err) => {
+                    console.log(err.data);
+                })
+        }
+        $('#mainPage').removeClass('loading');
+    }
+
+    $(document).ready(function () {
+        $('#addVideoButton').on('click', addVideo);
+        $('.ui.form').form({
+            on: 'blur',
+            inline: true,
+            fields: {
+                imageData: {
+                    identifier: 'videoData',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Enter the url please'
+                        },
+                        {
+                            type:'url',
+                            prompt:'Invalid URL'
+                        }
+                    ]
+                },
+                caption: {
+                    identifier: 'caption',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Enter caption please'
+                        }
+                    ]
+                }
+            }
+        });
+    });
+
+</script>
+

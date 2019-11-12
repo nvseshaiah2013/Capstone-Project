@@ -129,9 +129,15 @@ function paymentStatus(req, res) {
                 //console.log(paymentObj.cat_iD);
                 Payment.create(paymentObj)
                     .then(response => {
-                        if(response.RESPMSG == '01')
+                        // console.log("Team Id:" + req.params.teamId);
+                        // console.log("Cat Id:" + req.params.catId);
+                        // console.log(response.RESPMSG);
+                        if(paymentObj.RESPCODE == "01")
                         Team.findOneAndUpdate({_id:req.params.teamId,"events_participated.cat_id":req.params.catId},
-                        {"$set":{"events_participated.payment_status":"Paid"}})
+                        {"$set":{"events_participated.$.payment_status":"Paid"}},{new:true})
+                        .then((success)=>{
+                            console.log(success);
+                        })
                         .catch((err)=>{
                             console.log(err);
                         })

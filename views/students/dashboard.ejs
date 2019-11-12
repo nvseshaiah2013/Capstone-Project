@@ -7,12 +7,12 @@
 </head>
 
 <body>
-    <div class="ui menu red top large inverted">
-        <div class="ui container">
-            <a class="item header" href="#">LPU Colors </a>
+    <div class="ui container">
+    <div class="ui menu blue top large inverted">
+            <a class="item" href="#"><img class="ui small image" src="/assets/images/logo5.png" /> </a>
             <a class="item active"><i class="home icon"></i> Home </a>
             <div class="right menu">
-                <a class="item"><i class="user outline icon"></i> Hi <%= id.name.split(' ')[0] %></a>
+                <a class="item" href="#" id="myProfile"><i class="user outline icon"></i> Hi <%= id.name.split(' ')[0] %></a>
                 <div class="item ui dropdown"><i class="icon bell"></i>Notifications <i class="ui dropdown icon"></i>
 
                     <div class="menu">
@@ -82,6 +82,9 @@
                                                 </a>
                                                 <a class="item" id="liveEvents" href="#">
                                                     Live Events
+                                                </a>
+                                                <a class="item" id="myFeedback" href="#">
+                                                    Feedbacks
                                                 </a>
                                             </div>
                                         </div>
@@ -182,6 +185,10 @@
             </div>
 
         </div>
+    </div>
+    <div class="ui tiny modal" id="messageModal">
+        
+
     </div>
     <% if(auth) { %>
     <script>

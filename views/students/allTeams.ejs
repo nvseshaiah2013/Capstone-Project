@@ -132,7 +132,7 @@
                 <% } %>
                 <% if(own.isFinal) { %>
                 <div class="inline">
-                    <button class="ui button olive inline">Show Participated Events</button>
+                    <button class="ui button olive inline" onclick="getMyParticipation('<%= own._id %>')">Show Participated Events</button>
                 </div>
                 <% } else { %>
                 <div>
