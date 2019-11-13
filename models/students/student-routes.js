@@ -18,6 +18,73 @@ router.get('/login', function (req, res) {
     res.render("students/Login");
 });
 
+router.post('/goBack',function(req,res){
+    console.log(req.headers);
+    req.headers.authorization = 'Bearer ' + req.body.token;
+    console.log(req.body);
+    console.log(req.headers);
+    res.redirect('/student/dashboard');
+});
+
+router.post('/giveFeedback',studentAuth,function(req,res){
+    console.log(req.body);
+    let obj = req.body;
+    obj.regn_no = req.currentUser.regn_no;
+    let data = new Feedback(obj);
+    Feedback.create(data)
+    .then((response)=>{
+       return  res.send("Created");
+    })
+    .catch(err=>{
+        console.log(err);
+        return res.status(500).send({"message":"Not Created"});
+    })
+});
+
+router.get('/viewFeedback',studentAuth,function(req,res){
+    Feedback.find({regn_no:req.currentUser.regn_no})
+    .then((response)=>{
+        return res.render("students/viewFeedback",{feeds:response})
+    }).catch(err=>{
+        console.log(err);
+        return res.status(500).send({"message":err});
+    });
+});
+
+router.get('/clubRatings/:clubId',studentAuth,function(req,res){
+    Feedback.aggregate([
+        {
+            "$lookup":{
+               from:'events',
+               localField:'event_id',
+               foreignField:'_id',
+               as:'response' 
+            }
+        },
+        {
+            "$match":{
+                'response.club_id':ObjectId(req.params.clubId)
+            }
+        }
+       
+    ]).exec(function(err,result){
+        if(err)
+            return res.status(500).send(err);
+        return res.render("students/viewClubRatings",{ratings:result});
+    });
+});
+
+router.get('/dashboard',studentAuth,function(req,res){
+    Student.findOne({username:req.currentUser.username},{password:0})
+    .then((user)=>{
+        return res.render("students/dashboard",{auth:req.currentUser.token,id:user});
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(403).send({"message":err});
+    })
+})
+
 router.get('/signup', function (req, res) {
     res.render("students/sign-up");
 });
@@ -26,6 +93,7 @@ router.get('/clubs',studentAuth,function(req,res){
     Club.find({},{password:0})
     .then((clubs)=>{
         return res.render("students/viewAllClubs",{clubs:clubs});
+        return res.send(clubs);
     })
     .catch((err)=>{
         console.log(err);
@@ -41,6 +109,22 @@ router.get('/clubs/eventsOrganised/:clubId',studentAuth,function(req,res){
     .catch((err)=>{
         console.log(err);
         return res.status(500).send({"message":"Some Error Occured"});
+    })
+});
+
+router.get('/whichEvent/:catId',studentAuth,function(req,res){
+    Events.findOne({"categories._id":req.params.catId},{"categories.$":1,event_name:1})
+    .then((response)=>{
+        if(!response)
+            return res.status(500).send({ "message": "not found" });
+        let arr = [];
+        arr.push(response.event_name);
+        arr.push(response.categories[0].category_name);
+        return res.send(arr);
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(500).send({"message":err});
     })
 });
 
@@ -192,6 +276,23 @@ router.get('/teams', studentAuth, function (req, res) {
 
         });
 
+});
+
+router.get('/myTeams',studentAuth,function(req,res){
+    var teams = [];
+    Team.find({ "$or": [{ "owner_name.regn_no": req.currentUser.regn_no, isDeleted: false },
+     { "participants.regn_no": req.currentUser.regn_no}] }, { team_name:1 })
+        .then((docs) => {
+            // console.log(docs);
+            teams = [...docs];           
+                return res.render("students/myTeams", { allTeams: teams });
+                //return res.send(teams);
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(401).send({ "message": "Failed to Team Details" });
+
+        }); 
 });
 
 router.get('/notifications', studentAuth, function (req, res) {
@@ -485,6 +586,29 @@ router.get('/:categoryId/teams',studentAuth,function(req,res){
     });
 });
 
+router.get('/:teamId/eventNames',studentAuth,function(req,res){
+    Team.findOne({_id:req.params.teamId},{_id:0,"events_participated.cat_id":1})
+    .then((docs)=>{
+        var eventArray = [];
+        docs.events_participated.forEach(function(d){
+            eventArray.push(d.cat_id);
+        });
+        Events.find({"categories._id":{"$in":eventArray}},{"categories.$":1,event_name:1})
+        .then((response)=>{
+            // res.send(response);
+            return res.render("students/studentFeedback",{events:response})
+        })
+        .catch(err=>{
+            console.log(err);
+            return res.status(500).send({ "message": err });
+        })
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(500).send({"message":err});
+    });
+});
+
 router.get('/:teamId/participation',studentAuth,function(req,res){
     // Team.findOne({_id:req.params.teamId}).exec
     Team.aggregate([
@@ -579,6 +703,17 @@ router.get('/upcomingEvents',studentAuth,function(req,res){
         res.status(403).send({"message":err});
     });    
 });
+
+router.get('/showEvent/:eventId',studentAuth,function(req,res){
+    Events.findOne({_id:req.params.eventId},{"categories":1,event_name:1})
+    .then((events)=>{
+        return res.render("students/showCategories",{event:events});
+    })
+    .catch((err)=>{
+        return res.status(500).send({"message":err});
+    })
+});
+
 
 router.get('/liveEvents',studentAuth,function(req,res){
     let today = moment(new Date()).format('YYYY-MM-DD');

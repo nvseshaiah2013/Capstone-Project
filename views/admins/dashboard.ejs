@@ -1,18 +1,17 @@
 <% include ../partials/header %>
 <style>
     body {
-        /* background: url('/assets/images/wall.jpg') !important; */
-        background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        background: url('/assets/images/wall.jpg') !important;
+        /* background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); */
     }
 </style>
 </head>
 
 <body>
-    <div class="ui menu blue inverted large">
-        <div class="ui container">
-            <a class="item header" href="#">
-                LPU Colors
-            </a>
+    <div class="ui container">
+        <div class="ui menu blue inverted large">
+            <a class="item" href="#"><img class="ui small image" src="/assets/images/logo5.png" /> </a>
+
             <a class="active item" href="#">Home</a>
             <div class="right menu">
                 <a class="item" href="#">
@@ -28,103 +27,86 @@
         <div class="ui container">
             <div class="ui stackable grid">
                 <div class="four wide column">
-                    <div class="ui fluid blue segment">
+                    <div class="ui basic segment">
 
-                        <div class="ui styled accordion">
-                            <div class="title">
-                                <i class="dropdown icon"></i>
-                                Students
-                            </div>
-                            <div class="content">
-                                <div class="transition hidden">
-                                    <div class="ui link list">
-                                        <a class="item" id="viewAllStudents" href="#">
-                                            All Students
-                                        </a>
-                                        <a class="item" id="viewStudentProfile" href="#">
-                                            View Student Profiles
-                                        </a>
-                                        <a class="item" id="viewAllTeams" href="#">
-                                            View Student Teams
-                                        </a>
-                                    </div>
+                        <div class="ui vertical menu">
+                            <div class="item">
+                                <div class="header">Students</div>
+                                <div class="menu">
+                                    <a class="item" id="viewAllStudents" href="#">
+                                        All Students
+                                    </a>
+
+                                    <a class="item" id="viewAllTeams" href="#">
+                                        View Student Teams
+                                    </a>
+                                    <a class="item" id="viewAllTeams" href="#">
+                                        View Feedbacks
+                                    </a>
+                                    <a class="item" id="activeTeams" href="#">
+                                        Active Teams
+                                    </a>
+                                    <a class="item" id="passiveTeams" href="#">
+                                        Inactive Teams
+                                    </a>
+                                    <a class="item" id="stdNotifications" href="#">
+                                        Notifications
+                                    </a>
                                 </div>
                             </div>
-                            <div class="title">
-                                <i class="dropdown icon">
-                                </i>
-                                Admin Profile
-                            </div>
-                            <div class="content">
-                                <div class="transition hidden">
-                                    <div class="ui link list">
-                                        <a href="#" class="item" id="viewProfile">
-                                            View Profile
-                                        </a>
-                                        <a href="#" class="item" id="updatePassword">
-                                            Update Password
-                                        </a>
-                                    </div>
+                            <div class="item">
+                                <div class="header">Gallery</div>
+                                <div class="menu">
+                                    <a href="#" class="item" id="imageGallery">
+                                        Image Gallery
+                                    </a>
+                                    <a href="#" class="item" id="videoGallery">
+                                        Video Gallery
+                                    </a>
                                 </div>
                             </div>
-                            <div class="title">
-                                <i class="dropdown icon"></i>
-                                Clubs
-                            </div>
-                            <div class="content">
-                                <div class="transition hidden">
-                                    <div class="ui link list">
-                                        <a href="#" class="item" id="viewAllClubs">
-                                            View All Clubs
-                                        </a>
-                                        <a href="#" class="item" id="newClub">
-                                            Add New Club
-                                        </a>
-                                    </div>
+                            <div class="item">
+                                <div class="header">Clubs</div>
+                                <div class="menu">
+                                    <a href="#" class="item" id="viewAllClubs">
+                                        View All Clubs
+                                    </a>
+                                    <a href="#" class="item" id="newClub">
+                                        Add New Club
+                                    </a>
+                                    <a class="item" id="clbNotifications" href="#">
+                                        Notifications
+                                    </a>
                                 </div>
                             </div>
-                            <div class="title">
-                                <i class="dropdown icon"></i>
-                                Events
-                            </div>
-                            <div class="content">
-                                <div class="transition hidden">
-                                    <div class="ui link list">
-                                        <a href="#" class="item" id="viewAllEvents">
-                                            View All Events
-                                        </a>
-                                        <a href="#" class="item" id="newClub">
-                                            Add New Club
-                                        </a>
-                                        <a href="#" class="item" id="viewAllEventCertificates">
-                                            Issued Certificates
-                                        </a>
-                                    </div>
+                            <div class="item">
+                                <div class="header">Events</div>
+                                <div class="menu">
+                                    <a href="#" class="item" id="viewAllEvents">
+                                        View All Events
+                                    </a>
+                                    <a href="#" class="item" id="newClub">
+                                        Add New Club
+                                    </a>
+                                    <a href="#" class="item" id="viewAllEventCertificates">
+                                        Issued Certificates
+                                    </a>
                                 </div>
                             </div>
-                                <div class="title">
-                                    <i class="dropdown icon"></i>
-                                    Payments
+                            <div class="item">
+                                <div class="header">Payments</div>
+                                <div class="menu">
+                                    <a href="#" class="item" id="viewSuccessTransactions">
+                                        Successful Transactions
+                                    </a>
+                                    <a href="#" class="item" id="viewFailedTransactions">
+                                        Failed Transactions
+                                    </a>
+                                    <a href="#" class="item" id="viewPendingTransactions">
+                                        Pending Transactions
+                                    </a>
                                 </div>
-                                <div class="content">
-                                    <div class="transition hidden">
-                                        <div class="ui link list">
-                                            <a href="#" class="item" id="viewAllTransactions">
-                                                All Transactions
-                                            </a>
-                                            <a href="#" class="item" id="viewSuccessTransactions">
-                                                Successful Transactions
-                                            </a>
-                                            <a href="#" class="item" id="viewFailedTransactions">
-                                                Failed Transactions
-                                            </a>
-                                            <a href="#" class="item" id="viewPendingTransactions">
-                                                Pending Transactions
-                                            </a>
-                                        </div>
-                                
-                                    </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

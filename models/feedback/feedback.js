@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
 const feedbackSchema = new mongoose.Schema({
-    club_id:{
-        type:mongoose.Schema.Types.ObjectId,
-    }
-    ,
+    regn_no:{
+        type:String
+    },
     event_id:
     {   
         type:mongoose.Schema.Types.ObjectId

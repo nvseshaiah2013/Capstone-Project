@@ -1,0 +1,56 @@
+<% if(allTeams.length  == 0) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="camera retro icon"></i>
+        No teams created to show as of now.
+    </div>
+</div>
+<% } else  { %>
+<div class="ui segment">
+    <div class="ui stackable grid">
+        <div class="five wide column">
+            <select class="ui fluid search selection dropdown" id="getTeam">
+                <div class="default text">Select Team </div>
+
+                <% allTeams.forEach(function(team){ %>
+                <option value='<%= team._id %>'> <%= team.team_name %></option>
+                <% }); %>
+
+            </select>
+        </div>
+        <div class="seven wide column">
+
+        </div>
+        <div class="four wide column">
+
+            <button type="button" class="ui basic teal button" onclick="getTeamEvents()">Get Events</button>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<div class="ui basic segment" id="feedbackPlace">
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.ui.dropdown').dropdown();
+    });
+
+    function getTeamEvents()
+    {
+        $('#mainPage').addClass('loading');
+        console.log($('#getTeam').val());
+        if($('#getTeam').val())
+        axios.get('/student/' + $('#getTeam').val() + '/eventNames')
+        .then((response)=>{
+            $('#feedbackPlace').html(response.data);
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+        $('#mainPage').removeClass('loading');
+    }
+    
+</script>

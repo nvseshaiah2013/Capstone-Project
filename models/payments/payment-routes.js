@@ -3,6 +3,9 @@ const router = require('express')();
 const Event = require('../events/event');
 const Team = require('../teams/teams');
 const qs = require('querystring');
+const studentAuth = require('../../middleware/studentauth');
+const clubAuth = require('../../middleware/clubauth');
+const adminAuth = require('../../middleware/adminauth');
 const checksum_lib = require('../../checksum/checksum');
 const dotenv = require('dotenv');
 const https = require('https');
@@ -60,8 +63,6 @@ router.post('/pay/:teamId/:catId', function (req, res) {
                         console.log(err);
                         return res.status(401).send({ "message": "You cannot pay for this event category" });
                     })
-
-
             }
             else {
                 return res.status(401).send({ "message": "You cannot pay for this event." });
@@ -174,5 +175,230 @@ router.get('/pay/paymentStatus',function(req,res){
     });
 });
 
+router.get('/studentsPage/success',studentAuth,function(req,res){
+    Team.find({"$or":[{"owner_name.regn_no":req.currentUser.regn_no},{"participants.regn_no":req.currentUser.regn_no}]},{_id:1})
+    .then((teams)=>{
+        let obj = [];
+        teams.forEach(function(val){
+            obj.push(val._id);
+        });
+        //return res.status(200).send(obj);
+        Payment.find({ teamId: { "$in": obj }, STATUS:"TXN_SUCCESS"},{STATUS:1,BANKNAME:1,PAYMENTMODE:1,TXNAMOUNT:1,cat_id:1,TXNDATE:1})
+        .then((payment)=>{
+            if (payment)
+                return res.render("payments/successPayments", { payments: payment });
+            else return res.render("payments/successPayments", { payments: null });
+        })
+        .catch((err)=>{
+            return res.status(401).send({"message":err});
+        })
+    })
+    .catch((err)=>{
+        return res.status(500).send({"message":err});
+    })
+});
+
+router.get('/adminsPage/success',adminAuth,function(req,res){
+    Team.find({ }, { _id: 1 })
+        .then((teams) => {
+            let obj = [];
+            teams.forEach(function (val) {
+                obj.push(val._id);
+            });
+            //return res.status(200).send(obj);
+            Payment.find({ teamId: { "$in": obj }, STATUS: "TXN_SUCCESS" }, { STATUS:1,BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 })
+                .then((payment) => {
+                    if (payment)
+                        return res.render("payments/successPayments", { payments: payment });
+                    else return res.render("payments/successPayments", { payments: null });
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+        })
+        .catch((err) => {
+            return res.status(500).send({ "message": err });
+        })
+});
+
+router.get('/clubsPage/success',clubAuth,function(req,res){
+    Event.find({club_id:req.currentUser._id},{event_name:1,"categories._id":1})
+    .then((success)=>{
+        let obj = [];
+        success.forEach(function(val){
+            val.categories.forEach(function(cat){
+                obj.push(cat._id);
+            });
+        });
+        Payment.find({ cat_id: { "$in": obj }, STATUS: "TXN_SUCCESS" }, { STATUS :1,BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 })
+            .then((payment) => {
+                if (payment)
+                    return res.render("payments/successPayments", { payments: payment });
+                else return res.render("payments/successPayments", { payments: null });
+            })
+            .catch((err) => {
+                return res.status(401).send({ "message": err });
+            })
+       
+    })
+    .catch((err)=>{
+        console.log(err);
+        return res.status(500).send(err);
+    })
+});
+
+router.get('/studentsPage/failed', studentAuth, function (req, res) {
+    Team.find({ "$or": [{ "owner_name.regn_no": req.currentUser.regn_no }, { "participants.regn_no": req.currentUser.regn_no }] }, { _id: 1 })
+        .then((teams) => {
+            let obj = [];
+            teams.forEach(function (val) {
+                obj.push(val._id);
+            });
+            //return res.status(200).send(obj);
+            Payment.find({ teamId: { "$in": obj }, STATUS: "TXN_FAILURE" }, { BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1,STATUS:1 })
+                .then((payment) => {
+                    if (payment)
+                        return res.render("payments/failedPayments", { payments: payment });
+                    else return res.render("payments/failedPayments", { payments: null });
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+        })
+        .catch((err) => {
+            return res.status(500).send({ "message": err });
+        })
+});
+
+router.get('/adminsPage/failed', adminAuth, function (req, res) {
+    Team.find({}, { _id: 1 })
+        .then((teams) => {
+            let obj = [];
+            teams.forEach(function (val) {
+                obj.push(val._id);
+            });
+            //return res.status(200).send(obj);
+            Payment.find({ teamId: { "$in": obj }, STATUS: "TXN_FAILURE" }, { BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1,STATUS:1 })
+                .then((payment) => {
+                    if (payment)
+                        return res.render("payments/failedPayments", { payments: payment });
+                    else return res.render("payments/failedPayments", { payments: null });
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+        })
+        .catch((err) => {
+            return res.status(500).send({ "message": err });
+        })
+});
+
+router.get('/clubsPage/failed', clubAuth, function (req, res) {
+    Event.find({ club_id: req.currentUser._id }, { event_name: 1, "categories._id": 1 })
+        .then((success) => {
+            let obj = [];
+            success.forEach(function (val) {
+                val.categories.forEach(function (cat) {
+                    obj.push(cat._id);
+                });
+            });
+            Payment.find({ cat_id: { "$in": obj }, STATUS: "TXN_FAILURE" }, { STATUS:1,BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 })
+                .then((payment) => {
+                    if (payment)
+                        return res.render("payments/failedPayments", { payments: payment });
+                    else return res.render("payments/failedPayments", { payments: null });
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send(err);
+        })
+});
+
+router.get('/studentsPage/pending', studentAuth, function (req, res) {
+    Team.find({ "$or": [{ "owner_name.regn_no": req.currentUser.regn_no }, { "participants.regn_no": req.currentUser.regn_no }] }, { _id: 1 })
+        .then((teams) => {
+            let obj = [];
+            teams.forEach(function (val) {
+                obj.push(val._id);
+            });
+            //return res.status(200).send(obj);
+            Payment.find({ teamId: { "$in": obj }, STATUS: "PENDING" }, { STATUS:1,BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 })
+                .then((payment) => {
+                    if (payment)
+                        return res.render("payments/pendingPayments", { payments: payment });
+                    else return res.render("payments/pendingPayments", { payments: null });
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+        })
+        .catch((err) => {
+            return res.status(500).send({ "message": err });
+        })
+});
+
+router.get('/adminsPage/pending', adminAuth, function (req, res) {
+    Team.find({}, { _id: 1 })
+        .then((teams) => {
+            let obj = [];
+            teams.forEach(function (val) {
+                obj.push(val._id);
+            });
+            //return res.status(200).send(obj);
+            Payment.find({ teamId: { "$in": obj }, STATUS: "PENDING" }, {STATUS:1, BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 })
+                .then((payment) => {
+                    if (payment)
+                        return res.render("payments/pendingPayments", { payments: payment });
+                    else return res.render("payments/pendingPayments", { payments: null });
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+        })
+        .catch((err) => {
+            return res.status(500).send({ "message": err });
+        })
+});
+
+router.get('/clubsPage/pending', clubAuth, function (req, res) {
+    Event.find({ club_id: req.currentUser._id }, { event_name: 1, "categories._id": 1 })
+        .then((success) => {
+            let obj = [];
+            success.forEach(function (val) {
+                val.categories.forEach(function (cat) {
+                    obj.push(cat._id);
+                });
+            });
+            Payment.find({ cat_id: { "$in": obj }, STATUS: "PENDING" }, { STATUS:1,BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 })
+                .then((payment) => {
+                    if(payment)
+                        return res.render("payments/pendingPayments", { payments: payment });
+                    else return res.render("payments/pendingPayments",{payments:null});
+                })
+                .catch((err) => {
+                    return res.status(401).send({ "message": err });
+                })
+
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send(err);
+        })
+});
+
+router.get('/viewDetails/:catId/',function(req,res){
+    Event.findOne({"categories._id":req.params.catId},{"categories.$":1,event_name:1})
+    .then((event)=>{
+        return res.status(200).send({"message":event});
+    })
+    .catch((err)=>{
+        return res.status(401).send({"message":err});
+    })
+})
 
 module.exports = router;

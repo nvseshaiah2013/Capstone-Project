@@ -13,7 +13,7 @@
             <a class="item active"><i class="home icon"></i> Home </a>
             <div class="right menu">
                 <a class="item" href="#" id="myProfile"><i class="user outline icon"></i> Hi <%= id.name.split(' ')[0] %></a>
-                <div class="item ui dropdown"><i class="icon bell"></i>Notifications <i class="ui dropdown icon"></i>
+                <div class="item ui simple dropdown"><i class="icon bell"></i>Notifications <i class="ui dropdown icon"></i>
 
                     <div class="menu">
                         <% id.notifications.forEach(function(notification){ %>
@@ -84,7 +84,10 @@
                                                     Live Events
                                                 </a>
                                                 <a class="item" id="myFeedback" href="#">
-                                                    Feedbacks
+                                                    Give Feedback
+                                                </a>
+                                                <a class="item" id="viewFeedbacks" href="#">
+                                                    View Feedback
                                                 </a>
                                             </div>
                                         </div>
@@ -120,9 +123,7 @@
                                                 <a href="#" class="item" id="allClubs">
                                                     View All Clubs
                                                 </a>
-                                                <a href="#" class="item" id="createPersonalEvent">
-                                                    Host My Event
-                                                </a>
+                                                
                                             </div>
 
                                         </div>
@@ -151,9 +152,6 @@
                                     <div class="content">
                                         <div class="transition hidden">
                                             <div class="ui link list">
-                                                <a href="#" class="item" id="viewAllTransactions">
-                                                    All Transactions
-                                                </a>
                                                 <a href="#" class="item" id="viewSuccessTransactions">
                                                     Successful Transactions
                                                 </a>

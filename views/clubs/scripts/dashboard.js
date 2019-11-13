@@ -95,6 +95,48 @@ function getVideoGallery(evt)
     $('#mainPage').removeClass('loading');
 }
 
+
+function successPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/clubsPage/success')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+
+function failedPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/clubsPage/failed')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+
+function pendingPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/clubsPage/pending')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
 window.onload = getOurEvents;
 $(document).ready(function () {    
     $('.ui.accordion').accordion();
@@ -104,6 +146,9 @@ $(document).ready(function () {
     $('#myClubProfile').on('click',getProfile);
     $('#eventImages').on('click',getImageGallery);
     $('#eventVideos').on('click', getVideoGallery);
+    $('#viewAllSuccess').on('click', successPayment);
+    $('#viewAllFailed').on('click', failedPayment);
+    $('#viewAllPending').on('click', pendingPayment);
 });
 
 var selectedEvent;

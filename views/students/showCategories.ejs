@@ -1,0 +1,38 @@
+<% if(event.categories.length == 0){  %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="menu icon"></i>
+        No categories are added for this event.
+    </div>
+</div>
+<% } else { %>
+<div class="ui segment">
+    
+    <div class="ui cards">
+        <% event.categories.forEach(function(category){ %>
+        <div class="compact card">
+            <div class="ui top attached red label">
+                <%= event.event_name %>
+            </div>
+            <div class="content">
+
+                <div class="header">
+                    <%= category.category_name %>
+                </div>
+                <div class="meta">
+                    Group Size: <%= category.group_size %>
+                </div>
+                <div class="description">
+                    Participation Fee: <%= category.amount %>
+                </div>
+            </div>
+            <div class="extra content">
+                <!-- <div class="ui basic red button">Delete Category</div> -->
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+<% } %>
+
+

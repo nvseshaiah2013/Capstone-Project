@@ -306,7 +306,7 @@ router.post('/events/generateCertificate/:teamId/:categoryId', clubAuth, functio
 });
 
 router.get('/issuedCertificates', clubAuth, function (req, res) {
-    Team.find({ "certificates.club_id": req.currentUser._id }, { "certificates.$": 1 })
+    Team.find({ "certificates.club_id": req.currentUser._id }, { "certificates": 1 })
         .then((docs) => {
             return res.render("clubs/allCertificates", { certificates: docs });
             // return res.send({certificates:docs});

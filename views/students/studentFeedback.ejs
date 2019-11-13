@@ -1,0 +1,112 @@
+<% if(events.length  == 0) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="camera retro icon"></i>
+        No Event Videos added Yet.
+    </div>
+</div>
+<% } else  { %>
+<div class="ui segment">
+    <div class="ui stackable grid">
+
+        <div class="five wide column">
+            <select class="ui fluid search selection dropdown" id="getCatId" onchange="toggle()">
+                <div class="default text">Select Event </div>
+
+                <% events.forEach(function(event){ %>
+                    <% event.categories.forEach(function(category){ %>
+                        <option value='<%= category._id %>.<%= event._id %>'> <%= event.event_name %> / <%= category.category_name %></option>
+
+                <% }); %>
+                <% }); %>
+
+            </select>
+        </div>
+        <div class="seven wide column">
+
+        </div>
+        <div class="four wide column">
+
+            <button type="button" class="ui basic teal button" onclick="getFeedbackForm()">Get Feedback Form</button>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<div id="feedbackForm" class="ui container very padded segment">
+    <form class="ui form" method="POST">
+        
+            <div class="field required">
+                <label>
+                    Rating (1 to 5 Max)
+                </label>
+                <input type="number" name="rating" placeholder="Enter Rating"/>
+            </div>
+            <div class="field required">
+                <label>
+                    Feedback
+                </label>
+                <textarea name="review" id="" cols="30" rows="5" placeholder="Enter Feedback"></textarea>
+            </div>
+        
+        <button type="submit" class="ui basic purple button" id="fSubmit">
+            Submit Feedback
+            </button>
+    </form>
+</div>
+
+<script>
+    document.querySelector('#feedbackForm').style.display = 'none';
+    function getFeedbackForm()
+    {
+        if($('#getCatId'))
+        {
+            ids = $('#getCatId').val().split('.');
+            if(ids.length == 2)
+            {
+                document.querySelector('#feedbackForm').style.display = 'block';                
+            }
+        }
+    }
+    function feedbackSubmit(evt)
+    {
+        evt.preventDefault();
+        if($('.ui.form').form('is valid') && ids.length == 2)
+        {
+            let Data = new Object();
+            Data.review = $('[name="review"]').val();
+            Data.rating = $('[name="rating"]').val()
+            Data.event_id = ids[1];
+            Data.cat_id = ids[0];
+            // Data.set('event_id', ids[1]);
+            // Data.set('cat_id', ids[0]);
+            console.log(Data);
+            axios({
+                method:'post',
+                url:'/student/giveFeedback',
+                data:Data,
+                //config:{headers:{'Content-Type':'multipart/form-data'}}
+            })
+            .then((response) => {
+                    console.log(response.data);
+                    document.querySelector('#feedbackForm').style.display = 'none';                
+
+                })
+                .catch((err) => {
+                    console.log(response.data);
+                document.querySelector('#feedbackForm').style.display = 'none';                
+
+                });
+            //axios.post('/student/giveFeedback',{data:data},{})
+            
+        }
+    }
+    function toggle()
+    {
+       document.querySelector('#feedbackForm').style.display = 'none';                
+    }
+
+    $(document).ready(function(){
+        $('#fSubmit').on('click',feedbackSubmit);
+    });
+</script>

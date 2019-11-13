@@ -29,8 +29,54 @@ function adminSignOut(event)
 }
 
 
+function successPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/adminsPage/success')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+
+function failedPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/adminsPage/failed')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+window.onload = successPayment;
+
+function pendingPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/adminsPage/pending')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+
+
 $(document).ready(function(){
     $('#newClub').on('click',clubNew);
     $('.ui.accordion').accordion();
     $('#admin_signout').on('click',adminSignOut);
+    $('#viewSuccessTransactions').on('click', successPayment);
+    $('#viewFailedTransactions').on('click', failedPayment);
+    $('#viewPendingTransactions').on('click', pendingPayment);
 });

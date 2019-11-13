@@ -195,6 +195,87 @@ function myProfile(evt)
     $('#store').removeClass('loading');
 }
 
+function successPayment(evt)
+{
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/studentsPage/success')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+
+function failedPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/studentsPage/failed')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+
+function pendingPayment(evt) {
+    evt.preventDefault();
+    $('#store').addClass('loading');
+    axios.get('/payments/studentsPage/pending')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    $('#store').removeClass('loading');
+}
+
+function allClubs(evt)
+{
+    evt.preventDefault();
+    axios.get('/student/clubs')
+    .then((response)=>{
+        $('#store').html(response.data);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+}
+
+function myTeams(evt)
+{
+    evt.preventDefault();
+    axios.get('/student/myTeams')
+    .then((response)=>{
+        $('#store').html(response.data);
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+}
+
+function viewFeedbacks(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/student/viewFeedback')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    $('#mainPage').removeClass('loading');
+
+}
+
 $(document)
     .ready(function () {
         $('.ui.dropdown').dropdown();
@@ -209,7 +290,14 @@ $(document)
         $('#profile').on('click',myProfile);
         $('#viewVideoGallery').on('click',getVideoGallery);
         $('#myProfile').on('click',myProfile);
+        $('#viewSuccessTransactions').on('click',successPayment);
+        $('#viewFailedTransactions').on('click',failedPayment);
+        $('#viewPendingTransactions').on('click',pendingPayment);
+        $('#allClubs').on('click',allClubs);
+        $('#myFeedback').on('click',myTeams);
+        $('#viewFeedbacks').on('click',viewFeedbacks);
     });
 
 var selectedCategory;
 var selectedTeam;
+var ids;

@@ -6,15 +6,84 @@
         </div>
     </div>
 <% } else { %>
-    <div class="ui raised segments">
+    <div class="ui cards">
     <% clubs.forEach(function(club){ %>
-        <div class="ui segment">
-            <div class="ui top attached label">
+        <div class="ui card">
+            <div class="ui top attached olive label">
                 <%= club.name %>
             </div>
-            <a class="ui red ribbon label">Address: </a>
-            <span> <%= club.address %> </span>
+            <div class="content">
+                <div class="header">
+                 Email Id:   <%= club.username %>
+                </div>
+                <div class="meta">
+                    CEO : <%= club.desc.ceo %>
+                </div>
+                <p class="summary">
+                    Address:
+                    <%= club.contact.address %>
+                </p>
+                <div class="ui list">
+                <div class="header">
+                    Phone Nos. 
+                </div>
+                <% club.contact.phone_no.forEach(function(phone){ %>
+                    <a class="item" href="#">
+                        <%= phone %>
+                    </a>    
+                <% }); %>
+                </div>
+                <div class="ui list">
+                    <div class="header">
+                        Email Ids.
+                    </div>
+                    <% club.contact.email_id.forEach(function(phone){ %>
+                    <a class="item" href="#">
+                        <%= phone %>
+                    </a>
+                    <% }); %>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="buttons">
+
+                    <button type="button" class="ui basic olive button" onclick="getClubEvents('<%= club._id %>')">
+                        View Events
+                    </button>
+                    
+                    <button type="button" class="ui basic red button" onclick="getClubRatings('<%= club._id %>')">
+                        View Reviews
+                    </button>
+                </div>
+            </div>
         </div>
     <% }); %>
     </div>
 <% } %>
+
+<script>
+    function getClubEvents(clubId)
+    {
+        $('#mainPage').addClass('loading');
+        axios.get('/student/clubs/eventsOrganised/' + clubId)
+        .then((response)=>{
+            $('#store').html(response.data);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+            $('#mainPage').removeClass('loading');
+
+    }
+     function getClubRatings(clubId) {
+         $('#mainPage').addClass('loading');
+            axios.get('/student/clubRatings/' + clubId)
+                .then((response) => {
+                    $('#store').html(response.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            $('#mainPage').removeClass('loading');
+        }
+</script>

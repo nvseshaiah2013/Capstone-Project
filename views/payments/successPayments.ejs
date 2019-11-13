@@ -1,0 +1,69 @@
+
+<div class="ui tiny modal">
+    <div class="header">Event Detail</div>
+    <div class="content" id="modalContent">
+
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button cancel red inverted">
+            Close
+        </button>
+    </div>
+</div>
+
+<% if(payments.length == 0) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="credit card outline icon"></i>
+        You have not made any payments
+    </div>
+</div>
+<% } else { %>
+<!-- STATUS:1,BANKNAME: 1, PAYMENTMODE: 1, TXNAMOUNT: 1, cat_id: 1, TXNDATE: 1 -->
+<div class="ui container segment">
+    <div class="ui block header">
+        Success Transactions
+    </div>
+    <div class="ui cards">
+        <% payments.forEach(function(pay){ %>
+        <div class="card">
+            <div class="ui top attached green label">
+                <%= pay.STATUS %>
+            </div>
+            <div class="content">
+                <p class="summary">
+                    Bank Name: <%= pay.BANKNAME %>
+                </p>
+                <p class="summary">
+                    Payment Mode: <%= pay.PAYMENTMODE %>
+                </p>
+                <p class="description">
+                    Amount: <%= pay.TXNAMOUNT %>
+                </p>
+                <p class="meta">
+                    Date: <%= pay.TXNDATE.toLocaleString() %>
+                </p>
+            </div>
+            <div class="extra content">
+                <a href="#" class="ui basic green button" onclick="detailEvent('<%= pay.cat_id %>')">View Event</a>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+<% } %>
+<script>
+    function detailEvent(catId) {
+        axios.get('/payments/viewDetails/' + catId)
+            .then((response) => {
+                $('#modalContent').html('<div class="ui header"> Event Name: ' + response.data.message.event_name + '</div><div class="content"> Category Name:' + 
+                    response.data.message.categories[0].category_name + ' <p class="meta> Group Size: ' + response.data.message.categories[0].group_size + '</p></div>')
+                $('.ui.modal').modal('show');
+            })
+            .catch((err) => {
+                $('#modalContent').html('<h4 class="header">Error Occured </h4>');
+                $('.ui.modal').modal('show');
+            });
+    }
+
+</script>

@@ -6,6 +6,7 @@ dotenv.config();
 
 module.exports = (req,res,next) => {
     let header = req.headers.authorization;
+   // console.log(req.headers);
     if(!header) return res.redirect('/student/login');
    // console.log(req);
     let token = header.split(" ")[1];

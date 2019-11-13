@@ -21,7 +21,7 @@
                         <i class="thumbs up outline icon"></i>
                         <%= payment.RESPMSG %>
                     </div>
-                    <button class="ui active negative button">
+                    <button class="ui active negative button" onclick="goBack()">
                         <i class="home icon"></i>
                         Go Home
                     </button>
@@ -35,7 +35,7 @@
                             <i class="thumbs down outline icon"></i>
                             <%= payment.RESPMSG %>
                         </div>
-                        <button class="ui active negative button">
+                        <button class="ui active negative button" onclick="goBack()">
                             <i class="home icon"></i>
                             Go Home
                         </button>
@@ -49,7 +49,7 @@
                             <i class="exclamation icon"></i>
                             <%= payment.RESPMSG %>
                         </div>
-                    <button class="ui active negative button">
+                    <button class="ui active negative button" onclick="goBack()">
                         <i class="home icon"></i>
                         Go Home
                     </button>
@@ -70,5 +70,21 @@
     </div>
 
 </div>
+
+<!-- <form name="gohome" method="POST" accept="application/json, text/plain, */*">
+    <input type="hidden" name="token" value="" />
+</form> -->
+<form name="gohome" method="POST" action="/student/login">
+   
+</form>
+
+<script>
+    function goBack()
+    {
+        // document.getElementsByName('token')[0].value = localStorage.getItem('__colors__');
+        // document.getElementsByName('gohome')[0].action = '/student/goBack'
+        document.getElementsByName('gohome')[0].submit();
+    }
+</script>
 
 <% include ../partials/footer %>

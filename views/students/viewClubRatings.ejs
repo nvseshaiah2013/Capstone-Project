@@ -1,0 +1,47 @@
+<div class="ui segment">
+    <div class="ui block header">
+        Club Ratings
+    </div>
+    <% if(ratings.length == 0) { %>
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="expand icon"></i>
+                No one has rated this club yet.
+            </div>
+        </div>
+    <% } else { %>
+
+    <div class="ui cards">
+        <% ratings.forEach(function(rating){ %>
+        <div class="card">
+                <div class="ui top attached black label">
+
+                    <%= rating.response[0].event_name %>
+                </div>
+                <div class="content">
+                    <% rating.response[0].categories.forEach(function(val){ %>
+                        <div class="description">
+                            Category: <%= val.category_name %>
+                        </div>
+                    <% }) %>
+                    <div class="meta">
+                        Venue: <%= rating.response[0].description.venue %>
+                    </div>
+                    <div class="ui block header">
+                        No. of Categories: <%= rating.response[0].categories.length %>
+                    </div>
+                    <div class="summary">
+                        <p class="meta">
+                            Review: <%= rating.review %>
+                        </p>
+                        <p>
+                            Rating: <%= rating.rating %> <i class="star icon yellow"></i>
+                        </p>
+                    </div>
+                </div>
+                
+    </div>
+        <% }) %>
+    </div>
+    <% } %>
+</div>
