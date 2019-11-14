@@ -1,0 +1,67 @@
+
+
+<div class="ui segments">
+    <div class="ui segment">
+    
+    
+        <h3 class="ui horizontal divider header">
+            <i class="icon card">
+    
+            </i>
+            My Certificates
+        </h3>
+    </div>
+    <% if(certificates.length == 0) { %>
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="pdf file outline icon"></i>
+                No Certificates issued yet.
+            </div>
+            
+        </div>
+        <% } %>
+    <% certificates.forEach(function(certificate){ %>
+    <% certificate.certificates.forEach(function(cert){ %>
+    <div class="ui very padded segment">
+        <div class="ui top attached blue label">
+            Cert Id: <%= cert._id %>
+        </div>
+       
+        <button type="button" class="ui button large inverted green" onclick="getCert('<%= cert._id %>')">View Certificate</button>
+        <br>
+        
+
+    
+        <div class="ui bottom attached blue label">
+
+            Issued On: <%= cert.issuedOn.toLocaleString() %>
+        </div>
+        
+        
+       
+            
+    
+    </div>
+    <% }); %>
+    <% }) %>
+</div>
+
+<script>
+    function getCert(certId)
+    {
+        $('#mainPage').addClass('loading');
+        axios({
+            url: '/student/myCertificates/' + certId,
+            method: 'GET',
+            responseType: 'blob', // important
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'file.pdf');
+            document.body.appendChild(link);
+            link.click();
+        });
+        $('#mainPage').removeClass('loading');
+    }
+</script>

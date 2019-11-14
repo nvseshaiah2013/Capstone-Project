@@ -73,6 +73,47 @@ router.get('/clubRatings/:clubId',studentAuth,function(req,res){
         return res.render("students/viewClubRatings",{ratings:result});
     });
 });
+router.get('/myCertificates',studentAuth,function(req,res){
+    Team.find({"$or":[{
+        "owner_name.regn_no":req.currentUser.regn_no},
+        {"participants.regn_no":req.currentUser.regn_no}
+    ]},
+    {
+        certificates:1
+    })
+    .then(response=>{
+        // return res.send(response);
+           return res.status(200).render("students/allCertificates",{certificates:response});
+    })
+    .catch(err=>{
+        console.log(err);
+        return res.status(500).send({"message":err});
+    });
+});
+
+router.get('/myCertificates/:certId',studentAuth,function(req,res){
+    Team.find({
+        "$or": [{
+            "owner_name.regn_no": req.currentUser.regn_no
+        },
+        { "participants.regn_no": req.currentUser.regn_no }
+        ], "certificates._id": ObjectId(req.params.certId) }, { "certificates.$": 1 })
+        .then((docs) => {
+            if (docs) {
+                // return res.send({val:docs});
+                // console.log(docs[0].certificates);
+                // return res.sendFile('event-certificates/' + docs[0].certificates[0].src, {root:__dirname})
+                var data = fs.readFileSync(docs[0].certificates[0].src);
+                res.contentType('application/pdf');
+                return res.send(data);
+            }
+            return res.status(404).send({ "message": "File Not Found" });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(403).send({ "message": "No Such certificate" });
+        });
+});
 
 router.get('/dashboard',studentAuth,function(req,res){
     Student.findOne({username:req.currentUser.username},{password:0})

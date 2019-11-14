@@ -1,0 +1,50 @@
+<div class="ui segments">
+    <div class="ui segment">
+        <div class="ui horizontal divider header">
+            Registered Teams
+        </div>
+    </div>
+    <% if(teams.length == 0) { %>
+    <div class="ui placeholder segment">
+        <div class="ui icon header">
+            <i class="people icon"></i>
+            No registered teams yet.
+        </div>
+    </div>
+    <% } else { %>
+    <% teams.forEach(function(team){ %>
+    <div class="ui segment">
+        <h4 class="ui header">
+            Team Name: <%= team.team_name %>
+        </h4>
+        <div class="summary">
+            Owner Name: <%= team.owner_name.name %>
+        </div>
+        <button class="ui right floated button red" onclick="issueCert('<%= team._id %>')" >
+            Issue Certificate
+        </button>
+    </div>
+
+    <% }) %>
+    <% } %>
+</div>
+
+<script>
+    function issueCert(teamId)
+    {
+        $('#mainPage').addClass('loading');
+        if($('#getEvent').val())
+        {
+            axios.post('/clubs/events/generateCertificate/'+ teamId +'/' + $('#getEvent').val())
+            .then(suc=>{
+                console.log(suc.data);
+                alert(suc.data);
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        }
+        $('#mainPage').removeClass('loading');
+
+    }
+</script>

@@ -88,6 +88,66 @@ router.post('/add', function (req, res) {
     })
     // return res.status(200).send("Successfully Reached End!").end();
 });
+
+router.get('/eventNames',clubAuth,function(req,res){
+    Event.find({club_id:req.currentUser._id},{event_name:1})
+    .then((response)=>{
+        //return res.send(response);
+        return res.render("clubs/eventListFeedback",{events:response});
+    })
+    .catch((err)=>{
+        return res.status(500).send({"message":err});
+    })
+});
+
+router.get('/eventNames1', clubAuth, function (req, res) {
+    Event.find({ club_id: req.currentUser._id }, { event_name: 1,categories:1})
+        .then((response) => {
+            // return res.send(response);
+            return res.render("clubs/regTeamEventList", { events: response });
+        })
+        .catch((err) => {
+            return res.status(500).send({ "message": err });
+        })
+});
+
+router.get('/pastEventList',clubAuth,function(req,res){
+    let today = moment(new Date()).format('YYYY-MM-DD');
+    today = today + "T00:00:00.000Z";
+    Event.find({ end_date: { "$lt": new Date(today) } })
+        .then((docs) => {
+            res.render("clubs/pastEventList", { events: docs });
+        })
+        .catch((err) => {
+            res.status(403).send({ "message": err });
+        }); 
+});
+
+router.get('/viewFeedback/:eventId',clubAuth,function(req,res){
+    Event.findOne({club_id:req.currentUser._id,_id:req.params.eventId})
+    .then((response)=>{
+        if(response)
+        {
+            Feedback.find({event_id:req.params.eventId})
+            .then((feed)=>{
+                return res.render("clubs/viewFeedback",{feeds:feed});
+            })
+            .catch(err=>{
+                return res.status(500).send({ "message": err });
+            })
+        }
+        else
+        {
+            return res.status(401).send({ "message": "Unauthorized" });
+        }
+    })  
+    .catch((err)=>{
+        console.log(err);
+        return res.status(500).send({"message":err});
+    })
+});
+
+
 router.get('/profile', clubAuth, function (req, res) {
     Club.findOne({ _id: req.currentUser._id }, { password: 0 })
         .then((club) => {
@@ -177,6 +237,39 @@ router.post('/sendNotification/:studentId', clubAuth, function (req, res) {
         }
     });
 });
+
+router.get('/changePassword',clubAuth,function(req,res){
+    return res.render("clubs/changePassword");
+});
+
+router.post('/changePassword',clubAuth,function(req,res){
+    Club.findOne({ username: req.currentUser.username }).then(succ => {
+        if (succ) {
+            succ.comparePwd(req.body.old_password, function (err, result) {
+                if (err) throw err;
+                if (result) {
+                    Club.findOneAndUpdate({username:req.currentUser.username},{ password:req.body.new_password })
+                    .then(suc=>{
+                        return res.send("Changed");
+                    })
+                    .catch(err=>{
+                        return res.send("Not Changed");
+                    })
+                }
+                else {
+                    return res.status(401).render("clubs/login", { "message": "Wrong Credentials  - Check Username Password Again" });
+                }
+            });
+        }
+        else {
+            return res.status(401).render("clubs/login", { "message": "Wrong Credentials - Check Username Password Again" });
+        }
+    }).catch(err => {
+        console.log(err);
+        return res.status(401).render("clubs/login", { "message": "Wrong Credentials  - Check Username Password Again" });
+    });
+});
+
 
 router.get('/notifications', clubAuth, function (req, res) {
     Club.findById(req.currentUser._id, { notifications: 1 })
@@ -309,7 +402,7 @@ router.get('/issuedCertificates', clubAuth, function (req, res) {
     Team.find({ "certificates.club_id": req.currentUser._id }, { "certificates": 1 })
         .then((docs) => {
             return res.render("clubs/allCertificates", { certificates: docs });
-            // return res.send({certificates:docs});
+          //  return res.send({certificates:docs});
         })
         .catch((err) => {
             return res.status(403).send({ "message": err });
@@ -408,7 +501,7 @@ router.post('/events/:eventId/addCategory', clubAuth, function (req, res) {
         }
         else {
             if (docs) {
-                console.log("Success");
+                //console.log("Success");
                 return res.render("events/addCategory", { event: docs });
             }
             else {
@@ -423,20 +516,46 @@ router.get('/events/:categoryId/registeredTeams', clubAuth, function (req, res) 
     Event.findOne({ club_id: req.currentUser._id, "categories._id": req.params.categoryId })
         .then((event) => {
             if (!event) {
-                return res.status(403).send({ "message": "error" });
+                {console.log('p');return res.status(403).send({ "message": "error" });}
             }
             else {
                 Team.find({ "events_participated.cat_id": req.params.categoryId }, { team_name: 1, owner_name: 1 }, (err, teams) => {
                     if (err) {
-                        return res.status(403).send({ "message": "Error" });
+                       { console.log('l');return res.status(403).send({ "message": "Error" });}
                     }
                     else {
                         return res.render("clubs/registeredTeams", { teams: teams });
+                       // return res.send(teams);
                     }
                 });
             }
         })
         .catch((err) => {
+            console.log(err);
+            return res.status(403).send({ "message": "error" });
+        });
+});
+
+router.get('/events/:categoryId/registeredTeams1', clubAuth, function (req, res) {
+    Event.findOne({ club_id: req.currentUser._id, "categories._id": req.params.categoryId })
+        .then((event) => {
+            if (!event) {
+                { console.log('p'); return res.status(403).send({ "message": "error" }); }
+            }
+            else {
+                Team.find({ "events_participated.cat_id": req.params.categoryId }, { team_name: 1, owner_name: 1 }, (err, teams) => {
+                    if (err) {
+                        { console.log('l'); return res.status(403).send({ "message": "Error" }); }
+                    }
+                    else {
+                        return res.render("clubs/issueCertificate", { teams: teams });
+                        // return res.send(teams);
+                    }
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
             return res.status(403).send({ "message": "error" });
         });
 });

@@ -137,6 +137,78 @@ function pendingPayment(evt) {
     $('#store').removeClass('loading');
 }
 
+function viewFeedback(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/eventNames')
+    .then((response)=>{
+        $('#store').html(response.data);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+    $('#mainPage').removeClass('loading');
+}
+
+function issuedCertificates(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/issuedCertificates')
+    .then((response)=>{
+        $("#store").html(response.data);
+    })
+    .catch(err=>{
+        console.log(err);
+    });
+    $('#mainPage').removeClass('loading');
+
+}
+
+function viewRegisteredTeams(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/eventNames1')
+        .then((response) => {
+            $("#store").html(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    $('#mainPage').removeClass('loading');
+
+}
+
+function issueCertPastEvent(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/pastEventList')
+        .then((response) => {
+            $("#store").html(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    $('#mainPage').removeClass('loading');
+}
+
+function changePassword(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/changePassword')
+        .then((response) => {
+            $("#store").html(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    $('#mainPage').removeClass('loading');
+}
+
 window.onload = getOurEvents;
 $(document).ready(function () {    
     $('.ui.accordion').accordion();
@@ -149,6 +221,11 @@ $(document).ready(function () {
     $('#viewAllSuccess').on('click', successPayment);
     $('#viewAllFailed').on('click', failedPayment);
     $('#viewAllPending').on('click', pendingPayment);
+    $('#ourFeedback').on('click',viewFeedback);
+    $('#viewIssuedCerts').on('click',issuedCertificates);
+    $('#viewRegisteredTeams').on('click',viewRegisteredTeams);
+    $('#issueNewCert').on('click',issueCertPastEvent);
+    $('#changePassword').on('click',changePassword);
 });
 
 var selectedEvent;

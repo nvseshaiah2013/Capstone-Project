@@ -1,0 +1,27 @@
+<div class="ui segments">
+    <div class="ui segment">
+        <div class="ui horizontal divider header">
+            Registered Teams
+        </div>
+    </div>
+    <% if(teams.length == 0) { %>
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="people icon"></i>
+                No registered teams yet.
+            </div>
+        </div>
+    <% } else { %>
+        <% teams.forEach(function(team){ %>
+            <div class="ui segment">
+                <h4 class="ui header">
+                    Team Name: <%= team.team_name %>
+                </h4>  
+                <div class="summary">
+                    Owner Name: <%= team.owner_name.name %>
+                </div>
+            </div>
+
+        <% }) %>
+        <% } %>
+</div>

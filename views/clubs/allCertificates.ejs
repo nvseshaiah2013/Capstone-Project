@@ -1,3 +1,43 @@
-<div class="ui raised segment">
-    
+<h3 class="ui block header">
+    Certificates
+</h3>
+            <div class="ui cards">
+    <% certificates.forEach(function(certificate){ %>
+        <% certificate.certificates.forEach(function(cert){ %>
+            <div class="compact card">
+                <div class="ui top attached teal label">
+                    Cert Id: <%= cert._id %>   
+                </div>
+                <div class="content">
+
+                    <div class="meta">
+                        Issued On: <%= cert.issuedOn.toLocaleString() %>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <button type="button" class="ui button basic green" onclick="getCert('<%= cert._id %>')">View Certificate</button>
+                </div>
+
+               
+            </div>
+        <% }); %>
+   <% }) %>
 </div>
+
+<script>
+    function getCert(certId) {
+        $('#mainPage').addClass('loading');
+        axios({
+            url: '/clubs/issuedCertificates/' + certId,
+            method: 'GET',
+            responseType: 'blob', // important
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'file.pdf');
+            document.body.appendChild(link);
+            link.click();
+        });
+        $('#mainPage').removeClass('loading');
+    }</script>

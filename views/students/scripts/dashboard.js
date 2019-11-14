@@ -276,6 +276,20 @@ function viewFeedbacks(evt)
 
 }
 
+function myCertificates(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/student/myCertificates')
+        .then((response) => {
+            $('#store').html(response.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    $('#mainPage').removeClass('loading');
+}
+
 $(document)
     .ready(function () {
         $('.ui.dropdown').dropdown();
@@ -296,6 +310,10 @@ $(document)
         $('#allClubs').on('click',allClubs);
         $('#myFeedback').on('click',myTeams);
         $('#viewFeedbacks').on('click',viewFeedbacks);
+        $('#certificates').on('click',myCertificates);
+        $('.special.cards .image').dimmer({
+            on: 'hover'
+        });
     });
 
 var selectedCategory;

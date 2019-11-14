@@ -1,0 +1,31 @@
+<div class="ui block header">
+    Feedbacks
+</div>
+
+<% if(feeds.length == 0) { %>
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="calendar times icon"></i>
+       No Feedbacks provided as of now.
+    </div>
+</div>
+<% } else { %>
+<div class="ui cards">
+    <% feeds.forEach(function(feed){ %>
+    <div class="ui card">
+        <div class="ui top attached black label">
+            Event Review
+        </div>
+        <div class="content">
+            <div class="ui icon header">
+                Rating: <%= feed.rating %> <i class="icon outline star"></i>
+            </div>
+            <div class="meta">
+                <%= feed.review %>
+            </div>
+        </div>
+        
+    </div>
+    <% }) %>
+</div>
+<% } %>
