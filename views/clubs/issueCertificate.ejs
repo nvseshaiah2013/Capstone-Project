@@ -20,9 +20,20 @@
         <div class="summary">
             Owner Name: <%= team.owner_name.name %>
         </div>
-        <button class="ui right floated button red" onclick="issueCert('<%= team._id %>')" >
-            Issue Certificate
-        </button>
+        <div class="ui grid">
+            <div class="two column row">
+                <div class="ten wide column">
+
+                </div>
+                <div class="six wide column">
+
+                    <button class="ui button basic red" onclick="issueCert('<%= team._id %>')" >
+                        Issue Certificate
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <% }) %>

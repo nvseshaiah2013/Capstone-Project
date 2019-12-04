@@ -1,0 +1,264 @@
+<div class="ui segments">
+
+    <div class="ui red segment">
+        <h3 class="ui horizontal divider header">
+            Update Profile
+        </h3>
+    </div>
+    <div class="ui segment">
+        <h5 class="ui horizontal divider header">
+            Add New Member
+        </h5>
+        <form class="ui form segment" id="memberForm">
+            <div class="field required">
+                <label>
+                    Name
+                </label>
+                <input type="text" placeholder="Enter Name. " name="name_" />
+            </div>
+            <div class="field required">
+                <label>
+                    Registration Number
+                </label>
+                <input type="text" placeholder="Enter Regn No. " name="registration" />
+            </div>
+            <div class="field required">
+                <label>
+                    Designation
+                </label>
+                <input type="text" placeholder="Enter Designation. " name="designation" />
+            </div>
+            <button class="ui button basic positive">
+                Add Member
+            </button>
+        </form>
+    </div>
+    <div class="ui segment">
+        <h5 class="ui horizontal divider header">
+            Add New Founder
+        </h5>
+        <form class="ui form segment" id="founderForm">
+            <div class="field required">
+                <label>
+                    Name
+                </label>
+                <input type="text" placeholder="Enter Name. " name="name" />
+            </div>
+            <button class="ui button basic positive">
+                Add Founder
+            </button>
+        </form>
+    </div>
+    <div class="ui segment">
+        <h5 class="ui horizontal divider header">
+            Add Mobile Number
+        </h5>
+        <form class="ui form segment" id="mobileForm">
+            <div class="field required">
+                <label>
+                    Mobile Number
+                </label>
+                <input type="text" placeholder="Enter Mobile. " name="mobile" />
+            </div>
+            <button class="ui button basic positive">
+                Add Mobile
+            </button>
+        </form>
+    </div>
+    <div class="ui segment">
+        <h5 class="ui horizontal divider header">
+            Add Email id
+        </h5>
+        <form class="ui form segment" id="emailForm">
+            <div class="field required">
+                <label>
+                    Email Id.
+                </label>
+                <input type="text" placeholder="Enter Email. " name="email_id" />
+            </div>
+            <button class="ui button basic positive">
+                Add Email Id
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    function mobileForm(evt) {
+        evt.preventDefault();
+        if($('#mobileForm').form('is valid')){
+        $('#mainPage').addClass('loading');
+        axios.post('/clubs/addMobile',{data:$('[name="mobile"]').val()})
+            .then((success) => {
+                $('#mainPage').removeClass('loading');
+                $('#store').html(success.data);
+            })
+            .catch((err) => {
+                console.log(err.data);
+                $('#mainPage').removeClass('loading');
+            })
+        }
+    }
+
+    function emailForm(evt) {
+        evt.preventDefault();
+        if($('#emailForm').form('is valid')){
+        $('#mainPage').addClass('loading');
+        axios.post('/clubs/addEmail',{data:$('[name="email_id"]').val()})
+            .then((success) => {
+                $('#mainPage').removeClass('loading');
+                $('#store').html(success.data);
+            })
+            .catch((err) => {
+                console.log(err.data);
+                $('#mainPage').removeClass('loading');
+            })
+        }
+    }
+
+    function founderForm(evt) {
+        evt.preventDefault();
+        if($('#founderForm').form('is valid')){
+        $('#mainPage').addClass('loading');
+        axios.post('/clubs/addFounder',{data:$('[name="name"]').val()})
+            .then((success) => {
+                $('#mainPage').removeClass('loading');
+                $('#store').html(success.data);
+            })
+            .catch((err) => {
+                console.log(err.data);
+                $('#mainPage').removeClass('loading');
+            })
+        }
+    }
+
+    function memberForm(evt) {
+        evt.preventDefault();
+        if($('#memberForm').form('is valid')){
+            let obj ={
+                name:$('[name="name_"]').val(),
+                regn_no:$('[name="registration"]').val(),
+                designation:$('[name="designation"]').val()
+            }
+        $('#mainPage').addClass('loading');
+        axios.post('/clubs/addMember',{data:obj})
+            .then((success) => {
+                $('#mainPage').removeClass('loading');
+                $('#store').html(success.data);
+            })
+            .catch((err) => {
+                console.log(err.data);
+                $('#mainPage').removeClass('loading');
+            })
+        }
+    }
+
+    $(document).ready(function () {
+        $('#memberForm').form({
+            on: 'blur',
+            inline: true,
+            fields: {
+                name: {
+                    identifier: 'name_',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Invalid Field'
+                        }
+                    ]
+                },
+                designation: {
+                    identifier: 'designation',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Invalid Field'
+                        }
+                    ]
+                },
+                regn_no: {
+                    identifier: 'registration',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Please fill the field'
+                        },
+                        {
+                            type: 'exactLength[8]',
+                            prompt: 'The length should be of length 8'
+                        }
+                        ,
+                        {
+                            type: 'regExp[/^[1]{2}[0-9]{6}$/]'
+                        }
+                    ]
+
+                }
+            }
+        });
+        $('#founderForm').form({
+            on: 'blur',
+            inline: true,
+            fields: {
+                name: {
+                    identifier: 'name',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Invalid Field'
+                        }
+                    ]
+                }
+            }
+        })
+        $('#mobileForm').form({
+            on: 'blur',
+            inline: true,
+            fields: {
+                mobile: {
+                    identifier: 'mobile',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Enter Mobile No.'
+                        },
+                        {
+                            type: 'exactLength[10]',
+                            prompt: 'Length should be 10'
+                        },
+                        {
+                            type: 'regExp[/^[1-9]{1}[0-9]{9}$/]',
+                            prompt: 'Enter valid no'
+                        }
+                    ]
+                }
+            }
+        })
+        $('#emailForm').form({
+            on: 'blur',
+            inline: true,
+            fields: {
+                email: {
+
+                    identifier: 'email_id',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: 'Please fill the field'
+                        },
+
+                        {
+                            type: 'email',
+                            prompt: 'Please enter valid Email'
+                        }
+                    ]
+                }
+            }
+        })
+        $('#memberForm').on('submit',memberForm);
+        $('#mobileForm').on('submit',mobileForm);
+        $('#founderForm').on('submit',founderForm);
+        $('#emailForm').on('submit',emailForm);
+    });
+</script>

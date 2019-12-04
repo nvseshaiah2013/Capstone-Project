@@ -47,10 +47,12 @@
             axios.get('/clubs/videos/' + $('#getGallery').val() + '/all')
                 .then((response) => {
                     $('#allVideos').html(response.data);
+                    $('#mainPage').removeClass('loading');
+
                 })
                 .catch((err) => {
                     console.log(err);
+                    $('#mainPage').removeClass('loading');
                 });
-        $('#mainPage').removeClass('loading');
     }
 </script>

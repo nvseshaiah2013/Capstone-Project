@@ -4,11 +4,13 @@ function getOurEvents(event)
     $('#mainPage').addClass('loading');
     axios.get('/clubs/events/').then((succ) => {
         $('#store').html(succ.data);
+        $('#mainPage').removeClass('loading');
+
     })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         });
-    $('#mainPage').removeClass('loading');
 }
 
 function addNewEvent(evt)
@@ -18,10 +20,12 @@ function addNewEvent(evt)
     $('#mainPage').addClass('loading');
     axios.get('/clubs/events/add').then(suc => {
         $('#store').html(suc.data);
+        $('#mainPage').removeClass('loading');
+
     }).catch(err => {
         console.log(err);
+        $('#mainPage').removeClass('loading');
     });
-    $('#mainPage').removeClass('loading');
 }
 
 function clubSignOut(event){
@@ -32,11 +36,13 @@ function clubSignOut(event){
             delete axios.defaults.headers.common['Authorization'];
             localStorage.removeItem('__colors__');
             $('#formSignOut').submit();
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
+            $('#mainPage').removeClass('loading');
             $('#formSignOut').submit();
         });
-    $('#mainPage').removeClass('loading');
 }
 
 function getProfile(evt)
@@ -46,17 +52,19 @@ function getProfile(evt)
     axios.get('/clubs/profile')
     .then((response)=>{
         $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch((err)=>{
 
+        $('#mainPage').removeClass('loading');
     });
-    $('#mainPage').removeClass('loading');
 }
 
 function getPic(imageLink, eventId) {
-    console.log('h');
-    console.log(imageLink);
-    console.log(eventId);
+    // console.log('h');
+    // console.log(imageLink);
+    // console.log(eventId);
     axios.post('/clubs/images/' + eventId + '/getImage', { data: imageLink })
         .then((response) => {
             console.log(response.data);
@@ -74,11 +82,13 @@ function getImageGallery(evt)
     axios.get('/clubs/images/galleryPage')
     .then((response)=>{
         $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch((err)=>{
         console.log(err);
+        $('#mainPage').removeClass('loading');
     })
-    $('#mainPage').removeClass('loading');
 }
 
 function getVideoGallery(evt)
@@ -88,53 +98,67 @@ function getVideoGallery(evt)
     axios.get('/clubs/videos/galleryPage')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         })
-    $('#mainPage').removeClass('loading');
 }
 
 
 function successPayment(evt) {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/payments/clubsPage/success')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
+
         })
-    $('#store').removeClass('loading');
+    
 }
 
 
 function failedPayment(evt) {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/payments/clubsPage/failed')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
+
         })
-    $('#store').removeClass('loading');
+   
 }
 
 
 function pendingPayment(evt) {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/payments/clubsPage/pending')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
+
         })
-    $('#store').removeClass('loading');
+   
 }
 
 function viewFeedback(evt)
@@ -144,11 +168,14 @@ function viewFeedback(evt)
     axios.get('/clubs/eventNames')
     .then((response)=>{
         $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch((err)=>{
         console.log(err);
+        $('#mainPage').removeClass('loading');
+
     })
-    $('#mainPage').removeClass('loading');
 }
 
 function issuedCertificates(evt)
@@ -158,11 +185,13 @@ function issuedCertificates(evt)
     axios.get('/clubs/issuedCertificates')
     .then((response)=>{
         $("#store").html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch(err=>{
         console.log(err);
+        $('#mainPage').removeClass('loading');
     });
-    $('#mainPage').removeClass('loading');
 
 }
 
@@ -173,11 +202,13 @@ function viewRegisteredTeams(evt)
     axios.get('/clubs/eventNames1')
         .then((response) => {
             $("#store").html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch(err => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         });
-    $('#mainPage').removeClass('loading');
 
 }
 
@@ -188,11 +219,13 @@ function issueCertPastEvent(evt)
     axios.get('/clubs/pastEventList')
         .then((response) => {
             $("#store").html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch(err => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         });
-    $('#mainPage').removeClass('loading');
 }
 
 function changePassword(evt)
@@ -202,11 +235,29 @@ function changePassword(evt)
     axios.get('/clubs/changePassword')
         .then((response) => {
             $("#store").html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch(err => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         });
-    $('#mainPage').removeClass('loading');
+}
+
+function upDetails(evt)
+{
+    evt.preventDefault();
+    $('#mainPage').addClass('loading');
+    axios.get('/clubs/updateDetails')
+    .then((response)=>{
+        $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
+    })
+    .catch(err=>{
+        console.log(err);
+        $('#mainPage').removeClass('loading');
+    });
 }
 
 window.onload = getOurEvents;
@@ -225,7 +276,8 @@ $(document).ready(function () {
     $('#viewIssuedCerts').on('click',issuedCertificates);
     $('#viewRegisteredTeams').on('click',viewRegisteredTeams);
     $('#issueNewCert').on('click',issueCertPastEvent);
-    $('#changePassword').on('click',changePassword);
+    $('#upDetails').on('click',upDetails);
+    // $('#changePassword').on('click',changePassword);
 });
 
 var selectedEvent;

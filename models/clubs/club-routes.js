@@ -89,6 +89,10 @@ router.post('/add', function (req, res) {
     // return res.status(200).send("Successfully Reached End!").end();
 });
 
+router.get('/updateDetails',clubAuth,function(req,res){
+    return res.render("clubs/updateDetails");
+});
+
 router.get('/eventNames',clubAuth,function(req,res){
     Event.find({club_id:req.currentUser._id},{event_name:1})
     .then((response)=>{
@@ -176,9 +180,10 @@ router.get('/founders', clubAuth, function (req, res) {
 });
 
 router.post('/addFounder', clubAuth, function (req, res) {
-    Club.findOneAndUpdate({ _id: req.currentUser._id }, { "$push": { "desc.founders": req.body.data.founder } }, { new: true })
+   // console.log(req.body.data);
+    Club.findOneAndUpdate({ _id: req.currentUser._id }, { "$push": { "desc.founders": req.body.data } }, { new: true })
         .then((docs) => {
-            return res.render("clubs/profile", { club: docs });
+            return res.render("clubs/profile", { profile: docs });
         })
         .catch((err) => {
             console.log(err);
@@ -198,27 +203,38 @@ router.get('/members', clubAuth, function (req, res) {
 });
 
 router.post('/addMember', clubAuth, function (req, res) {
-    Student.findOne({ regn_no: req.body.data.regn_no })
-        .then((student) => {
-            if (student && req.body.data.secretToken === student.secretToken) {
-                let obj = {
-                    name: student.name,
-                    regn_no: student.regn_no
-                };
-                Club.findByIdAndUpdate(req.currentUser._id, { "$push": { "desc.members": obj } }, { new: true })
-                    .then((club) => {
-                        return res.render("clubs/profile", { club: club });
-                    })
-                    .catch((err) => {
-                        return res.status(403).send({ "message": "Member Addition Error" });
-                    })
-            }
-            else {
-                return res.status(403).send({ "message": "No Such Student" });
-            }
+    //console.log(req.body.data);
+
+    Club.findByIdAndUpdate(req.currentUser._id, { "$push": { "desc.members": req.body.data } }, { new: true })
+        .then((club) => {
+            return res.render("clubs/profile", { profile: club });
         })
         .catch((err) => {
-            return res.status(403).send({ "message": "Member Addition Failed" });
+            return res.status(403).send({ "message": "Member Addition Error" });
+        })
+});
+
+router.post('/addMobile', clubAuth, function (req, res) {
+    //console.log(req.body.data);
+
+    Club.findByIdAndUpdate(req.currentUser._id, { "$push": { "contact.phone_no": req.body.data } }, { new: true })
+        .then((club) => {
+            return res.render("clubs/profile", { profile: club });
+        })
+        .catch((err) => {
+            return res.status(403).send({ "message": "Member Addition Error" });
+        })
+});
+
+router.post('/addEmail', clubAuth, function (req, res) {
+    // console.log(req.body.data);
+
+    Club.findByIdAndUpdate(req.currentUser._id, { "$push": { "contact.email_id": req.body.data } }, { new: true })
+        .then((club) => {
+            return res.render("clubs/profile", { profile: club });
+        })
+        .catch((err) => {
+            return res.status(403).send({ "message": "Member Addition Error" });
         })
 });
 
@@ -360,33 +376,45 @@ router.post('/events/generateCertificate/:teamId/:categoryId', clubAuth, functio
                 // console.log(Date.now());
                 // console.log(event.end_date);
                 if (moment(Date.now()).isSameOrAfter(event.end_date)) {
-                    Team.findOne({ _id: req.params.teamId, "events_participated.cat_id": req.params.categoryId },
-                        { "events_participated.$": 1, team_name: 1, owner_name: 1, participants: 1, certificates: 1 })
-                        .then((team) => {
-                            if (team) {
-                                let fileName = Date.now() + team.team_name + '.pdf';
-                                //console.log(team);
-                                team.certificates.push({ club_id: event.club_id, cat_id: req.params.categoryId, src: 'event-certificates/' + fileName });
-                                team.save((err, success) => {
-                                    if (err) {
-                                        console.log(err);
-                                        return res.status(403).send({ "message": "cannot generate certificate" });
+                    Team.findOne({_id:req.params.teamId,"certificates.cat_id":req.params.categoryId})
+                    .then((response)=>{
+                        if(response)
+                            return res.status(403).send({"message":"Certificate already Exists for this team and category" });
+                        else {
+                            Team.findOne({ _id: req.params.teamId, "events_participated.cat_id": req.params.categoryId },
+                                { "events_participated.$": 1, team_name: 1, owner_name: 1, participants: 1, certificates: 1 })
+                                .then((team) => {
+                                    if (team) {
+                                        let fileName = Date.now() + team.team_name + '.pdf';
+                                        //console.log(team);
+                                        team.certificates.push({ club_id: event.club_id, cat_id: req.params.categoryId, src: 'event-certificates/' + fileName });
+                                        team.save((err, success) => {
+                                            if (err) {
+                                                console.log(err);
+                                                return res.status(403).send({ "message": "cannot generate certificate" });
+                                            }
+                                            else {
+                                                makeCertificate(event.event_name, event.categories[0].category_name,
+                                                    team.team_name, req.currentUser.name, fileName, team.owner_name.name, team.participants, success._id);
+                                                return res.status(200).send({ "message": "Certificate Generated Successfully" });
+                                            }
+                                        });
                                     }
                                     else {
-                                        makeCertificate(event.event_name, event.categories[0].category_name,
-                                            team.team_name, req.currentUser.name, fileName, team.owner_name.name, team.participants, success._id);
-                                        return res.status(200).send({ "message": "Certificate Generated Successfully" });
+                                        return res.status(403).send({ "message": "Team not registered for the Event" });
                                     }
-                                });
-                            }
-                            else {
-                                return res.status(403).send({ "message": "Team not registered for the Event" });
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            return res.status(403).send({ "message": "Invalid Request" });
-                        })
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                    return res.status(403).send({ "message": "Invalid Request" });
+                                })
+                        }
+                    })
+                    .catch((err=>{
+                        console.log(err);
+                        return res.status(403).send({"message":"Some Error Occured"});
+                    }))
+                    
                 }
                 else {
                     return res.status(403).send({ "message": "Certificate Can only be generated after end of Event" });

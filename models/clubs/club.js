@@ -7,24 +7,6 @@ const jwt = require('jsonwebtoken');
 const salt_factor = 10;
 
 dotenv.config();
-
-const notification = new mongoose.Schema({
-    _id:false,
-    heading:{
-        type:String,
-        required:true
-    },
-    text:{
-        type:String,
-        required:true
-    },
-    date_created:{
-        type:Date,
-        default:Date.now()
-    }
-});
-
-
 const clubSchema = new mongoose.Schema({
     name:{
         type:String,
@@ -45,7 +27,6 @@ const clubSchema = new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
-    notifications:[notification],
     activeTokens:[String]
 });
 

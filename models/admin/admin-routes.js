@@ -7,6 +7,8 @@ const Clubs = require('../clubs/club');
 const Teams = require('../teams/teams');
 const Payment = require('../payments/payment');
 const adminAuth = require('../../middleware/adminauth');
+const Feedback = require('../feedback/feedback');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 
 router.get('/login',function(req,res){
@@ -19,7 +21,7 @@ router.post('/query',function(req,res){
         email:req.body.email,
         feedback:req.body.feedback
     }
-    Admin.findOneAndUpdate({},{$push:{contactRequests:data}})
+    Admin.updateMany({},{$push:{contactRequests:data}})
     .then((suc)=>{
         return res.redirect('/landing')
     })
@@ -140,6 +142,17 @@ router.get('/students',adminAuth,function(req,res){
     });
 });
 
+router.get('/clubs',adminAuth,function(req,res){
+    Clubs.find({})
+    .then((clubs)=>{
+        return res.render("admins/allClubs",{clubs:clubs});
+    })
+    .catch(err=>{
+        console.log(err);
+        return res.status(500).send("Error");
+    });
+});
+
 
 router.get('/events',adminAuth,function(req,res){
     Events.find({})
@@ -151,8 +164,19 @@ router.get('/events',adminAuth,function(req,res){
     });
 });
 
-router.get('/allTeams',adminAuth,function(req,res){
-    Teams.find({})
+router.get('/events/:eventId',adminAuth,function(req,res){
+    Events.findOne({_id:req.params.eventId})
+    .then((events)=>{
+        return res.render("admins/showEvent",{event:events});
+    })
+    .catch(err=>{
+        console.log(err);
+        return res.status(500).send({"message":err});
+    });
+})
+
+router.get('/allTeams/:regn_no',adminAuth,function(req,res){
+    Teams.find({"$or":[{"owner_name.regn_no":req.params.regn_no},{"participants.regn_no":req.params.regn_no}]})
     .then((teams)=>{
         return res.status(200).render("admins/allTeams",{teams:teams});
     })
@@ -161,6 +185,39 @@ router.get('/allTeams',adminAuth,function(req,res){
     });
 });
 
+router.get('/eventsOrganised/:clubId',adminAuth,function (req,res){
+    Events.find({ club_id: req.params.clubId })
+        .then((events) => {
+            return res.status(200).render("admins/allEvents", { events: events });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).send({ "message": "Some Error Occured" });
+        })
+});
+
+router.get('/clubRatings/:clubId',adminAuth,function(req,res){
+    Feedback.aggregate([
+        {
+            "$lookup": {
+                from: 'events',
+                localField: 'event_id',
+                foreignField: '_id',
+                as: 'response'
+            }
+        },
+        {
+            "$match": {
+                'response.club_id': ObjectId(req.params.clubId)
+            }
+        }
+
+    ]).exec(function (err, result) {
+        if (err)
+            return res.status(500).send(err);
+        return res.render("students/viewClubRatings", { ratings: result });
+    });
+});
 
 
 module.exports = router;

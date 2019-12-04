@@ -1,0 +1,40 @@
+<div class="=ui segments">
+    <div class="ui segment">
+        <h3 class="ui divider horizontal header">
+            All Students
+        </h3>
+    </div>
+    <% students.forEach(function(student){ %>
+        <div class="ui attached segment">
+            <div class="ui header">
+                Name: <%= student.name %>
+            </div>
+            <div class="meta">
+                Regn No. <%= student.regn_no %>
+            </div>
+            <br/>
+
+                <button class="ui button basic violet" onclick="showTeams('<%= student.regn_no %>')">
+                    View Teams
+                </button>
+            
+        </div>
+    <%  }); %>
+
+</div>
+
+<script>
+    function showTeams(regn_no)
+    {
+        $('#mainPage').addClass('loading');
+        axios.get('/admins/allTeams/' + regn_no)
+        .then((success)=>{
+            $('#store').html(success.data);
+            $('#mainPage').removeClass('loading');
+        })
+        .catch(err=>{
+            console.log(err);
+            $('#mainPage').removeClass('loading');
+        })
+    }
+</script>

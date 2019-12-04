@@ -1,0 +1,74 @@
+<h3 class="ui block header">
+    All Events
+</h3>
+
+<div class="ui cards">
+    <% events.forEach(function(event) { %>
+    <div class="ui raised card">
+        <div class="content">
+            <div class="header"><%= event.event_name %></div>
+        </div>
+        <div class="content">
+            <h4 class="ui sub header">Important Dates</h4>
+            <div class="ui small feed">
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            Start Date : <%= event.start_date.toDateString() %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            End Date: <%= event.end_date.toDateString() %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            Registration Deadline: <%= event.reg_deadline.toDateString() %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            No. Of Categories: <%= event.categories.length %>
+                        </div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="content">
+                        <div class="summary">
+                            Venue: <%= event.description.venue %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra content">
+            <button class="ui labeled icon primary button" onclick="showEvent('<%= event._id %>')"><i
+                    class="add icon"></i>More Details</button>
+        </div>
+    </div>
+
+    <%  }); %>
+</div>
+
+<script>
+    function showEvent(eventId)
+    {
+        $('#mainPage').addClass('loading');
+        axios.get('/admins/events/' + eventId)
+        .then((success)=>{
+            $('#mainPage').removeClass('loading');
+            $('#store').html(success.data);
+        })
+        .catch(err=>{
+            console.log(err);
+            $('#mainPage').removeClass('loading');
+        });
+    }
+</script>

@@ -1,0 +1,33 @@
+<div class="ui segment">
+    <div class="ui horizontal divider header">
+        All Teams
+    </div>
+    <div class="ui cards">
+        <% teams.forEach(function(team){ %>
+            <div class="card">
+
+            
+            <div class="content">
+                <div class="ui block header">
+                    <%= team.team_name %>
+                </div>
+                <div class="ui header">
+                    Owner: <%= team.owner_name.name %>
+                </div>
+                <div class="summary">
+                    Participants
+                </div>
+                <div class="ui link list">
+                    <% team.participants.forEach(function(part){ %>
+                       <div class="item">
+
+                           <%= part.name %>
+                       </div> 
+                    <% }); %>
+                </div>
+            </div>
+    </div>
+       <% }); %>
+    </div>
+
+</div>

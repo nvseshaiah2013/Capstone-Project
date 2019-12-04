@@ -36,7 +36,7 @@ const adminSchema = new mongoose.Schema({
         required:true
     },
     notifications:[notification],
-    expiredTokens:[String],
+    activeTokens:[String],
     contactRequests:[contactRequest]
 });
 

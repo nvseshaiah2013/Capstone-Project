@@ -1,10 +1,15 @@
 function getTeams(evt)
 {
     evt.preventDefault();
+    $('#mainPage').addClass('loading');
+
     axios.get('/student/teams').then(result => {
         $('#store').html(result.data);
+        $('#mainPage').removeClass('loading');
     }).catch(err => {
         console.log(err);
+        $('#mainPage').removeClass('loading');
+
     });
 }
 
@@ -83,11 +88,13 @@ function getVideoGallery(evt) {
     axios.get('/student/videos/galleryPage')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         })
-    $('#mainPage').removeClass('loading');
 }
 
 function getLiveEvents(event)
@@ -153,12 +160,12 @@ function getUpcomingEvents(event){
 }
 
 function getPic(imageLink, eventId) {
-    console.log('h');
-    console.log(imageLink);
-    console.log(eventId);
+    // console.log('h');
+    // console.log(imageLink);
+    // console.log(eventId);
     axios.post('/student/images/' + eventId + '/getImage', { data: imageLink })
         .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             $('#imagesgallery').append($.parseHTML(response.data));
         })
         .catch((err) => {
@@ -169,7 +176,7 @@ function getPic(imageLink, eventId) {
 function studentSignOut(evt)
 {
     evt.preventDefault();
-    $('#loaderItem').addClass('active');
+    $('#mainPage').addClass('active');
     axios.post('/student/signout')
         .then((response) => {
             delete axios.defaults.headers.common['Authorization'];
@@ -184,80 +191,105 @@ function studentSignOut(evt)
 function myProfile(evt)
 {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/student/profile')
     .then((response)=>{
         $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch((err)=>{
         console.log(err);
+        $('#mainPage').removeClass('loading');
+
     })
-    $('#store').removeClass('loading');
+   
 }
 
 function successPayment(evt)
 {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/payments/studentsPage/success')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
+
         })
-    $('#store').removeClass('loading');
+    
 }
 
 
 function failedPayment(evt) {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/payments/studentsPage/failed')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
+
         })
-    $('#store').removeClass('loading');
 }
 
 
 function pendingPayment(evt) {
     evt.preventDefault();
-    $('#store').addClass('loading');
+    $('#mainPage').addClass('loading');
     axios.get('/payments/studentsPage/pending')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
+
         })
-    $('#store').removeClass('loading');
+
 }
 
 function allClubs(evt)
 {
     evt.preventDefault();
+    $('#mainPage').addClass('loading');
     axios.get('/student/clubs')
     .then((response)=>{
         $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch((err)=>{
         console.log(err);
+        $('#mainPage').removeClass('loading');
+
     })
 }
 
 function myTeams(evt)
 {
     evt.preventDefault();
+    $('#mainPage').addClass('loading');
     axios.get('/student/myTeams')
     .then((response)=>{
         $('#store').html(response.data);
+        $('#mainPage').removeClass('loading');
+
     })
     .catch((err)=>{
         console.log(err);
+        $('#mainPage').removeClass('loading');
+
     });
 }
 
@@ -268,11 +300,13 @@ function viewFeedbacks(evt)
     axios.get('/student/viewFeedback')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         });
-    $('#mainPage').removeClass('loading');
 
 }
 
@@ -283,11 +317,13 @@ function myCertificates(evt)
     axios.get('/student/myCertificates')
         .then((response) => {
             $('#store').html(response.data);
+            $('#mainPage').removeClass('loading');
+
         })
         .catch((err) => {
             console.log(err);
+            $('#mainPage').removeClass('loading');
         });
-    $('#mainPage').removeClass('loading');
 }
 
 $(document)
