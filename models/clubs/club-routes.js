@@ -237,7 +237,10 @@ router.post('/addEmail', clubAuth, function (req, res) {
             return res.status(403).send({ "message": "Member Addition Error" });
         })
 });
+/*
 
+
+*/
 router.post('/sendNotification/:studentId', clubAuth, function (req, res) {
     let data = req.body.data;
     let notification = {
@@ -251,6 +254,21 @@ router.post('/sendNotification/:studentId', clubAuth, function (req, res) {
         else {
             return res.status(200).send({ "message": "Notification Sent" });
         }
+    });
+});
+
+router.post('/sendNotification/:studentId', clubAuth, function (req, res) {
+    let data = req.body.data;
+    let notification = {
+        heading: data.heading,
+        text: data.text
+    };
+    Student.findOneAndUpdate({ regn_no: req.params.studentId }, { "$push": { notifications: notification } })
+    .then(result=>{
+        return res.status(200).send({ "message": "Notification Sent" });
+    })
+    .catch(err=>{
+        return res.status(403).send({ "message": "Cannot send Notification" });
     });
 });
 
